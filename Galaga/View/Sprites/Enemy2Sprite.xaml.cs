@@ -12,15 +12,14 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Galaga.View.Sprites;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Galaga.View.Sprites
 {
-    public sealed partial class Enemy3 
+    public sealed partial class Enemy2Sprite
     {
-        public Enemy3()
+        public Enemy2Sprite()
         {
             this.InitializeComponent();
         }

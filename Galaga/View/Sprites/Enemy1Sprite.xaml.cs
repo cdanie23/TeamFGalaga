@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Galaga.View.Sprites
 {
-    public sealed partial class Enemy1
+    public sealed partial class Enemy1Sprite
     {
-        public Enemy1()
+        public Enemy1Sprite()
         {
             this.InitializeComponent();
         }

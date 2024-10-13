@@ -1,5 +1,5 @@
 ﻿<custom:BaseSprite
-    x:Class="Galaga.View.Sprites.Enemy2"
+    x:Class="Galaga.View.Sprites.Enemy2Sprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:custom="using:Galaga.View.Sprites"
