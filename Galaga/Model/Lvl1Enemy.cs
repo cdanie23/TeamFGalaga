@@ -17,7 +17,6 @@ namespace Galaga.Model
         /// <summary>
         /// Creates an instance of a level 1 enemy
         /// PostCondition: Sprite == new Enemy1Sprite() && SpeedX == SpeedXDirection && SpeedY == SpeedYDirection
-        /// 
         /// </summary>
         public Lvl1Enemy()
         {

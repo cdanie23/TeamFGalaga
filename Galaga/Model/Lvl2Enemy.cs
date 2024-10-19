@@ -15,9 +15,8 @@ namespace Galaga.Model
         private const int SpeedXDirection = 4;
         private const int SpeedYDirection = 0;
         /// <summary>
-        /// Creates an instance of a level 1 enemy
-        /// PostCondition: Sprite == new Enemy1Sprite() && SpeedX == SpeedXDirection && SpeedY == SpeedYDirection
-        /// 
+        /// Creates an instance of a level 2 enemy
+        /// PostCondition: Sprite == new Enemy2Sprite() && SpeedX == SpeedXDirection && SpeedY == SpeedYDirection
         /// </summary>
         public Lvl2Enemy()
         {
