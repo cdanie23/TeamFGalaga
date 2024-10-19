@@ -19,6 +19,9 @@ namespace Galaga.View.Sprites
 {
     public sealed partial class Enemy2Sprite
     {
+        /// <summary>
+        /// Creates an instance of the level two enemy sprite
+        /// </summary>
         public Enemy2Sprite()
         {
             this.InitializeComponent();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Galaga.View.Sprites;
 
@@ -91,6 +92,10 @@ namespace Galaga.Model
         ///     The sprite.
         /// </value>
         public BaseSprite Sprite { get; protected set; }
+        /// <summary>
+        /// Gets or sets the original placement of the game object
+        /// </summary>
+        public Point OriginalLocation { get; set; }
 
         #endregion
 

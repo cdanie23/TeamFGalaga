@@ -23,6 +23,8 @@ namespace Galaga.View.Sprites
             this.InitializeComponent();
         }
 
+
+        
         /// <summary>
         /// Renders sprite at the specified (x,y) location in relation
         /// to the top, left part of the canvas.

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using Windows.UI.Xaml.Controls;
-
+using Point = Windows.Foundation.Point;
 
 namespace Galaga.Model
 {
@@ -19,8 +20,11 @@ namespace Galaga.Model
 
         private Player player;
 
-        private EnemiesManager enemiesManager;
+        private readonly EnemiesManager enemiesManager;
         #endregion
+
+        
+        
 
         #region Constructors
 
@@ -47,7 +51,7 @@ namespace Galaga.Model
         private void initializeGame()
         {
             this.createAndPlacePlayer();
-            this.createAndPlaceEnemies();
+            this.placeCenteredEnemies();
         }
 
         private void createAndPlacePlayer()
@@ -58,7 +62,7 @@ namespace Galaga.Model
             this.placePlayerNearBottomOfBackgroundCentered();
         }
 
-        private void createAndPlaceEnemies()
+        private void placeCenteredEnemies()
         {
             foreach (var enemy in this.enemiesManager)
             {
@@ -100,7 +104,10 @@ namespace Galaga.Model
                         startXLvl3 += enemy.Width + spaceBetweenLvl3Enemies;
                         break;
                 }
+
+                enemy.OriginalLocation = new Point() { X = enemy.X, Y = enemy.Y };
             }
+            
         }
 
         private void placePlayerNearBottomOfBackgroundCentered()
@@ -124,7 +131,43 @@ namespace Galaga.Model
         {
             this.player.MoveRight();
         }
-
+        /// <summary>
+        /// Moves the enemies left
+        /// </summary>
+        public void MoveEnemiesLeft()
+        {
+            this.enemiesManager.MoveEnemiesLeft();
+        }
+        /// <summary>
+        /// Moves the enemies right
+        /// </summary>
+        public void MoveEnemiesRight()
+        {
+            this.enemiesManager.MoveEnemiesRight();
+            
+        }
+        /// <summary>
+        /// Checks to see if the enemies have stepped the amount of times they should
+        /// </summary>
+        /// <returns>true or false</returns>
+        public bool EnemiesDoneMovingInDirection()
+        {
+            return this.enemiesManager.StepsTaken == this.enemiesManager.NumOfStepsInEachDirection;
+        }
+        /// <summary>
+        /// Resets the amount of steps taken
+        /// </summary>
+        public void ResetEnemyStepsTakenInEachDirection()
+        {
+            this.enemiesManager.StepsTaken = 0;
+        }
+        /// <summary>
+        /// Doubles the amount of steps taken in each direction 
+        /// </summary>
+        public void DoubleNumOfStepsTaken()
+        {
+            this.enemiesManager.NumOfStepsInEachDirection *= 2;
+        }
         #endregion
 
     }

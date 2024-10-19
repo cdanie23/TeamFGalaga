@@ -17,8 +17,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Galaga.View.Sprites
 {
-    public sealed partial class Enemy1Sprite
+    /// <summary>
+    /// The enemy one sprite class
+    /// </summary>
+    public sealed partial class Enemy1Sprite 
     {
+        /// <summary>
+        /// Creates an instance of the level one enemy sprite
+        /// </summary>
         public Enemy1Sprite()
         {
             this.InitializeComponent();
