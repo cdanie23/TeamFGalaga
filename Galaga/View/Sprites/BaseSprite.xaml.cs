@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Drawing;
+using Windows.Foundation;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
 
 
@@ -16,12 +18,21 @@ namespace Galaga.View.Sprites
     public abstract partial class BaseSprite : ISpriteRenderer
     {
         /// <summary>
+        /// Gets the boundary rectangle for the sprite
+        /// </summary>
+        public Rectangle Boundary { get; private set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="BaseSprite"/> class.
         /// </summary>
         protected BaseSprite()
         {
             this.InitializeComponent();
+            this.Boundary = new Rectangle(0, 0, 0, 0);
+
+
         }
+
+        
 
 
         
@@ -35,7 +46,9 @@ namespace Galaga.View.Sprites
         {
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
+            this.Boundary = new Rectangle((int)x, (int)y, (int)this.ActualWidth, (int)this.ActualHeight);
         }
+
     }
 
 

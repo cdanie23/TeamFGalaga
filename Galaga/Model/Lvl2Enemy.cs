@@ -20,7 +20,7 @@ namespace Galaga.Model
         /// </summary>
         public Lvl2Enemy()
         {
-            Sprite = new Enemy2Sprite();
+            this.Sprite = new Enemy2Sprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
     }

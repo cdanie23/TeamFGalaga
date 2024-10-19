@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Galaga.Model;
 using Windows.Foundation;
 using Windows.System;
@@ -17,7 +18,7 @@ namespace Galaga.View
     public sealed partial class GameCanvas
     {
         private readonly GameManager gameManager;
-        private readonly DispatcherTimer timer;
+        private readonly DispatcherTimer gameDispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameCanvas"/> class.
@@ -35,10 +36,13 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
 
             this.gameManager = new GameManager(this.canvas);
-            this.timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 500) };
-            this.timer.Tick += this.timerTickMoveLeft;
-            this.timer.Start();
-        }
+
+            this.gameDispatcher = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 200) };
+
+            this.gameDispatcher.Tick += this.timerTickMoveLeft;
+            this.gameDispatcher.Tick += this.timerTickMoveBullet;
+            this.gameDispatcher.Start();
+        }   
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
@@ -50,20 +54,28 @@ namespace Galaga.View
                 case VirtualKey.Right:
                     this.gameManager.MovePlayerRight();
                     break;
+                case VirtualKey.Space:
+                    this.gameManager.ShootPlayerBullet();
+                    break;
             }
         }
 
+        private void timerTickMoveBullet(object sender, object e)
+        {
+            this.gameManager.MovePlayerBullet();
+            this.gameManager.RemoveStruckEnemyAndBullet();
+        }
         private void timerTickMoveLeft(Object sender, object e)
         {
             if (this.gameManager.EnemiesDoneMovingInDirection())
             {
                 //Remove the move enemies left tick event
-                this.timer.Tick -= this.timerTickMoveLeft;
+                this.gameDispatcher.Tick -= this.timerTickMoveLeft;
                 //Adds the move enemies right tick event
-                this.timer.Tick += this.timerTickMoveRight;
+                this.gameDispatcher.Tick += this.timerTickMoveRight;
                 this.gameManager.ResetEnemyStepsTakenInEachDirection();
-                //After first change of direction you have to double the steps taken to position the sprite past its starting position
-                this.gameManager.DoubleNumOfStepsTaken();
+                //After first change of direction you have to double the steps taken to position the sprite past its starting position in both directions
+                this.gameManager.IncreaseStepsTaken();
             }
             else
             {
@@ -77,9 +89,9 @@ namespace Galaga.View
             if (this.gameManager.EnemiesDoneMovingInDirection())
             {
                 //Remove the move enemies right tick event
-                this.timer.Tick -= this.timerTickMoveRight;
+                this.gameDispatcher.Tick -= this.timerTickMoveRight;
                 //Adds the move enemies left tick event
-                this.timer.Tick += this.timerTickMoveLeft;
+                this.gameDispatcher.Tick += this.timerTickMoveLeft;
 
                 this.gameManager.ResetEnemyStepsTakenInEachDirection();
             }

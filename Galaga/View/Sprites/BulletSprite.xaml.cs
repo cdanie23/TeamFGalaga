@@ -18,16 +18,17 @@ using Windows.UI.Xaml.Navigation;
 namespace Galaga.View.Sprites
 {
     /// <summary>
-    /// The level two enemy sprite class
+    /// The bullet sprite class
     /// </summary>
-    public sealed partial class Enemy2Sprite
+    public sealed partial class BulletSprite
     {
         /// <summary>
-        /// Creates an instance of the level two enemy sprite
+        /// Instantiates an instance of a bullet sprite
         /// </summary>
-        public Enemy2Sprite()
+        public BulletSprite()
         {
             this.InitializeComponent();
         }
+
     }
 }

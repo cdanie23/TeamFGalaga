@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using Windows.UI.Xaml.Controls;
 using Point = Windows.Foundation.Point;
@@ -121,7 +122,11 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            this.player.MoveLeft();
+            var newLocation = this.player.X - this.player.SpeedX;
+            if (newLocation > 0)
+            {
+                this.player.MoveLeft();
+            }
         }
 
         /// <summary>
@@ -129,7 +134,12 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            this.player.MoveRight();
+            var newLocation = this.player.X + this.player.SpeedX;
+            if (newLocation + this.player.Width < this.canvasWidth)
+            {
+                this.player.MoveRight();
+            }
+            
         }
         /// <summary>
         /// Moves the enemies left
@@ -164,10 +174,61 @@ namespace Galaga.Model
         /// <summary>
         /// Doubles the amount of steps taken in each direction 
         /// </summary>
-        public void DoubleNumOfStepsTaken()
+        public void IncreaseStepsTaken()
         {
-            this.enemiesManager.NumOfStepsInEachDirection *= 2;
+            this.enemiesManager.NumOfStepsInEachDirection = 10;
         }
+        /// <summary>
+        /// Shoots the Bullet of the player
+        /// Precondition: Player must not already have a Bullet on the canvas
+        /// </summary>
+        public void ShootPlayerBullet()
+        {
+            if (!this.canvas.Children.Contains(this.player.Bullet.Sprite))
+            {
+                this.canvas.Children.Add(this.player.Bullet.Sprite);
+                this.player.Bullet.X = this.player.X + this.player.Width / 2;
+                this.player.Bullet.Y = this.player.Y - 10;
+            }
+
+        }
+        /// <summary>
+        /// Moves the Bullet of the player
+        /// Precondition: The player must have a bullet on the canvas and the bullet cannot exceed the height boundary of the canvas
+        /// </summary>
+        public void MovePlayerBullet()
+        {
+            if (this.canvas.Children.Contains(this.player.Bullet.Sprite) && (this.player.Bullet.Y - this.player.Bullet.SpeedY > 0))
+            {
+                this.player.Bullet.MoveUp();
+            }
+            else
+            {
+                this.canvas.Children.Remove(this.player.Bullet.Sprite);
+            }
+        }
+    
+        /// <summary>
+        /// Removes the enemy that was struck by the Bullet and the Bullet that struck the enemy
+        /// </summary>
+        /// <returns>true if the Bullet struck an enemy and was removed, false otherwise</returns>
+        public bool RemoveStruckEnemyAndBullet()
+        {
+            foreach (var enemy in this.enemiesManager)
+            {
+                if (this.player.Bullet.Sprite.Boundary.IntersectsWith(enemy.Sprite.Boundary))
+                {
+                    this.enemiesManager.Remove(enemy);
+                    this.canvas.Children.Remove(enemy.Sprite);
+                    this.canvas.Children.Remove(this.player.Bullet.Sprite);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        
         #endregion
 
     }

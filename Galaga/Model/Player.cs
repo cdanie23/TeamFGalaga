@@ -1,4 +1,6 @@
-﻿using Galaga.View.Sprites;
+﻿using Windows.ApplicationModel.Store.Preview.InstallControl;
+using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -12,6 +14,10 @@ namespace Galaga.Model
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
 
+        /// <summary>
+        /// Gets the Bullet
+        /// </summary>
+        public Bullet Bullet; 
         #endregion
 
         #region Constructors
@@ -23,6 +29,8 @@ namespace Galaga.Model
         {
             Sprite = new PlayerSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
+
+            this.Bullet = new Bullet();
         }
 
         #endregion

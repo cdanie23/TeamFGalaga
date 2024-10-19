@@ -11,8 +11,7 @@ namespace Galaga.Model
     public abstract class GameObject
     {
         
-        private const double WidthOfGameCanvas = 640;
-
+        
         #region Data members
 
         private Point location;
@@ -111,12 +110,7 @@ namespace Galaga.Model
         public void MoveRight()
         {
             var newLocation = this.X + this.SpeedX;
-            if (newLocation + this.Width < WidthOfGameCanvas)
-            {
-                this.X = newLocation;
-            }
-
-
+            this.X = newLocation;
         }
 
         /// <summary>
@@ -127,10 +121,7 @@ namespace Galaga.Model
         public void MoveLeft()
         {
             var newLocation = this.X - this.SpeedX;
-            if (newLocation > 0)
-            {
-                this.X = newLocation;
-            }
+            this.X = newLocation;
         }
 
         /// <summary>

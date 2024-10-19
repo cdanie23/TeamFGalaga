@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,9 @@ namespace Galaga.Model
         /// </summary>
         public Lvl1Enemy()
         {
-            Sprite = new Enemy1Sprite();
+            this.Sprite = new Enemy1Sprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
+            
         }
     }
 }

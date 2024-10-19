@@ -1,0 +1,18 @@
+﻿<custom:BaseSprite
+    x:Class="Galaga.View.Sprites.BulletSprite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:custom="using:Galaga.View.Sprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="10"
+    d:DesignWidth="5"
+    Height="10"
+    Width="5">
+
+    <Canvas>
+        <Rectangle Name ="border" Height ="10" Width ="5" Stroke="Red" StrokeThickness="3"/>
+
+    </Canvas>
+</custom:BaseSprite>
