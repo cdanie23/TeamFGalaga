@@ -15,6 +15,10 @@ namespace Galaga.Model
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
         /// <summary>
+        /// Get or set the bullet
+        /// </summary>
+        public Bullet Bullet { get; private set; }
+        /// <summary>
         /// Creates an instance of a level 3 enemy
         /// PostCondition: Sprite == new Enemy1Sprite(), SpeedX == SpeedXDirection, SpeedY == SpeedYDirection
         /// </summary>
@@ -22,11 +26,8 @@ namespace Galaga.Model
         {
             this.Sprite = new Enemy3Sprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
+            this.Bullet = new Bullet();
         }
 
-        public void ShootWeapon()
-        {
-            //TODO implement and document
-        }
     }
 }

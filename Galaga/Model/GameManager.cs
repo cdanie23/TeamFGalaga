@@ -228,7 +228,45 @@ namespace Galaga.Model
             return false;
         }
 
-        
+        /// <summary>
+        /// Shoots all level 3 enemies weapons
+        /// </summary>
+        public void ShootLevel3EnemyWeapons()
+        {
+            foreach (var enemy in this.enemiesManager)
+            {
+                if (enemy is Lvl3Enemy lvl3Enemy)
+                {
+                    if (!this.canvas.Children.Contains(lvl3Enemy.Bullet.Sprite))
+                    {
+                        this.canvas.Children.Add(lvl3Enemy.Bullet.Sprite);
+                        lvl3Enemy.Bullet.X = lvl3Enemy.X + lvl3Enemy.Sprite.Width / 2;
+                        lvl3Enemy.Bullet.Y = lvl3Enemy.Y + lvl3Enemy.Sprite.Height;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Moves the level 3 enemies bullets and removes it if it exceeds the height of the canvas
+        /// </summary>
+        public void MoveLevel3EnemyBullets()
+        {
+            foreach (var enemy in this.enemiesManager)
+            {
+                if (enemy is Lvl3Enemy lvl3Enemy)
+                {
+                    if (lvl3Enemy.Bullet.Y + lvl3Enemy.Bullet.SpeedY + lvl3Enemy.Bullet.Height < this.canvasHeight)
+                    {
+                        lvl3Enemy.Bullet.Y += lvl3Enemy.Bullet.SpeedY;
+                    }
+                    else
+                    {
+                        this.canvas.Children.Remove(lvl3Enemy.Bullet.Sprite);
+                    }
+                    
+                }
+            }
+        }
         #endregion
 
     }

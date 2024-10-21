@@ -19,6 +19,7 @@ namespace Galaga.View
     {
         private readonly GameManager gameManager;
         private readonly DispatcherTimer gameDispatcher;
+        private readonly DispatcherTimer level3EnemyShootDispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameCanvas"/> class.
@@ -40,9 +41,20 @@ namespace Galaga.View
             this.gameDispatcher = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 200) };
 
             this.gameDispatcher.Tick += this.timerTickMoveLeft;
-            this.gameDispatcher.Tick += this.timerTickMoveBullet;
+            this.gameDispatcher.Tick += this.timerTickMovePlayerBullet;
             this.gameDispatcher.Start();
-        }   
+
+            this.level3EnemyShootDispatcher = new DispatcherTimer() { Interval = this.getRandomInterval()};
+            this.level3EnemyShootDispatcher.Tick += this.timerTickShootLevel3EnemyWeapons;
+            this.level3EnemyShootDispatcher.Start();
+        }
+
+        private TimeSpan getRandomInterval()
+        {
+            Random random = new Random();
+            int randomSecond = random.Next(2, 10);
+            return new TimeSpan(0, 0, 0, randomSecond);
+        }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
@@ -60,10 +72,19 @@ namespace Galaga.View
             }
         }
 
-        private void timerTickMoveBullet(object sender, object e)
+        private void timerTickShootLevel3EnemyWeapons(object sender, object e)
+        {
+            this.gameManager.ShootLevel3EnemyWeapons();
+            this.level3EnemyShootDispatcher.Interval = this.getRandomInterval();
+        }
+       
+
+       
+        private void timerTickMovePlayerBullet(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
             this.gameManager.RemoveStruckEnemyAndBullet();
+            this.gameManager.MoveLevel3EnemyBullets();
         }
         private void timerTickMoveLeft(Object sender, object e)
         {
@@ -84,6 +105,7 @@ namespace Galaga.View
             
         }
 
+        
         private void timerTickMoveRight(Object sender, object e)
         {
             if (this.gameManager.EnemiesDoneMovingInDirection())

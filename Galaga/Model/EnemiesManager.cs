@@ -13,12 +13,12 @@ using Windows.UI.Xaml.Controls;
 namespace Galaga.Model
 {
     /// <summary>
-    /// Encapsulates the enemies in the game of Galaga
+    /// Encapsulates all the enemies in the game of Galaga
     /// </summary>
     public class EnemiesManager : ICollection<GameObject>
     {
         private readonly Collection<GameObject> enemies;
-        
+       
         /// <summary>
         /// The amount of level 1 enemies
         /// </summary>
@@ -96,10 +96,7 @@ namespace Galaga.Model
         }
         
 
-        public void ShootWeapons()
-        {
-            //TODO implement and comments
-        }
+        
         /// <summary>
         /// Gets the enumerator of the collection
         /// </summary>
