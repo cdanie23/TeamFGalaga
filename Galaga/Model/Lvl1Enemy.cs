@@ -16,6 +16,10 @@ namespace Galaga.Model
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
         /// <summary>
+        /// The number of points for killing this enemy
+        /// </summary>
+        public const int Points = 1;
+        /// <summary>
         /// Creates an instance of a level 1 enemy
         /// PostCondition: Sprite == new Enemy1Sprite(), SpeedX == SpeedXDirection, SpeedY == SpeedYDirection
         /// </summary>

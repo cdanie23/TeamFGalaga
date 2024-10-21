@@ -13,7 +13,7 @@ namespace Galaga.Model
     /// </summary>
     public class Bullet : GameObject
     {
-        private const int BulletYSpeed = 10;
+        private const int BulletYSpeed = 20;
         /// <summary>
         /// Creates an instance of the Bullet 
         /// </summary>

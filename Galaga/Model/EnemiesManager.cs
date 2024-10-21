@@ -16,9 +16,11 @@ namespace Galaga.Model
     /// Encapsulates all the enemies in the game of Galaga
     /// </summary>
     public class EnemiesManager : ICollection<GameObject>
-    {
+    { 
         private readonly Collection<GameObject> enemies;
-       
+
+
+
         /// <summary>
         /// The amount of level 1 enemies
         /// </summary>
@@ -39,9 +41,15 @@ namespace Galaga.Model
         /// Gets or sets the number of steps for the enemies to take in each direction
         /// </summary>
         public int NumOfStepsInEachDirection { get; set; }
+
         /// <summary>
         /// Creates an instance of the Enemies object
         /// Post-condition: this.enemies == enemies
+        /// </summary>
+        public bool AreAllEnemiesDestroyed => this.Count == 0;
+        /// <summary>
+        /// Creates an instance of the enemy manager class
+        /// Post-conditions: this.enemies == enemies , this.StepsTaken == 0, this.NumOfStepsInEachDirection == 5
         /// </summary>
         public EnemiesManager()
         {
@@ -65,6 +73,7 @@ namespace Galaga.Model
             this.enemies = enemies;
             this.StepsTaken = 0;
             this.NumOfStepsInEachDirection = 5;
+           
         }
 
         
@@ -197,6 +206,10 @@ namespace Galaga.Model
 
             return false;
         }
+
+       
+        
+        
         /// <summary>
         /// Supports a simple iteration of a non-generic collection
         /// </summary>
@@ -210,6 +223,7 @@ namespace Galaga.Model
         /// Gets the count
         /// </summary>
         public int Count => this.enemies.Count;
+
         /// <summary>
         /// Checks if the collection is read only
         /// </summary>

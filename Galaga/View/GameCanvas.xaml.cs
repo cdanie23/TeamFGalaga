@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using Galaga.Model;
 using Windows.Foundation;
+using Windows.Gaming.UI;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -20,6 +22,7 @@ namespace Galaga.View
         private readonly GameManager gameManager;
         private readonly DispatcherTimer gameDispatcher;
         private readonly DispatcherTimer level3EnemyShootDispatcher;
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameCanvas"/> class.
@@ -84,7 +87,41 @@ namespace Galaga.View
         {
             this.gameManager.MovePlayerBullet();
             this.gameManager.RemoveStruckEnemyAndBullet();
+            this.ScoreTextBlock.Text = this.gameManager.ScoreText;
             this.gameManager.MoveLevel3EnemyBullets();
+
+            if (this.gameManager.RemovePlayerIfStruck())
+            {
+                this.gameDispatcher.Stop();
+                this.showGameOverDialog();
+            }
+
+            if (this.gameManager.AreAllEnemiesDestroyed)
+            {
+                this.gameDispatcher.Stop();
+                this.showWinDialog();
+                
+            }
+        }
+
+        private async void showWinDialog()
+        {
+            ContentDialog dialog = new ContentDialog()
+            {
+                Title = "Thanks For Playing",
+                Content = "Game Over, You Win!"
+            };
+            await dialog.ShowAsync();
+        }
+
+        private async void showGameOverDialog()
+        {
+            ContentDialog dialog = new ContentDialog()
+            {
+                Title = "Thanks For Playing",
+                Content = "Game Over, You lose"
+            };
+            await dialog.ShowAsync();
         }
         private void timerTickMoveLeft(Object sender, object e)
         {

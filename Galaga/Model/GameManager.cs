@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
+using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.UI.Xaml.Controls;
 using Point = Windows.Foundation.Point;
 
@@ -24,9 +25,17 @@ namespace Galaga.Model
         private readonly EnemiesManager enemiesManager;
         #endregion
 
-        
-        
 
+        /// <summary>
+        /// The score of the game
+        /// </summary>
+        public int Score { get; set; } = 0;
+        /// <summary>
+        /// The score formatted for the view
+        /// </summary>
+        public String ScoreText => "Score : " + this.Score;
+
+        public bool AreAllEnemiesDestroyed => this.enemiesManager.AreAllEnemiesDestroyed;
         #region Constructors
 
         /// <summary>
@@ -41,7 +50,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.enemiesManager = new EnemiesManager();
-
+            
             this.initializeGame();
         }
 
@@ -221,7 +230,41 @@ namespace Galaga.Model
                     this.enemiesManager.Remove(enemy);
                     this.canvas.Children.Remove(enemy.Sprite);
                     this.canvas.Children.Remove(this.player.Bullet.Sprite);
+                    switch (enemy)
+                    {
+                        case Lvl1Enemy _:
+                            this.Score += Lvl1Enemy.Points;
+                            break;
+                        case Lvl2Enemy _:
+                            this.Score += Lvl2Enemy.Points;
+                            break;
+                        case Lvl3Enemy lvl3Enemy:
+                            this.Score += Lvl3Enemy.Points;
+                            this.canvas.Children.Remove(lvl3Enemy.Bullet.Sprite);
+                            break;
+                    }
                     return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Checks to see if the player is struck and removes the player
+        /// </summary>
+        /// <returns>True if the player is struck, false otherwise</returns>
+        public bool RemovePlayerIfStruck()
+        {
+            foreach (var enemy in this.enemiesManager)
+            {
+                if (enemy is Lvl3Enemy)
+                {
+                    var lvl3Enemy = (Lvl3Enemy)enemy;
+                    if (lvl3Enemy.Bullet.Sprite.Boundary.IntersectsWith(this.player.Sprite.Boundary))
+                    {
+                        this.canvas.Children.Remove(this.player.Sprite);
+                        return true;
+                    }
                 }
             }
 

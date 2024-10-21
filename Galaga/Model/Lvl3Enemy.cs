@@ -15,6 +15,10 @@ namespace Galaga.Model
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
         /// <summary>
+        /// The number of points gained for killing this enemy
+        /// </summary>
+        public const int Points = 3;
+        /// <summary>
         /// Get or set the bullet
         /// </summary>
         public Bullet Bullet { get; private set; }
