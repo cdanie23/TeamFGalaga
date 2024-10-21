@@ -276,18 +276,26 @@ namespace Galaga.Model
         /// </summary>
         public void ShootLevel3EnemyWeapons()
         {
+            Collection<Lvl3Enemy> Lvl3Enemies = new Collection<Lvl3Enemy>();
             foreach (var enemy in this.enemiesManager)
             {
                 if (enemy is Lvl3Enemy lvl3Enemy)
                 {
-                    if (!this.canvas.Children.Contains(lvl3Enemy.Bullet.Sprite))
-                    {
-                        this.canvas.Children.Add(lvl3Enemy.Bullet.Sprite);
-                        lvl3Enemy.Bullet.X = lvl3Enemy.X + lvl3Enemy.Sprite.Width / 2;
-                        lvl3Enemy.Bullet.Y = lvl3Enemy.Y + lvl3Enemy.Sprite.Height;
-                    }
+                    
+                    Lvl3Enemies.Add(lvl3Enemy);
                 }
             }
+
+            int randomIndex = new Random().Next(0, Lvl3Enemies.Count - 1);
+            Lvl3Enemy level3Enemy = Lvl3Enemies[randomIndex];
+
+            if (!this.canvas.Children.Contains(level3Enemy.Bullet.Sprite))
+            {
+                this.canvas.Children.Add(level3Enemy.Bullet.Sprite);
+                level3Enemy.Bullet.X = level3Enemy.X + level3Enemy.Width / 2;
+                level3Enemy.Bullet.Y = level3Enemy.Y + level3Enemy.Height;
+            }
+
         }
         /// <summary>
         /// Moves the level 3 enemies bullets and removes it if it exceeds the height of the canvas

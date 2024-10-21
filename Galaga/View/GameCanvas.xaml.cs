@@ -93,11 +93,13 @@ namespace Galaga.View
             if (this.gameManager.RemovePlayerIfStruck())
             {
                 this.gameDispatcher.Stop();
+                this.level3EnemyShootDispatcher.Stop();
                 this.showGameOverDialog();
             }
 
             if (this.gameManager.AreAllEnemiesDestroyed)
             {
+                this.level3EnemyShootDispatcher.Stop();
                 this.gameDispatcher.Stop();
                 this.showWinDialog();
                 
