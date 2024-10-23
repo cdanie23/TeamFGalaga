@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a game object in the Galaga game.
+    ///     Represents a game object in the Galaga game.
     /// </summary>
     public abstract class GameObject
     {
-        
-        
         #region Data members
 
         private Point location;
@@ -91,8 +88,9 @@ namespace Galaga.Model
         ///     The sprite.
         /// </value>
         public BaseSprite Sprite { get; protected set; }
+
         /// <summary>
-        /// Gets or sets the original placement of the game object
+        ///     Gets or sets the original placement of the game object
         /// </summary>
         public Point OriginalLocation { get; set; }
 
@@ -100,12 +98,10 @@ namespace Galaga.Model
 
         #region Methods
 
-
-
         /// <summary>
-        /// Moves the game object right
-        /// Precondition: the game object cannot move past the border of the game canvas
-        /// Postcondition: X += SpeedX
+        ///     Moves the game object right
+        ///     Precondition: the game object cannot move past the border of the game canvas
+        ///     Postcondition: X += SpeedX
         /// </summary>
         public void MoveRight()
         {
@@ -175,6 +171,5 @@ namespace Galaga.Model
         }
 
         #endregion
-
     }
 }

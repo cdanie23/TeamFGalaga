@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Drawing;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.UI.Xaml.Controls;
 using Point = Windows.Foundation.Point;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// Manages the Galaga game play.
+    ///     Manages the Galaga game play.
     /// </summary>
     public class GameManager
     {
@@ -23,23 +20,32 @@ namespace Galaga.Model
         private Player player;
 
         private readonly EnemiesManager enemiesManager;
+
         #endregion
 
+        #region Properties
 
         /// <summary>
-        /// The score of the game
+        ///     The score of the game
         /// </summary>
-        public int Score { get; set; } = 0;
-        /// <summary>
-        /// The score formatted for the view
-        /// </summary>
-        public String ScoreText => "Score : " + this.Score;
+        public int Score { get; set; }
 
+        /// <summary>
+        ///     The score formatted for the view
+        /// </summary>
+        public string ScoreText => "Score : " + this.Score;
+
+        /// <summary>
+        ///     Check if all enemies are destroyed
+        /// </summary>
         public bool AreAllEnemiesDestroyed => this.enemiesManager.AreAllEnemiesDestroyed;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameManager"/> class.
+        ///     Initializes a new instance of the <see cref="GameManager" /> class.
         /// </summary>
         public GameManager(Canvas canvas)
         {
@@ -50,7 +56,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.enemiesManager = new EnemiesManager();
-            
+
             this.initializeGame();
         }
 
@@ -84,15 +90,14 @@ namespace Galaga.Model
 
         private void centerEnemiesNearTopOfCanvas()
         {
-            double spaceBetweenLvl1Enemies = this.canvasWidth / EnemiesManager.NumOfLvl1Enemies / 2.0;
-            double startXLvl1 = spaceBetweenLvl1Enemies;
-            
-            double spaceBetweenLvl2Enemies = this.canvasWidth / EnemiesManager.NumOfLvl2Enemies / 2.0;
-            double startXLvl2 = spaceBetweenLvl2Enemies;
+            var spaceBetweenLvl1Enemies = this.canvasWidth / EnemiesManager.NumOfLvl1Enemies / 2.0;
+            var startXLvl1 = spaceBetweenLvl1Enemies;
 
-            double spaceBetweenLvl3Enemies = this.canvasWidth / EnemiesManager.NumOfLvl3Enemies / 2.0;
-            double startXLvl3 = spaceBetweenLvl3Enemies;
-            
+            var spaceBetweenLvl2Enemies = this.canvasWidth / EnemiesManager.NumOfLvl2Enemies / 2.0;
+            var startXLvl2 = spaceBetweenLvl2Enemies;
+
+            var spaceBetweenLvl3Enemies = this.canvasWidth / EnemiesManager.NumOfLvl3Enemies / 2.0;
+            var startXLvl3 = spaceBetweenLvl3Enemies;
 
             foreach (var enemy in this.enemiesManager)
             {
@@ -115,9 +120,8 @@ namespace Galaga.Model
                         break;
                 }
 
-                enemy.OriginalLocation = new Point() { X = enemy.X, Y = enemy.Y };
+                enemy.OriginalLocation = new Point { X = enemy.X, Y = enemy.Y };
             }
-            
         }
 
         private void placePlayerNearBottomOfBackgroundCentered()
@@ -127,7 +131,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player left.
+        ///     Moves the player left.
         /// </summary>
         public void MovePlayerLeft()
         {
@@ -139,7 +143,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player right.
+        ///     Moves the player right.
         /// </summary>
         public void MovePlayerRight()
         {
@@ -148,66 +152,73 @@ namespace Galaga.Model
             {
                 this.player.MoveRight();
             }
-            
         }
+
         /// <summary>
-        /// Moves the enemies left
+        ///     Moves the enemies left
         /// </summary>
         public void MoveEnemiesLeft()
         {
             this.enemiesManager.MoveEnemiesLeft();
         }
+
         /// <summary>
-        /// Moves the enemies right
+        ///     Moves the enemies right
         /// </summary>
         public void MoveEnemiesRight()
         {
             this.enemiesManager.MoveEnemiesRight();
-            
         }
+
         /// <summary>
-        /// Checks to see if the enemies have stepped the amount of times they should
+        ///     Checks to see if the enemies have stepped the amount of times they should
         /// </summary>
         /// <returns>true or false</returns>
         public bool EnemiesDoneMovingInDirection()
         {
             return this.enemiesManager.StepsTaken == this.enemiesManager.NumOfStepsInEachDirection;
         }
+
         /// <summary>
-        /// Resets the amount of steps taken
+        ///     Resets the amount of steps taken
         /// </summary>
         public void ResetEnemyStepsTakenInEachDirection()
         {
             this.enemiesManager.StepsTaken = 0;
         }
+
         /// <summary>
-        /// Doubles the amount of steps taken in each direction 
+        ///     Doubles the amount of steps taken in each direction
         /// </summary>
         public void IncreaseStepsTaken()
         {
             this.enemiesManager.NumOfStepsInEachDirection = 10;
         }
+
         /// <summary>
-        /// Shoots the Bullet of the player
-        /// Precondition: Player must not already have a Bullet on the canvas
+        ///     Shoots the Bullet of the player
+        ///     Precondition: Player must not already have a Bullet on the canvas
         /// </summary>
         public void ShootPlayerBullet()
         {
             if (!this.canvas.Children.Contains(this.player.Bullet.Sprite))
             {
                 this.canvas.Children.Add(this.player.Bullet.Sprite);
+                //Place bullet in the middle and in front of the sprite 
                 this.player.Bullet.X = this.player.X + this.player.Width / 2;
                 this.player.Bullet.Y = this.player.Y - 10;
             }
-
         }
+
         /// <summary>
-        /// Moves the Bullet of the player
-        /// Precondition: The player must have a bullet on the canvas and the bullet cannot exceed the height boundary of the canvas
+        ///     Moves the Bullet of the player
+        ///     Precondition: The player must have a bullet on the canvas and the bullet cannot exceed the height boundary of the
+        ///     canvas
         /// </summary>
         public void MovePlayerBullet()
         {
-            if (this.canvas.Children.Contains(this.player.Bullet.Sprite) && (this.player.Bullet.Y - this.player.Bullet.SpeedY > 0))
+            if (this.canvas.Children.Contains(this.player.Bullet.Sprite) &&
+                this.player.Bullet.Y - this.player.Bullet.SpeedY > 0)
             {
                 this.player.Bullet.MoveUp();
             }
@@ -216,9 +227,9 @@ namespace Galaga.Model
                 this.canvas.Children.Remove(this.player.Bullet.Sprite);
             }
         }
-    
+
         /// <summary>
-        /// Removes the enemy that was struck by the Bullet and the Bullet that struck the enemy
+        ///     Removes the enemy that was struck by the Bullet and the Bullet that struck the enemy
         /// </summary>
         /// <returns>true if the Bullet struck an enemy and was removed, false otherwise</returns>
         public bool RemoveStruckEnemyAndBullet()
@@ -243,23 +254,24 @@ namespace Galaga.Model
                             this.canvas.Children.Remove(lvl3Enemy.Bullet.Sprite);
                             break;
                     }
+
                     return true;
                 }
             }
 
             return false;
         }
+
         /// <summary>
-        /// Checks to see if the player is struck and removes the player
+        ///     Checks to see if the player is struck and removes the player
         /// </summary>
         /// <returns>True if the player is struck, false otherwise</returns>
         public bool RemovePlayerIfStruck()
         {
             foreach (var enemy in this.enemiesManager)
             {
-                if (enemy is Lvl3Enemy)
+                if (enemy is Lvl3Enemy lvl3Enemy)
                 {
-                    var lvl3Enemy = (Lvl3Enemy)enemy;
                     if (lvl3Enemy.Bullet.Sprite.Boundary.IntersectsWith(this.player.Sprite.Boundary))
                     {
                         this.canvas.Children.Remove(this.player.Sprite);
@@ -272,33 +284,36 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Shoots all level 3 enemies weapons
+        ///     Shoots all level 3 enemies weapons
         /// </summary>
-        public void ShootLevel3EnemyWeapons()
+        public void ShootRandomLevel3EnemyWeapon()
         {
-            Collection<Lvl3Enemy> Lvl3Enemies = new Collection<Lvl3Enemy>();
+            var lvl3Enemies = new Collection<Lvl3Enemy>();
             foreach (var enemy in this.enemiesManager)
             {
                 if (enemy is Lvl3Enemy lvl3Enemy)
                 {
-                    
-                    Lvl3Enemies.Add(lvl3Enemy);
+                    lvl3Enemies.Add(lvl3Enemy);
                 }
             }
 
-            int randomIndex = new Random().Next(0, Lvl3Enemies.Count - 1);
-            Lvl3Enemy level3Enemy = Lvl3Enemies[randomIndex];
-
-            if (!this.canvas.Children.Contains(level3Enemy.Bullet.Sprite))
+            Lvl3Enemy randomLvl3Enemy = null;
+            if (lvl3Enemies.Count > 0)
             {
-                this.canvas.Children.Add(level3Enemy.Bullet.Sprite);
-                level3Enemy.Bullet.X = level3Enemy.X + level3Enemy.Width / 2;
-                level3Enemy.Bullet.Y = level3Enemy.Y + level3Enemy.Height;
+                var randomIndex = new Random().Next(0, lvl3Enemies.Count - 1);
+                randomLvl3Enemy = lvl3Enemies[randomIndex];
             }
 
+            if (randomLvl3Enemy != null && !this.canvas.Children.Contains(randomLvl3Enemy.Bullet.Sprite))
+            {
+                this.canvas.Children.Add(randomLvl3Enemy.Bullet.Sprite);
+                randomLvl3Enemy.Bullet.X = randomLvl3Enemy.X + randomLvl3Enemy.Width / 2;
+                randomLvl3Enemy.Bullet.Y = randomLvl3Enemy.Y + randomLvl3Enemy.Height;
+            }
         }
+
         /// <summary>
-        /// Moves the level 3 enemies bullets and removes it if it exceeds the height of the canvas
+        ///     Moves the level 3 enemies bullets and removes it if it exceeds the height of the canvas
         /// </summary>
         public void MoveLevel3EnemyBullets()
         {
@@ -314,11 +329,10 @@ namespace Galaga.Model
                     {
                         this.canvas.Children.Remove(lvl3Enemy.Bullet.Sprite);
                     }
-                    
                 }
             }
         }
-        #endregion
 
+        #endregion
     }
 }

@@ -2,70 +2,86 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// Encapsulates all the enemies in the game of Galaga
+    ///     Encapsulates all the enemies in the game of Galaga
     /// </summary>
     public class EnemiesManager : ICollection<GameObject>
-    { 
-        private readonly Collection<GameObject> enemies;
-
-
+    {
+        #region Data members
 
         /// <summary>
-        /// The amount of level 1 enemies
+        ///     The amount of level 1 enemies
         /// </summary>
         public const int NumOfLvl1Enemies = 2;
+
         /// <summary>
-        /// The amount of level 2 enemies
+        ///     The amount of level 2 enemies
         /// </summary>
         public const int NumOfLvl2Enemies = 3;
+
         /// <summary>
-        /// The amount of level 3 enemies
+        ///     The amount of level 3 enemies
         /// </summary>
         public const int NumOfLvl3Enemies = 4;
+
+        private readonly Collection<GameObject> enemies;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the number of steps taken by the enemies
+        ///     Gets or sets the number of steps taken by the enemies
         /// </summary>
-        public int StepsTaken { get; set; } 
+        public int StepsTaken { get; set; }
+
         /// <summary>
-        /// Gets or sets the number of steps for the enemies to take in each direction
+        ///     Gets or sets the number of steps for the enemies to take in each direction
         /// </summary>
         public int NumOfStepsInEachDirection { get; set; }
 
         /// <summary>
-        /// Creates an instance of the Enemies object
-        /// Post-condition: this.enemies == enemies
+        ///     Creates an instance of the Enemies object
+        ///     Post-condition: this.enemies == enemies
         /// </summary>
         public bool AreAllEnemiesDestroyed => this.Count == 0;
+
         /// <summary>
-        /// Creates an instance of the enemy manager class
-        /// Post-conditions: this.enemies == enemies , this.StepsTaken == 0, this.NumOfStepsInEachDirection == 5
+        ///     Gets the count
+        /// </summary>
+        public int Count => this.enemies.Count;
+
+        /// <summary>
+        ///     Checks if the collection is read only
+        /// </summary>
+        public bool IsReadOnly => false;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates an instance of the enemy manager class
+        ///     Post-conditions: this.enemies == enemies , this.StepsTaken == 0, this.NumOfStepsInEachDirection == 5
         /// </summary>
         public EnemiesManager()
         {
-            Collection<GameObject> enemies = new Collection<GameObject>();
+            var enemies = new Collection<GameObject>();
 
-            for (int i = 0; i < NumOfLvl1Enemies; i++)
+            for (var i = 0; i < NumOfLvl1Enemies; i++)
             {
                 enemies.Add(new Lvl1Enemy());
             }
 
-            for (int i = 0; i < NumOfLvl2Enemies; i++)
+            for (var i = 0; i < NumOfLvl2Enemies; i++)
             {
                 enemies.Add(new Lvl2Enemy());
             }
 
-            for (int i = 0; i < NumOfLvl3Enemies; i++)
+            for (var i = 0; i < NumOfLvl3Enemies; i++)
             {
                 enemies.Add(new Lvl3Enemy());
             }
@@ -73,52 +89,24 @@ namespace Galaga.Model
             this.enemies = enemies;
             this.StepsTaken = 0;
             this.NumOfStepsInEachDirection = 5;
-           
         }
 
-        
-        /// <summary>
-        /// Moves all enemies to the left one step
-        /// PostCondition: StepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesLeft()
-        {
-            foreach (GameObject enemy in this.enemies)
-            {
-                enemy.MoveLeft();
-            }
+        #endregion
 
-            this.StepsTaken++;
-        }
-        /// <summary>
-        /// Moves all enemies to the right one step
-        /// PostCondition: StepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesRight()
-        {
-            foreach (GameObject enemy in this.enemies)
-            {
-                enemy.MoveRight(); 
-            }
+        #region Methods
 
-            this.StepsTaken++;
-        }
-        
-
-        
         /// <summary>
-        /// Gets the enumerator of the collection
+        ///     Gets the enumerator of the collection
         /// </summary>
         /// <returns>the enumerator</returns>
-       
         public IEnumerator<GameObject> GetEnumerator()
         {
             //TODO dispose of enumerator somehow
             return this.enemies.GetEnumerator();
         }
-        
+
         /// <summary>
-        /// Adds a game object to the collection
+        ///     Adds a game object to the collection
         /// </summary>
         /// <param name="item">the item to add</param>
         /// <exception cref="ArgumentException">item cannot be null</exception>
@@ -130,17 +118,18 @@ namespace Galaga.Model
             }
 
             this.enemies.Add(item);
-
         }
+
         /// <summary>
-        /// Clears the collection of all elements
+        ///     Clears the collection of all elements
         /// </summary>
         public void Clear()
         {
             this.enemies.Clear();
         }
+
         /// <summary>
-        /// Checks if the collection contains the specific item
+        ///     Checks if the collection contains the specific item
         /// </summary>
         /// <param name="item">the item to check for</param>
         /// <returns>true if item was found, false if not</returns>
@@ -151,7 +140,8 @@ namespace Galaga.Model
             {
                 throw new ArgumentException(nameof(item));
             }
-            foreach(var enemy in this.enemies)
+
+            foreach (var enemy in this.enemies)
             {
                 if (enemy == item)
                 {
@@ -161,8 +151,9 @@ namespace Galaga.Model
 
             return false;
         }
+
         /// <summary>
-        /// Copies the collection to an array
+        ///     Copies the collection to an array
         /// </summary>
         /// <param name="array">the array to copy to </param>
         /// <param name="arrayIndex">the index of the collection to begin copying at</param>
@@ -182,8 +173,9 @@ namespace Galaga.Model
 
             this.enemies.CopyTo(array, arrayIndex);
         }
+
         /// <summary>
-        /// Removes the item from the collection
+        ///     Removes the item from the collection
         /// </summary>
         /// <param name="item">the item to remove</param>
         /// <returns>true if the item was removed false otherwise</returns>
@@ -207,11 +199,8 @@ namespace Galaga.Model
             return false;
         }
 
-       
-        
-        
         /// <summary>
-        /// Supports a simple iteration of a non-generic collection
+        ///     Supports a simple iteration of a non-generic collection
         /// </summary>
         /// <returns>the enumerator of the collection</returns>
         IEnumerator IEnumerable.GetEnumerator()
@@ -220,13 +209,33 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Gets the count
+        ///     Moves all enemies to the left one step
+        ///     PostCondition: StepsTaken == @prev + 1
         /// </summary>
-        public int Count => this.enemies.Count;
+        public void MoveEnemiesLeft()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveLeft();
+            }
+
+            this.StepsTaken++;
+        }
 
         /// <summary>
-        /// Checks if the collection is read only
+        ///     Moves all enemies to the right one step
+        ///     PostCondition: StepsTaken == @prev + 1
         /// </summary>
-        public bool IsReadOnly => false;
+        public void MoveEnemiesRight()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveRight();
+            }
+
+            this.StepsTaken++;
+        }
+
+        #endregion
     }
 }

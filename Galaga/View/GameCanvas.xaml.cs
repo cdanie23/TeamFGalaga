@@ -1,31 +1,38 @@
 ﻿using System;
-using System.Diagnostics;
-using Galaga.Model;
 using Windows.Foundation;
-using Windows.Gaming.UI;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Galaga.View
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class GameCanvas
     {
+        private const int TimerIntervalMilliseconds = 200;
+        private const int RandomSecMaxValue = 10;
+        private const int RandomSecMinValue = 2;
+
+        #region Data members
+
         private readonly GameManager gameManager;
         private readonly DispatcherTimer gameDispatcher;
         private readonly DispatcherTimer level3EnemyShootDispatcher;
-        
+       
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameCanvas"/> class.
+        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
         /// </summary>
         public GameCanvas()
         {
@@ -41,21 +48,26 @@ namespace Galaga.View
 
             this.gameManager = new GameManager(this.canvas);
 
-            this.gameDispatcher = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 200) };
+            this.gameDispatcher = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalMilliseconds) };
 
             this.gameDispatcher.Tick += this.timerTickMoveLeft;
             this.gameDispatcher.Tick += this.timerTickMovePlayerBullet;
             this.gameDispatcher.Start();
 
-            this.level3EnemyShootDispatcher = new DispatcherTimer() { Interval = this.getRandomInterval()};
+            this.level3EnemyShootDispatcher = new DispatcherTimer { Interval = this.getRandomInterval() };
             this.level3EnemyShootDispatcher.Tick += this.timerTickShootLevel3EnemyWeapons;
             this.level3EnemyShootDispatcher.Start();
         }
 
+        #endregion
+
+        #region Methods
+
         private TimeSpan getRandomInterval()
         {
-            Random random = new Random();
-            int randomSecond = random.Next(2, 10);
+            var random = new Random();
+            
+            var randomSecond = random.Next(RandomSecMinValue, RandomSecMaxValue);
             return new TimeSpan(0, 0, 0, randomSecond);
         }
 
@@ -77,12 +89,10 @@ namespace Galaga.View
 
         private void timerTickShootLevel3EnemyWeapons(object sender, object e)
         {
-            this.gameManager.ShootLevel3EnemyWeapons();
+            this.gameManager.ShootRandomLevel3EnemyWeapon();
             this.level3EnemyShootDispatcher.Interval = this.getRandomInterval();
         }
-       
 
-       
         private void timerTickMovePlayerBullet(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
@@ -102,13 +112,12 @@ namespace Galaga.View
                 this.level3EnemyShootDispatcher.Stop();
                 this.gameDispatcher.Stop();
                 this.showWinDialog();
-                
             }
         }
 
         private async void showWinDialog()
         {
-            ContentDialog dialog = new ContentDialog()
+            var dialog = new ContentDialog
             {
                 Title = "Thanks For Playing",
                 Content = "Game Over, You Win!"
@@ -118,14 +127,15 @@ namespace Galaga.View
 
         private async void showGameOverDialog()
         {
-            ContentDialog dialog = new ContentDialog()
+            var dialog = new ContentDialog
             {
                 Title = "Thanks For Playing",
                 Content = "Game Over, You lose"
             };
             await dialog.ShowAsync();
         }
-        private void timerTickMoveLeft(Object sender, object e)
+
+        private void timerTickMoveLeft(object sender, object e)
         {
             if (this.gameManager.EnemiesDoneMovingInDirection())
             {
@@ -141,11 +151,9 @@ namespace Galaga.View
             {
                 this.gameManager.MoveEnemiesLeft();
             }
-            
         }
 
-        
-        private void timerTickMoveRight(Object sender, object e)
+        private void timerTickMoveRight(object sender, object e)
         {
             if (this.gameManager.EnemiesDoneMovingInDirection())
             {
@@ -160,7 +168,8 @@ namespace Galaga.View
             {
                 this.gameManager.MoveEnemiesRight();
             }
-            
         }
+
+        #endregion
     }
 }
