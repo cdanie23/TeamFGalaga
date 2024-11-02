@@ -1,11 +1,10 @@
-﻿using Windows.ApplicationModel.Store.Preview.InstallControl;
-using Windows.UI.Xaml.Controls;
+﻿
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a player in the game.
+    /// Represents a Player in the game.
     /// </summary>
     public class Player : GameObject
     {
@@ -30,7 +29,7 @@ namespace Galaga.Model
             Sprite = new PlayerSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
 
-            this.Bullet = new Bullet();
+            this.Bullet = new Bullet(BulletType.Player);
         }
 
         #endregion

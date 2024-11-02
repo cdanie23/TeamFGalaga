@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using Windows.Foundation;
+
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Markup;
+
 
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -46,7 +46,7 @@ namespace Galaga.View.Sprites
         {
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
-            this.Boundary = new Rectangle((int)x, (int)y, (int)this.ActualWidth, (int)this.ActualHeight);
+            this.Boundary = new Rectangle((int)x, (int)y, (int)ActualWidth, (int)ActualHeight);
         }
 
     }

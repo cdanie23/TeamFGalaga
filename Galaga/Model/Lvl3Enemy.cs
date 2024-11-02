@@ -1,23 +1,16 @@
 ﻿using Galaga.View.Sprites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Galaga.Model
 {
     /// <summary>
     /// The level 3 enemy class, inherits game object
     /// </summary>
-    public class Lvl3Enemy : GameObject
+    public class Lvl3Enemy :Enemy
     {
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
-        /// <summary>
-        /// The number of points gained for killing this enemy
-        /// </summary>
-        public const int Points = 3;
+       
         /// <summary>
         /// Get or set the bullet
         /// </summary>
@@ -28,9 +21,11 @@ namespace Galaga.Model
         /// </summary>
         public Lvl3Enemy()
         {
-            this.Sprite = new Enemy3Sprite();
+            Sprite = new Enemy3Sprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
-            this.Bullet = new Bullet();
+            this.Bullet = new Bullet(BulletType.Enemy);
+
+            Points = 3;
         }
 
     }

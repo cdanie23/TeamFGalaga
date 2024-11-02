@@ -2,15 +2,293 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.Foundation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
 {
     /// <summary>
     ///     Encapsulates all the enemies in the game of Galaga
     /// </summary>
-    public class EnemiesManager : ICollection<GameObject>
+    public class EnemiesManager : IEnumerable<Enemy>
     {
         #region Data members
+
+        /// <summary>
+        ///     Gets or sets the number of steps taken by the enemies
+        /// </summary>
+        private int stepsTaken;
+
+        /// <summary>
+        ///     Gets or sets the number of steps for the enemies to take in each direction
+        /// </summary>
+        private int numOfStepsInEachDirection;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Creates an instance of the Enemies object
+        ///     Post-condition: this.enemies == enemies
+        /// </summary>
+        public bool AreAllEnemiesDestroyed => this.Count == 0;
+
+        /// <summary>
+        ///     Gets the count
+        /// </summary>
+        public int Count => this.enemies.Count;
+
+        private bool EnemiesDoneMovingInDirection => this.stepsTaken == this.numOfStepsInEachDirection;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates an instance of the enemy manager class
+        ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5 & this.canvas ==
+        ///     canvas & this.canvasHeight == canvas.Height & this.canvasWidth == canvas.Width
+        ///     & this.bulletManager != null & this.moveTimer != null
+        ///     <param name="canvas">the canvas of the game</param>
+        /// </summary>
+        public EnemiesManager(Canvas canvas)
+        {
+            this.enemies = new Collection<Enemy>();
+
+            for (var i = 0; i < NumOfLvl1Enemies; i++)
+            {
+                this.enemies.Add(new Lvl1Enemy());
+            }
+
+            for (var i = 0; i < NumOfLvl2Enemies; i++)
+            {
+                this.enemies.Add(new Lvl2Enemy());
+            }
+
+            for (var i = 0; i < NumOfLvl3Enemies; i++)
+            {
+                this.enemies.Add(new Lvl3Enemy());
+            }
+
+            this.stepsTaken = 0;
+            this.numOfStepsInEachDirection = 5;
+
+            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+
+            this.canvas = canvas;
+            this.canvasWidth = canvas.Width;
+            this.bulletManager = new BulletManager(canvas);
+
+            this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveTimerMilliseconds) };
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Gets the enumerator for the collection
+        /// </summary>
+        /// <returns>the enumerator for the collection</returns>
+        public IEnumerator<Enemy> GetEnumerator()
+        {
+            var enumerator = ((IEnumerable<Enemy>)this.enemies).GetEnumerator();
+            enumerator.Dispose();
+            return enumerator;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            var enumerator = ((IEnumerable<Enemy>)this.enemies).GetEnumerator();
+            enumerator.Dispose();
+            return enumerator;
+        }
+
+        private void shootRandomLevel3EnemyWeapon()
+        {
+            var enemy = this.getRandomLevel3Enemy();
+            if (enemy != null && !this.canvas.Children.Contains(enemy.Bullet.Sprite))
+            {
+                this.canvas.Children.Add(enemy.Bullet.Sprite);
+                enemy.Bullet.X = enemy.X + enemy.Width / 2;
+                enemy.Bullet.Y = enemy.Y + enemy.Height;
+                this.bulletManager.AddBullet(enemy.Bullet);
+            }
+        }
+
+        private void shootRandomLevel3EnemyWeaponTickEvent(object sender, object e)
+        {
+            this.shootRandomLevel3EnemyWeapon();
+            this.bulletManager.EnemyRandomShootTimer.Interval = this.bulletManager.GetRandomInterval();
+        }
+
+        private void timerTickMoveLeft(object sender, object e)
+        {
+            if (this.EnemiesDoneMovingInDirection)
+            {
+                this.moveTimer.Tick -= this.timerTickMoveLeft;
+
+                this.moveTimer.Tick += this.timerTickMoveRight;
+                this.stepsTaken = 0;
+
+                this.numOfStepsInEachDirection = NumOfStepsInEachDirectionOfOrigin;
+            }
+            else
+            {
+                this.MoveEnemiesLeft();
+            }
+        }
+
+        private void timerTickMoveRight(object sender, object e)
+        {
+            if (this.EnemiesDoneMovingInDirection)
+            {
+                this.moveTimer.Tick -= this.timerTickMoveRight;
+                this.moveTimer.Tick += this.timerTickMoveLeft;
+
+                this.stepsTaken = 0;
+            }
+            else
+            {
+                this.MoveEnemiesRight();
+            }
+        }
+
+        /// <summary>
+        ///     Sets the enemies up for the game
+        /// </summary>
+        public void SetupEnemies()
+        {
+            this.placeCenteredEnemies();
+
+            this.moveTimer.Tick += this.timerTickMoveLeft;
+            this.moveTimer.Start();
+
+            this.bulletManager.EnemyRandomShootTimer.Tick += this.shootRandomLevel3EnemyWeaponTickEvent;
+            this.bulletManager.EnemyRandomShootTimer.Start();
+        }
+
+        private void centerEnemiesNearTopOfCanvas()
+        {
+            var spaceBetweenLvl1Enemies = this.canvasWidth / NumOfLvl1Enemies / 2.0;
+            var startXLvl1 = spaceBetweenLvl1Enemies;
+
+            var spaceBetweenLvl2Enemies = this.canvasWidth / NumOfLvl2Enemies / 2.0;
+            var startXLvl2 = spaceBetweenLvl2Enemies;
+
+            var spaceBetweenLvl3Enemies = this.canvasWidth / NumOfLvl3Enemies / 2.0;
+            var startXLvl3 = spaceBetweenLvl3Enemies;
+
+            foreach (var enemy in this.enemies)
+            {
+                switch (enemy)
+                {
+                    case Lvl1Enemy _:
+                        enemy.X = startXLvl1;
+                        enemy.Y = EnemyRow1;
+                        startXLvl1 += enemy.Width + spaceBetweenLvl1Enemies;
+                        break;
+                    case Lvl2Enemy _:
+                        enemy.X = startXLvl2;
+                        enemy.Y = EnemyRow2;
+                        startXLvl2 += enemy.Width + spaceBetweenLvl2Enemies;
+                        break;
+                    case Lvl3Enemy _:
+                        enemy.X = startXLvl3;
+                        enemy.Y = EnemyRow3;
+                        startXLvl3 += enemy.Width + spaceBetweenLvl3Enemies;
+                        break;
+                }
+
+                enemy.OriginalLocation = new Point { X = enemy.X, Y = enemy.Y };
+            }
+        }
+
+        private void placeCenteredEnemies()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                this.canvas.Children.Add(enemy.Sprite);
+            }
+
+            this.centerEnemiesNearTopOfCanvas();
+        }
+
+        /// <summary>
+        ///     Removes the struck enemy by the player
+        /// </summary>
+        /// <param name="player">the player of the game</param>
+        /// <returns>the enemy which was struck or null if no one was struck</returns>
+        public Enemy RemoveStruckEnemy(Player player)
+        {
+            foreach (var enemy in this.enemies)
+            {
+                if (this.canvas.Children.Contains(enemy.Sprite) && enemy.CollisionDetected(player.Bullet))
+                {
+                    this.canvas.Children.Remove(enemy.Sprite);
+                    this.bulletManager.RemoveBullet(player.Bullet);
+                    this.enemies.Remove(enemy);
+                    return enemy;
+                }
+            }
+
+            return null;
+        }
+
+        private Lvl3Enemy getRandomLevel3Enemy()
+        {
+            var lvl3Enemies = new List<Lvl3Enemy>();
+            foreach (var enemy in this.enemies)
+            {
+                if (enemy is Lvl3Enemy lvl3Enemy)
+                {
+                    lvl3Enemies.Add(lvl3Enemy);
+                }
+            }
+
+            Lvl3Enemy randomLvl3Enemy = null;
+            if (lvl3Enemies.Count > 0)
+            {
+                var randomIndex = new Random().Next(0, lvl3Enemies.Count - 1);
+                randomLvl3Enemy = lvl3Enemies[randomIndex];
+            }
+
+            return randomLvl3Enemy;
+        }
+
+        /// <summary>
+        ///     Moves all enemies to the left one step
+        ///     PostCondition: stepsTaken == @prev + 1
+        /// </summary>
+        public void MoveEnemiesLeft()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveLeft();
+            }
+
+            this.stepsTaken++;
+        }
+
+        /// <summary>
+        ///     Moves all enemies to the right one step
+        ///     PostCondition: stepsTaken == @prev + 1
+        /// </summary>
+        public void MoveEnemiesRight()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveRight();
+            }
+
+            this.stepsTaken++;
+        }
+
+        #endregion
+
+        #region Data Members
 
         /// <summary>
         ///     The amount of level 1 enemies
@@ -27,214 +305,18 @@ namespace Galaga.Model
         /// </summary>
         public const int NumOfLvl3Enemies = 4;
 
-        private readonly Collection<GameObject> enemies;
+        private readonly Collection<Enemy> enemies;
+        private readonly Canvas canvas;
+        private readonly double canvasWidth;
 
-        #endregion
+        private const double EnemyRow1 = 200;
+        private const double EnemyRow2 = 100;
+        private const double EnemyRow3 = 0;
+        private const int MoveTimerMilliseconds = 200;
+        private const int NumOfStepsInEachDirectionOfOrigin = 10;
 
-        #region Properties
-
-        /// <summary>
-        ///     Gets or sets the number of steps taken by the enemies
-        /// </summary>
-        public int StepsTaken { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the number of steps for the enemies to take in each direction
-        /// </summary>
-        public int NumOfStepsInEachDirection { get; set; }
-
-        /// <summary>
-        ///     Creates an instance of the Enemies object
-        ///     Post-condition: this.enemies == enemies
-        /// </summary>
-        public bool AreAllEnemiesDestroyed => this.Count == 0;
-
-        /// <summary>
-        ///     Gets the count
-        /// </summary>
-        public int Count => this.enemies.Count;
-
-        /// <summary>
-        ///     Checks if the collection is read only
-        /// </summary>
-        public bool IsReadOnly => false;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        ///     Creates an instance of the enemy manager class
-        ///     Post-conditions: this.enemies == enemies , this.StepsTaken == 0, this.NumOfStepsInEachDirection == 5
-        /// </summary>
-        public EnemiesManager()
-        {
-            var enemies = new Collection<GameObject>();
-
-            for (var i = 0; i < NumOfLvl1Enemies; i++)
-            {
-                enemies.Add(new Lvl1Enemy());
-            }
-
-            for (var i = 0; i < NumOfLvl2Enemies; i++)
-            {
-                enemies.Add(new Lvl2Enemy());
-            }
-
-            for (var i = 0; i < NumOfLvl3Enemies; i++)
-            {
-                enemies.Add(new Lvl3Enemy());
-            }
-
-            this.enemies = enemies;
-            this.StepsTaken = 0;
-            this.NumOfStepsInEachDirection = 5;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Gets the enumerator of the collection
-        /// </summary>
-        /// <returns>the enumerator</returns>
-        public IEnumerator<GameObject> GetEnumerator()
-        {
-            //TODO dispose of enumerator somehow
-            return this.enemies.GetEnumerator();
-        }
-
-        /// <summary>
-        ///     Adds a game object to the collection
-        /// </summary>
-        /// <param name="item">the item to add</param>
-        /// <exception cref="ArgumentException">item cannot be null</exception>
-        public void Add(GameObject item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentException(nameof(item));
-            }
-
-            this.enemies.Add(item);
-        }
-
-        /// <summary>
-        ///     Clears the collection of all elements
-        /// </summary>
-        public void Clear()
-        {
-            this.enemies.Clear();
-        }
-
-        /// <summary>
-        ///     Checks if the collection contains the specific item
-        /// </summary>
-        /// <param name="item">the item to check for</param>
-        /// <returns>true if item was found, false if not</returns>
-        /// <exception cref="ArgumentException">item cannot be null</exception>
-        public bool Contains(GameObject item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentException(nameof(item));
-            }
-
-            foreach (var enemy in this.enemies)
-            {
-                if (enemy == item)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     Copies the collection to an array
-        /// </summary>
-        /// <param name="array">the array to copy to </param>
-        /// <param name="arrayIndex">the index of the collection to begin copying at</param>
-        /// <exception cref="ArgumentException">array cannot be null</exception>
-        /// <exception cref="IndexOutOfRangeException">the index must be greater than 0 and not out of range of the collection</exception>
-        public void CopyTo(GameObject[] array, int arrayIndex)
-        {
-            if (array == null)
-            {
-                throw new ArgumentException(nameof(array));
-            }
-
-            if (arrayIndex < 0 && arrayIndex > this.enemies.Count - 1)
-            {
-                throw new IndexOutOfRangeException("index must be greater than 0 and in range of collection");
-            }
-
-            this.enemies.CopyTo(array, arrayIndex);
-        }
-
-        /// <summary>
-        ///     Removes the item from the collection
-        /// </summary>
-        /// <param name="item">the item to remove</param>
-        /// <returns>true if the item was removed false otherwise</returns>
-        /// <exception cref="ArgumentException">the item cannot be null</exception>
-        public bool Remove(GameObject item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentException(nameof(item));
-            }
-
-            foreach (var enemy in this.enemies)
-            {
-                if (enemy == item)
-                {
-                    this.enemies.Remove(item);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     Supports a simple iteration of a non-generic collection
-        /// </summary>
-        /// <returns>the enumerator of the collection</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        /// <summary>
-        ///     Moves all enemies to the left one step
-        ///     PostCondition: StepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesLeft()
-        {
-            foreach (var enemy in this.enemies)
-            {
-                enemy.MoveLeft();
-            }
-
-            this.StepsTaken++;
-        }
-
-        /// <summary>
-        ///     Moves all enemies to the right one step
-        ///     PostCondition: StepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesRight()
-        {
-            foreach (var enemy in this.enemies)
-            {
-                enemy.MoveRight();
-            }
-
-            this.StepsTaken++;
-        }
+        private readonly DispatcherTimer moveTimer;
+        private readonly BulletManager bulletManager;
 
         #endregion
     }

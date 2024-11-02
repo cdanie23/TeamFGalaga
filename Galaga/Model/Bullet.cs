@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
@@ -14,14 +9,22 @@ namespace Galaga.Model
     public class Bullet : GameObject
     {
         private const int BulletYSpeed = 20;
+
         /// <summary>
-        /// Creates an instance of the Bullet 
+        /// Gets the bullet type
         /// </summary>
-        public Bullet()
+        public BulletType BulletType { get; private set; }
+        /// <summary>
+        /// Creates an instance of the Bullet
+        /// PostCondition: this.BulletType == BulletType & this.Sprite == BulletSprite & this.SpeedX == 0 & this.SpeedY == this.BulletYSpeed
+        /// </summary>
+        public Bullet(BulletType bulletType)
         {
-            this.Sprite = new BulletSprite();
-            this.SetSpeed(0, BulletYSpeed);
+            this.BulletType = bulletType;
+            Sprite = new BulletSprite();
+            SetSpeed(0, BulletYSpeed);
         }
-        
+
+       
     }
 }

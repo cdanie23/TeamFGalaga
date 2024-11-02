@@ -16,17 +16,11 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class GameCanvas
     {
-        private const int TimerIntervalMilliseconds = 200;
-        private const int RandomSecMaxValue = 10;
-        private const int RandomSecMinValue = 2;
 
         #region Data members
 
         private readonly GameManager gameManager;
-        private readonly DispatcherTimer gameDispatcher;
-        private readonly DispatcherTimer level3EnemyShootDispatcher;
-       
-
+        
         #endregion
 
         #region Constructors
@@ -47,29 +41,16 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
 
             this.gameManager = new GameManager(this.canvas);
-
-            this.gameDispatcher = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalMilliseconds) };
-
-            this.gameDispatcher.Tick += this.timerTickMoveLeft;
-            this.gameDispatcher.Tick += this.timerTickMovePlayerBullet;
-            this.gameDispatcher.Start();
-
-            this.level3EnemyShootDispatcher = new DispatcherTimer { Interval = this.getRandomInterval() };
-            this.level3EnemyShootDispatcher.Tick += this.timerTickShootLevel3EnemyWeapons;
-            this.level3EnemyShootDispatcher.Start();
+            this.gameManager.EnemyStruck += this.onScoreUpdate;
+            this.gameManager.PlayerStruck += this.onPlayerDeath;
+            this.gameManager.EnemyStruck += this.onAllEnemiesDead;
         }
 
         #endregion
 
         #region Methods
 
-        private TimeSpan getRandomInterval()
-        {
-            var random = new Random();
-            
-            var randomSecond = random.Next(RandomSecMinValue, RandomSecMaxValue);
-            return new TimeSpan(0, 0, 0, randomSecond);
-        }
+       
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
@@ -87,32 +68,22 @@ namespace Galaga.View
             }
         }
 
-        private void timerTickShootLevel3EnemyWeapons(object sender, object e)
+        private void onScoreUpdate(Object sender, GameManager.EnemyDeathEventArgs args)
         {
-            this.gameManager.ShootRandomLevel3EnemyWeapon();
-            this.level3EnemyShootDispatcher.Interval = this.getRandomInterval();
+            this.gameManager.Score += args.Enemy.Points;
+            this.scoreTextBlock.Text = this.gameManager.GetFormattedScore();
         }
 
-        private void timerTickMovePlayerBullet(object sender, object e)
+        private void onAllEnemiesDead(Object sender, GameManager.EnemyDeathEventArgs args)
         {
-            this.gameManager.MovePlayerBullet();
-            this.gameManager.RemoveStruckEnemyAndBullet();
-            this.ScoreTextBlock.Text = this.gameManager.ScoreText;
-            this.gameManager.MoveLevel3EnemyBullets();
-
-            if (this.gameManager.RemovePlayerIfStruck())
-            {
-                this.gameDispatcher.Stop();
-                this.level3EnemyShootDispatcher.Stop();
-                this.showGameOverDialog();
-            }
-
             if (this.gameManager.AreAllEnemiesDestroyed)
             {
-                this.level3EnemyShootDispatcher.Stop();
-                this.gameDispatcher.Stop();
                 this.showWinDialog();
             }
+        }
+        private void onPlayerDeath(Object sender, EventArgs e)
+        {
+            this.showGameOverDialog();
         }
 
         private async void showWinDialog()
@@ -135,40 +106,7 @@ namespace Galaga.View
             await dialog.ShowAsync();
         }
 
-        private void timerTickMoveLeft(object sender, object e)
-        {
-            if (this.gameManager.EnemiesDoneMovingInDirection())
-            {
-                //Remove the move enemies left tick event
-                this.gameDispatcher.Tick -= this.timerTickMoveLeft;
-                //Adds the move enemies right tick event
-                this.gameDispatcher.Tick += this.timerTickMoveRight;
-                this.gameManager.ResetEnemyStepsTakenInEachDirection();
-                //After first change of direction you have to double the steps taken to position the sprite past its starting position in both directions
-                this.gameManager.IncreaseStepsTaken();
-            }
-            else
-            {
-                this.gameManager.MoveEnemiesLeft();
-            }
-        }
-
-        private void timerTickMoveRight(object sender, object e)
-        {
-            if (this.gameManager.EnemiesDoneMovingInDirection())
-            {
-                //Remove the move enemies right tick event
-                this.gameDispatcher.Tick -= this.timerTickMoveRight;
-                //Adds the move enemies left tick event
-                this.gameDispatcher.Tick += this.timerTickMoveLeft;
-
-                this.gameManager.ResetEnemyStepsTakenInEachDirection();
-            }
-            else
-            {
-                this.gameManager.MoveEnemiesRight();
-            }
-        }
+     
 
         #endregion
     }
