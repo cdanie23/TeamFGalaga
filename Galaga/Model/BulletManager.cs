@@ -29,24 +29,29 @@ namespace Galaga.Model
         public DispatcherTimer EnemyRandomShootTimer { get; private set; }
         private readonly ICollection<Bullet> bullets;
         private readonly Canvas canvas;
+        private readonly PlayerManager playerManager;
         
         /// <summary>
-        /// Makes an instant of the bullet manager 
+        /// Makes an instant of the bullet manager
+        /// Post-condition: this.canvas == canvas, this.bullets != null, this.playerManager != null
         /// </summary>
         /// <param name="canvas">The canvas which the game is played</param>
+        /// <param name="playerManager">the player manager of the game</param>
         /// <exception cref="ArgumentNullException">Thrown when the canvas passed in is null</exception>
-        public BulletManager(Canvas canvas)
+        public BulletManager(Canvas canvas, PlayerManager playerManager)
         {
             this.bullets = new List<Bullet>();
 
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
             this.canvas = canvas;
-           
+            this.playerManager = playerManager;
         }
 
         
-
+        /// <summary>
+        /// Sets the intervals and tick events of the bullet timers
+        /// </summary>
         public void SetupBulletTimers()
         {
             this.BulletMoveTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, Milliseconds) };
@@ -67,7 +72,7 @@ namespace Galaga.Model
             return this.canvas.Children.Remove(bullet.Sprite);
         }
         /// <summary>
-        /// Gets a random time span between this.RandomSecMinvalue & this.RandomSecMaxvalue
+        /// Gets a random time span between this.RandomSecMinvalue and this.RandomSecMaxvalue
         /// </summary>
         /// <returns>A random time span</returns>
         public TimeSpan GetRandomInterval()
@@ -143,6 +148,10 @@ namespace Galaga.Model
         {
             foreach (Bullet bullet in flaggedBullets)
             {
+                if (bullet.BulletType == BulletType.Player)
+                {
+                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+                }
                 this.RemoveBullet(bullet);
             }
         }

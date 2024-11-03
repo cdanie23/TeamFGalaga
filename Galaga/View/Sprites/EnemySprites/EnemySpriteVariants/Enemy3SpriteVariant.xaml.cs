@@ -4,8 +4,14 @@
 
 namespace Galaga.View.Sprites.EnemySprites.EnemySpriteVariants
 {
+    /// <summary>
+    /// The enemy 3 sprite variant class
+    /// </summary>
     public sealed partial class Enemy3SpriteVariant
     {
+        /// <summary>
+        /// Creates an instance of the enemy 3 sprite variant
+        /// </summary>
         public Enemy3SpriteVariant()
         {
             this.InitializeComponent();

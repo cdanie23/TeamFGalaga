@@ -29,10 +29,12 @@ namespace Galaga.Model
         }
 
         #region Data members
+
         /// <summary>
         /// The event of an enemy being killed
         /// </summary>
         public event EventHandler<EnemyDeathEventArgs> EnemyStruck;
+
         /// <summary>
         /// The event of the player being struck
         /// </summary>
@@ -66,14 +68,14 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
-        ///     PostCondition: this.playerManager != null & this.enemyManager != null & this.bulletManager != null
+        ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.bulletManager != null
         ///     <param name="canvas">the canvas of the game</param>
         /// </summary>
         public GameManager(Canvas canvas)
         {
             this.playerManager = new PlayerManager(canvas);
             this.enemyManager = new EnemiesManager(canvas);
-            this.bulletManager = new BulletManager(canvas);
+            this.bulletManager = new BulletManager(canvas, this.playerManager);
             this.initializeGame();
         }
 
@@ -115,9 +117,11 @@ namespace Galaga.Model
         /// </summary>
         public void ShootPlayerBullet()
         {
-            if (this.playerManager.ShootPlayerBullet())
+            //TODO update documentation and figure out how to maintain the same instance of a bullet across objects 
+            Bullet bullet = this.playerManager.ShootPlayerBullet();
+            if (bullet != null)
             {
-                this.bulletManager.AddBullet(this.playerManager.Player.Bullet);
+                this.bulletManager.AddBullet(bullet);
             }
         }
 
@@ -147,7 +151,7 @@ namespace Galaga.Model
 
         private void checkForStruckEnemyTickEvent(Object sender, object e)
         {
-            Enemy enemy = this.enemyManager.RemoveStruckEnemy(this.playerManager.Player, this.bulletManager);
+            Enemy enemy = this.enemyManager.RemoveStruckEnemy(this.playerManager, this.bulletManager);
 
             if (enemy != null)
             {

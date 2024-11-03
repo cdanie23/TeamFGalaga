@@ -14,16 +14,19 @@ namespace Galaga.Model
         /// </summary>
         public Player Player { get; private set; }
         
+
         private readonly Canvas canvas;
 
         private readonly double canvasWidth;
         private readonly double canvasHeight;
-
         private const double PlayerOffsetFromBottom = 30;
+        
+        private DateTime dateTimeOfLastPlayerBullet;
+        private readonly TimeSpan delayBetweenBullets;
         /// <summary>
         /// Creates an instance of the player manager
         /// PreCondition: canvas != null
-        /// PostCondition: this.canvas == canvas & this.canvasHeight == canvasHeight & this.canvasWidth == canvasWidth & this.bulletManager != null
+        /// PostCondition: this.canvas == canvas, this.canvasHeight == canvasHeight, this.canvasWidth == canvasWidth, this.bulletManager != null
         /// </summary>
         /// <param name="canvas">the canvas of the game</param>
         /// <exception cref="ArgumentNullException">thrown if the canvas is null</exception>
@@ -36,6 +39,7 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
+            this.delayBetweenBullets = new TimeSpan(0, 0, 0, 0, 500);
         }
         /// <summary>
         /// Sets the player in the game
@@ -46,23 +50,30 @@ namespace Galaga.Model
         }
         /// <summary>
         ///     Shoots the Bullet of the Player
-        ///     Precondition: Player must not already have a Bullet on the canvas
+        ///     Precondition: Player must not already have three active BulletsAvailable
         ///     <returns>True or false based on if the bullet was shot</returns>
         /// </summary>
-        public Boolean ShootPlayerBullet()
+        public Bullet ShootPlayerBullet()
         {
-            if (!this.canvas.Children.Contains(this.Player.Bullet.Sprite))
+            //TODO update documentation
+            if (this.canPlayerShoot())
             {
-                this.canvas.Children.Add(this.Player.Bullet.Sprite);
-
-                this.Player.Bullet.X = this.Player.X + this.Player.Width / 2;
-                this.Player.Bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
-                return true;
+                Bullet bullet = this.Player.BulletsAvailable.Pop();
+                this.canvas.Children.Add(bullet.Sprite);
+                bullet.X = this.Player.X + this.Player.Width / 2;
+                bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
+                this.dateTimeOfLastPlayerBullet = DateTime.Now;
+                return bullet;
             }
 
-            return false;
+            return null;
         }
 
+        private Boolean canPlayerShoot()
+        {
+            return this.Player.BulletsAvailable.Count > 0 &&
+                   DateTime.Now - this.dateTimeOfLastPlayerBullet > this.delayBetweenBullets;
+        }
         /// <summary>
         /// Check is the player is struck by a bullet
         /// </summary>

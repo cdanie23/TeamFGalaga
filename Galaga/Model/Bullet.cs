@@ -16,7 +16,7 @@ namespace Galaga.Model
         public BulletType BulletType { get; private set; }
         /// <summary>
         /// Creates an instance of the Bullet
-        /// PostCondition: this.BulletType == BulletType & this.Sprite == BulletSprite & this.SpeedX == 0 & this.SpeedY == this.BulletYSpeed
+        /// PostCondition: this.BulletType == BulletType, this.Sprite == BulletSprite, this.SpeedX == 0, this.SpeedY == this.BulletYSpeed
         /// </summary>
         public Bullet(BulletType bulletType)
         {

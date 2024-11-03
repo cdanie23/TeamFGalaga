@@ -1,6 +1,5 @@
 ﻿
 
-using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {

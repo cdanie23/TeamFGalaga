@@ -1,4 +1,7 @@
 ﻿
+
+using System.Collections.Generic;
+
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
@@ -12,11 +15,14 @@ namespace Galaga.Model
 
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
+       
+        private const int MaxNumOfBullets = 3;
 
         /// <summary>
-        /// Gets the Bullet
+        /// The available bullets of the player
         /// </summary>
-        public Bullet Bullet; 
+        public Stack<Bullet> BulletsAvailable { get;}
+
         #endregion
 
         #region Constructors
@@ -29,8 +35,18 @@ namespace Galaga.Model
             Sprite = new PlayerSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
 
-            this.Bullet = new Bullet(BulletType.Player);
+            this.BulletsAvailable = new Stack<Bullet>();
+            this.setupActiveBullets();
+
         }
+
+        private void setupActiveBullets()
+        {
+            for (var i = 0; i < MaxNumOfBullets; i++)
+            {
+                this.BulletsAvailable.Push(new Bullet(BulletType.Player));
+            }
+        } 
 
         #endregion
     }

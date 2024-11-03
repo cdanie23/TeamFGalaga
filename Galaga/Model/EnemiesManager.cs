@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
+
 
 namespace Galaga.Model
 {
@@ -261,21 +261,26 @@ namespace Galaga.Model
         /// <summary>
         ///     Removes the struck enemy by the player
         /// </summary>
-        /// <param name="player">the player of the game</param>
+        /// <param name="playerManager">the player manager of the game</param>
         /// <param name="bulletManager">the bullet manager to remove the bullet from</param>
         /// <returns>the enemy which was struck or null if no one was struck</returns>
-        public Enemy RemoveStruckEnemy(Player player, BulletManager bulletManager)
+        public Enemy RemoveStruckEnemy(PlayerManager playerManager, BulletManager bulletManager)
         {
 
             foreach (var enemy in this.enemies)
             {
-                if (enemy.CollisionDetected(player.Bullet))
+                foreach (Bullet bullet in bulletManager)
                 {
-                    this.canvas.Children.Remove(enemy.Sprite);
-                    bulletManager.RemoveBullet(player.Bullet);
-                    this.enemies.Remove(enemy);
-                    return enemy;
+                    if (bullet.BulletType == BulletType.Player && enemy.CollisionDetected(bullet))
+                    {
+                        this.canvas.Children.Remove(enemy.Sprite);
+                        bulletManager.RemoveBullet(bullet);
+                        this.enemies.Remove(enemy);
+                        playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+                        return enemy;
+                    }
                 }
+                
             }
 
             return null;
