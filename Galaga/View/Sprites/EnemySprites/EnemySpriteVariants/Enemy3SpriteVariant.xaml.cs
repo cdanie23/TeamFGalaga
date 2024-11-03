@@ -2,13 +2,14 @@
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace Galaga.View.Sprites.EnemySprites
+namespace Galaga.View.Sprites.EnemySprites.EnemySpriteVariants
 {
-    public partial class Enemy4Sprite
+    public sealed partial class Enemy3SpriteVariant
     {
-        public Enemy4Sprite()
+        public Enemy3SpriteVariant()
         {
             this.InitializeComponent();
         }
+
     }
 }

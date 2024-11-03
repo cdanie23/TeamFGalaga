@@ -1,0 +1,18 @@
+﻿<local:Enemy4Sprite
+    x:Class="Galaga.View.Sprites.EnemySprites.EnemySpriteVariants.Enemy4SpriteVariant"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Galaga.View.Sprites.EnemySprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="60"
+    d:DesignWidth="50">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="VariantCockpitColor" Color="Red"/>
+    </UserControl.Resources>
+    <Canvas>
+        <local:Enemy4Sprite/>
+        <Rectangle Width="10" Height="20" Stroke="{StaticResource VariantCockpitColor}" StrokeThickness="5" Canvas.Left="20" Canvas.Top="22"/>
+    </Canvas>
+</local:Enemy4Sprite>

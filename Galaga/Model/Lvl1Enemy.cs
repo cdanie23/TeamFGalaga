@@ -1,6 +1,8 @@
 ﻿
 
+
 using Galaga.View.Sprites.EnemySprites;
+
 
 namespace Galaga.Model
 {
@@ -11,9 +13,7 @@ namespace Galaga.Model
     {
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
-        /// <summary>
-        /// The number of points for killing this enemy
-        /// </summary>
+       
         
         /// <summary>
         /// Creates an instance of a level 1 enemy

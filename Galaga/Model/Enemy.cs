@@ -1,5 +1,7 @@
 ﻿
 
+using Galaga.View.Sprites;
+
 namespace Galaga.Model
 {
     /// <summary>
@@ -11,5 +13,6 @@ namespace Galaga.Model
         /// Gets or sets the points associated with the enemy
         /// </summary>
         public int Points { get; set; } = 0;
+
     }
 }

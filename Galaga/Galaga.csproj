@@ -157,6 +157,12 @@
     <Compile Include="View\Sprites\EnemySprites\Enemy4Sprite.xaml.cs">
       <DependentUpon>Enemy4Sprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy3SpriteVariant.xaml.cs">
+      <DependentUpon>Enemy3SpriteVariant.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy4SpriteVariant.xaml.cs">
+      <DependentUpon>Enemy4SpriteVariant.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
@@ -207,6 +213,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\EnemySprites\Enemy4Sprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy3SpriteVariant.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy4SpriteVariant.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

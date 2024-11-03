@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Galaga.View.Sprites;
 using Galaga.View.Sprites.EnemySprites;
+using Galaga.View.Sprites.EnemySprites.EnemySpriteVariants;
 
 namespace Galaga.Model
 {
@@ -17,10 +15,12 @@ namespace Galaga.Model
         /// </summary>
         public Lvl4Enemy()
         {
-            Sprite = new Enemy4Sprite();
+            SpriteAnimations = new BaseSprite[] { new Enemy4Sprite(), new Enemy4SpriteVariant() };
+            Sprite = SpriteAnimations[0];
             SetSpeed(3, 0);
             Points = 4;
             Bullet = new Bullet(BulletType.Enemy);
+            
         }
     }
 }

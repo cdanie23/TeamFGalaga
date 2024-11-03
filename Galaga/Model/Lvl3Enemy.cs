@@ -1,5 +1,6 @@
-﻿using Galaga.View.Sprites.EnemySprites;
-
+﻿using Galaga.View.Sprites;
+using Galaga.View.Sprites.EnemySprites;
+using Galaga.View.Sprites.EnemySprites.EnemySpriteVariants;
 
 namespace Galaga.Model
 {
@@ -18,10 +19,11 @@ namespace Galaga.Model
         /// </summary>
         public Lvl3Enemy()
         {
-            Sprite = new Enemy3Sprite();
+            SpriteAnimations = new BaseSprite[] { new Enemy3Sprite(), new Enemy3SpriteVariant() };
+            Sprite = SpriteAnimations[0];
             SetSpeed(SpeedXDirection, SpeedYDirection);
             Bullet = new Bullet(BulletType.Enemy);
-
+            
             Points = 3;
         }
 

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -66,9 +67,9 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Creates an instance of the enemy manager class
-        ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5 & this.canvas ==
-        ///     canvas & this.canvasHeight == canvas.Height & this.canvasWidth == canvas.Width
-        ///     & this.bulletManager != null & this.moveTimer != null
+        ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5, this.canvas ==
+        ///     canvas, this.canvasHeight == canvas.Height, this.canvasWidth == canvas.Width
+        ///     , this.bulletManager != null, this.moveTimer != null
         ///     <param name="canvas">the canvas of the game</param>
         /// </summary>
         public EnemiesManager(Canvas canvas)
@@ -128,6 +129,10 @@ namespace Galaga.Model
             return enumerator;
         }
 
+        /// <summary>
+        /// Shoots a randomly selected level three enemy weapon
+        /// </summary>
+        /// <param name="bulletManager">the bullet manager to add the bullet to</param>
         public void ShootRandomLevel3EnemyWeapon(BulletManager bulletManager)
         {
             var enemy = this.getRandomLevel3Enemy();
@@ -180,9 +185,11 @@ namespace Galaga.Model
         public void SetupEnemies()
         {
             this.placeCenteredEnemies();
-
+            this.setupFirstEnemyAnimation();
+            
             this.moveTimer.Tick += this.timerTickMoveLeft;
             this.moveTimer.Start();
+            
         }
 
         private void centerEnemiesNearTopOfCanvas()
@@ -235,14 +242,27 @@ namespace Galaga.Model
             {
                 this.canvas.Children.Add(enemy.Sprite);
             }
-
             this.centerEnemiesNearTopOfCanvas();
+        }
+
+        private void setupFirstEnemyAnimation()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                if (enemy is ShootingEnemy shootingEnemy)
+                {
+                    var secondSprite = shootingEnemy.SpriteAnimations[1];
+                    this.canvas.Children.Add(secondSprite);
+                    secondSprite.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         /// <summary>
         ///     Removes the struck enemy by the player
         /// </summary>
         /// <param name="player">the player of the game</param>
+        /// <param name="bulletManager">the bullet manager to remove the bullet from</param>
         /// <returns>the enemy which was struck or null if no one was struck</returns>
         public Enemy RemoveStruckEnemy(Player player, BulletManager bulletManager)
         {
@@ -290,6 +310,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.enemies)
             {
+                if (enemy is ShootingEnemy shootingEnemy)
+                {
+                    shootingEnemy.UpdateSprite();
+                }
                 enemy.MoveLeft();
             }
 
@@ -304,6 +328,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.enemies)
             {
+                if (enemy is ShootingEnemy shootingEnemy)
+                {
+                    shootingEnemy.UpdateSprite();
+                }
                 enemy.MoveRight();
             }
 
