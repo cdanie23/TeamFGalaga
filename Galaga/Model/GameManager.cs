@@ -74,7 +74,6 @@ namespace Galaga.Model
             this.playerManager = new PlayerManager(canvas);
             this.enemyManager = new EnemiesManager(canvas);
             this.bulletManager = new BulletManager(canvas);
-
             this.initializeGame();
         }
 
@@ -84,10 +83,15 @@ namespace Galaga.Model
 
         private void initializeGame()
         {
-            this.enemyManager.SetupEnemies();
+            this.bulletManager.SetupBulletTimers();
             this.bulletManager.BulletMoveTimer.Tick += this.checkForStruckEnemyTickEvent;
             this.bulletManager.BulletMoveTimer.Tick += this.checkForStruckPlayerTickEvent;
+
             this.playerManager.SetupPlayer();
+            this.enemyManager.SetupEnemies();
+
+            this.bulletManager.EnemyRandomShootTimer.Tick += this.shootRandomLevel3EnemyWeaponTickEvent;
+            this.bulletManager.EnemyRandomShootTimer.Start();
         }
 
 
@@ -107,11 +111,14 @@ namespace Galaga.Model
             this.playerManager.MovePlayerRight();
         }
         /// <summary>
-        /// Shoots the players bullet
+        /// Shoots the players bullet and adds it to the bullet manager if it was shot
         /// </summary>
         public void ShootPlayerBullet()
         {
-            this.playerManager.ShootPlayerBullet();
+            if (this.playerManager.ShootPlayerBullet())
+            {
+                this.bulletManager.AddBullet(this.playerManager.Player.Bullet);
+            }
         }
 
 
@@ -133,18 +140,25 @@ namespace Galaga.Model
                     this.bulletManager.Clear();
                     this.bulletManager.BulletMoveTimer.Stop();
                     this.PlayerStruck?.Invoke(this, EventArgs.Empty);
+                    break;
                 }
             }
         }
 
         private void checkForStruckEnemyTickEvent(Object sender, object e)
         {
-            Enemy enemy = this.enemyManager.RemoveStruckEnemy(this.playerManager.Player);
+            Enemy enemy = this.enemyManager.RemoveStruckEnemy(this.playerManager.Player, this.bulletManager);
 
             if (enemy != null)
             {
                 this.EnemyStruck?.Invoke(this, new EnemyDeathEventArgs(enemy));
             }
+        }
+
+        private void shootRandomLevel3EnemyWeaponTickEvent(object sender, object e)
+        {
+            this.enemyManager.ShootRandomLevel3EnemyWeapon(this.bulletManager);
+            this.bulletManager.EnemyRandomShootTimer.Interval = this.bulletManager.GetRandomInterval();
         }
         #endregion
     }

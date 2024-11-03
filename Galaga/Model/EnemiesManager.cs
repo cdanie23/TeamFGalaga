@@ -14,7 +14,25 @@ namespace Galaga.Model
     public class EnemiesManager : IEnumerable<Enemy>
     {
         #region Data members
+        private const int NumOfLvl1Enemies = 3;
+        private const int NumOfLvl2Enemies = 4;
+        private const int NumOfLvl3Enemies = 4;
+        private const int NumOfLvl4Enemies = 5;
 
+
+
+        private readonly Collection<Enemy> enemies;
+        private readonly Canvas canvas;
+        private readonly double canvasWidth;
+
+        private const int EnemyRow1 = 300;
+        private const int EnemyRow2 = 200;
+        private const int EnemyRow3 = 100;
+        private const int EnemyRow4 = 0;
+        private const int MoveTimerMilliseconds = 200;
+        private const int NumOfStepsInEachDirectionOfOrigin = 10;
+
+        private readonly DispatcherTimer moveTimer;
         /// <summary>
         ///     Gets or sets the number of steps taken by the enemies
         /// </summary>
@@ -72,6 +90,11 @@ namespace Galaga.Model
                 this.enemies.Add(new Lvl3Enemy());
             }
 
+            for (var i = 0; i < NumOfLvl4Enemies; i++)
+            {
+                this.enemies.Add(new Lvl4Enemy());
+            }
+
             this.stepsTaken = 0;
             this.numOfStepsInEachDirection = 5;
 
@@ -79,7 +102,6 @@ namespace Galaga.Model
 
             this.canvas = canvas;
             this.canvasWidth = canvas.Width;
-            this.bulletManager = new BulletManager(canvas);
 
             this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveTimerMilliseconds) };
         }
@@ -106,7 +128,7 @@ namespace Galaga.Model
             return enumerator;
         }
 
-        private void shootRandomLevel3EnemyWeapon()
+        public void ShootRandomLevel3EnemyWeapon(BulletManager bulletManager)
         {
             var enemy = this.getRandomLevel3Enemy();
             if (enemy != null && !this.canvas.Children.Contains(enemy.Bullet.Sprite))
@@ -114,15 +136,11 @@ namespace Galaga.Model
                 this.canvas.Children.Add(enemy.Bullet.Sprite);
                 enemy.Bullet.X = enemy.X + enemy.Width / 2;
                 enemy.Bullet.Y = enemy.Y + enemy.Height;
-                this.bulletManager.AddBullet(enemy.Bullet);
+                bulletManager.AddBullet(enemy.Bullet);
             }
         }
 
-        private void shootRandomLevel3EnemyWeaponTickEvent(object sender, object e)
-        {
-            this.shootRandomLevel3EnemyWeapon();
-            this.bulletManager.EnemyRandomShootTimer.Interval = this.bulletManager.GetRandomInterval();
-        }
+        
 
         private void timerTickMoveLeft(object sender, object e)
         {
@@ -165,9 +183,6 @@ namespace Galaga.Model
 
             this.moveTimer.Tick += this.timerTickMoveLeft;
             this.moveTimer.Start();
-
-            this.bulletManager.EnemyRandomShootTimer.Tick += this.shootRandomLevel3EnemyWeaponTickEvent;
-            this.bulletManager.EnemyRandomShootTimer.Start();
         }
 
         private void centerEnemiesNearTopOfCanvas()
@@ -180,6 +195,9 @@ namespace Galaga.Model
 
             var spaceBetweenLvl3Enemies = this.canvasWidth / NumOfLvl3Enemies / 2.0;
             var startXLvl3 = spaceBetweenLvl3Enemies;
+
+            var spaceBetweenLvl4Enemies = this.canvasWidth / NumOfLvl4Enemies / 2.0;
+            var startXLvl4 = spaceBetweenLvl4Enemies;
 
             foreach (var enemy in this.enemies)
             {
@@ -199,6 +217,11 @@ namespace Galaga.Model
                         enemy.X = startXLvl3;
                         enemy.Y = EnemyRow3;
                         startXLvl3 += enemy.Width + spaceBetweenLvl3Enemies;
+                        break;
+                    case Lvl4Enemy _:
+                        enemy.X = startXLvl4;
+                        enemy.Y = EnemyRow4;
+                        startXLvl4 += enemy.Width + spaceBetweenLvl4Enemies;
                         break;
                 }
 
@@ -221,14 +244,15 @@ namespace Galaga.Model
         /// </summary>
         /// <param name="player">the player of the game</param>
         /// <returns>the enemy which was struck or null if no one was struck</returns>
-        public Enemy RemoveStruckEnemy(Player player)
+        public Enemy RemoveStruckEnemy(Player player, BulletManager bulletManager)
         {
+
             foreach (var enemy in this.enemies)
             {
-                if (this.canvas.Children.Contains(enemy.Sprite) && enemy.CollisionDetected(player.Bullet))
+                if (enemy.CollisionDetected(player.Bullet))
                 {
                     this.canvas.Children.Remove(enemy.Sprite);
-                    this.bulletManager.RemoveBullet(player.Bullet);
+                    bulletManager.RemoveBullet(player.Bullet);
                     this.enemies.Remove(enemy);
                     return enemy;
                 }
@@ -288,36 +312,6 @@ namespace Galaga.Model
 
         #endregion
 
-        #region Data Members
-
-        /// <summary>
-        ///     The amount of level 1 enemies
-        /// </summary>
-        public const int NumOfLvl1Enemies = 2;
-
-        /// <summary>
-        ///     The amount of level 2 enemies
-        /// </summary>
-        public const int NumOfLvl2Enemies = 3;
-
-        /// <summary>
-        ///     The amount of level 3 enemies
-        /// </summary>
-        public const int NumOfLvl3Enemies = 4;
-
-        private readonly Collection<Enemy> enemies;
-        private readonly Canvas canvas;
-        private readonly double canvasWidth;
-
-        private const double EnemyRow1 = 200;
-        private const double EnemyRow2 = 100;
-        private const double EnemyRow3 = 0;
-        private const int MoveTimerMilliseconds = 200;
-        private const int NumOfStepsInEachDirectionOfOrigin = 10;
-
-        private readonly DispatcherTimer moveTimer;
-        private readonly BulletManager bulletManager;
-
-        #endregion
+        
     }
 }

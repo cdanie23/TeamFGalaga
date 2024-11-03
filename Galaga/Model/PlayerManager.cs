@@ -18,7 +18,6 @@ namespace Galaga.Model
 
         private readonly double canvasWidth;
         private readonly double canvasHeight;
-        private readonly BulletManager bulletManager;
 
         private const double PlayerOffsetFromBottom = 30;
         /// <summary>
@@ -37,7 +36,6 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.bulletManager = new BulletManager(this.canvas);
         }
         /// <summary>
         /// Sets the player in the game
@@ -49,8 +47,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Shoots the Bullet of the Player
         ///     Precondition: Player must not already have a Bullet on the canvas
+        ///     <returns>True or false based on if the bullet was shot</returns>
         /// </summary>
-        public void ShootPlayerBullet()
+        public Boolean ShootPlayerBullet()
         {
             if (!this.canvas.Children.Contains(this.Player.Bullet.Sprite))
             {
@@ -58,8 +57,10 @@ namespace Galaga.Model
 
                 this.Player.Bullet.X = this.Player.X + this.Player.Width / 2;
                 this.Player.Bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
-                this.bulletManager.AddBullet(this.Player.Bullet);
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

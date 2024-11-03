@@ -38,7 +38,6 @@ namespace Galaga.Model
         public BulletManager(Canvas canvas)
         {
             this.bullets = new List<Bullet>();
-            this.setupBulletTimers();
 
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
@@ -48,7 +47,7 @@ namespace Galaga.Model
 
         
 
-        private void setupBulletTimers()
+        public void SetupBulletTimers()
         {
             this.BulletMoveTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, Milliseconds) };
             this.BulletMoveTimer.Tick += this.moveAllBulletsTickEvent;
@@ -64,7 +63,6 @@ namespace Galaga.Model
         /// <returns>Returns true if the bullet was removed, false if not</returns>
         public Boolean RemoveBullet(Bullet bullet)
         {
-            //TODO make documentation
             this.bullets.Remove(bullet);
             return this.canvas.Children.Remove(bullet.Sprite);
         }

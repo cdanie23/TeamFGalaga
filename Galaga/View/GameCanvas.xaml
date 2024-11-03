@@ -9,6 +9,6 @@
     >
 
     <Canvas x:Name="canvas" Width="720" Height="600" Background ="Black">
-        <TextBlock Name="scoreTextBlock" Canvas.Left="560" TextWrapping="Wrap" Text="Score: 0" Canvas.Top="10" FocusVisualPrimaryBrush="#FFE8E3E3" Foreground="#FFE8E3E3" HorizontalAlignment="Left" Height="18" VerticalAlignment="Top"/>
+        <TextBlock Name="scoreTextBlock" Canvas.Left="641" TextWrapping="Wrap" Text="Score: 0" Canvas.Top="551" FocusVisualPrimaryBrush="#FFE8E3E3" Foreground="#FFE8E3E3" HorizontalAlignment="Left" Height="18" VerticalAlignment="Top"/>
     </Canvas>
 </Page>

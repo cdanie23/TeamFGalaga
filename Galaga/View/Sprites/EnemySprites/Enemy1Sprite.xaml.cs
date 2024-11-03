@@ -2,17 +2,17 @@
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace Galaga.View.Sprites
+namespace Galaga.View.Sprites.EnemySprites
 {
     /// <summary>
-    /// The enemy three sprite class
+    /// The enemy one sprite class
     /// </summary>
-    public sealed partial class Enemy3Sprite 
+    public partial class Enemy1Sprite
     {
         /// <summary>
-        /// Creates an instance of the level three enemy sprite
+        /// Creates an instance of the level one enemy sprite
         /// </summary>
-        public Enemy3Sprite()
+        public Enemy1Sprite()
         {
             this.InitializeComponent();
         }

@@ -1,5 +1,5 @@
 ﻿<custom:BaseSprite
-    x:Class="Galaga.View.Sprites.Enemy3Sprite"
+    x:Class="Galaga.View.Sprites.EnemySprites.Enemy3Sprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:custom="using:Galaga.View.Sprites"
@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="OutWingColor" Color="Blue"/>
         <SolidColorBrush x:Key="InWingColor" Color="Aqua"/>
-        <SolidColorBrush x:Key="WingConnector" Color="Black"/>
+        <SolidColorBrush x:Key="WingConnector" Color="White"/>
         <SolidColorBrush x:Key="FuselageColor" Color="Gray"/>
         <SolidColorBrush x:Key="CockpitColor" Color="NavajoWhite"/>
         <SolidColorBrush x:Key="GunColor" Color="LightSlateGray"/>

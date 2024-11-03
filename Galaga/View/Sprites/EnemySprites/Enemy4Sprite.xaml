@@ -1,0 +1,27 @@
+﻿<sprites1:Enemy3Sprite
+   
+    x:Class="Galaga.View.Sprites.EnemySprites.Enemy4Sprite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sprites1="using:Galaga.View.Sprites.EnemySprites"
+    mc:Ignorable="d"
+    d:DesignHeight="60"
+    d:DesignWidth="50"
+    Height="60"
+    Width="50">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="BackWing" Color="Aqua"/>
+        <SolidColorBrush x:Key="BackWingFlap" Color="AliceBlue"/>
+    </UserControl.Resources>
+
+    <Canvas>
+        <sprites1:Enemy3Sprite/>
+        <Rectangle Height="8" Width="3" Stroke="{StaticResource BackWing}" StrokeThickness="2" Canvas.Left="19" Canvas.Top="9" RenderTransformOrigin="0.6,0.142"/>
+        <Rectangle Height="8" Width="3" Stroke="{StaticResource BackWing}" StrokeThickness="2" Canvas.Left="27" Canvas.Top="9" RenderTransformOrigin="0.6,0.142"/>
+        <Rectangle Height="3" Width="8" Stroke="{StaticResource BackWingFlap}" Canvas.Left="27" Canvas.Top="6" StrokeThickness="2"/>
+        <Rectangle Height="3" Width="8" Stroke="{StaticResource BackWingFlap}" Canvas.Left="14" Canvas.Top="6" StrokeThickness="2"/>
+    </Canvas>
+</sprites1:Enemy3Sprite>

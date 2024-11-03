@@ -128,11 +128,13 @@
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
+    <Compile Include="Model\Lvl4Enemy.cs" />
     <Compile Include="Model\Lvl2Enemy.cs" />
     <Compile Include="Model\Lvl1Enemy.cs" />
     <Compile Include="Model\Lvl3Enemy.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerManager.cs" />
+    <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
@@ -143,14 +145,17 @@
     <Compile Include="View\Sprites\BulletSprite.xaml.cs">
       <DependentUpon>BulletSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\Enemy1Sprite.xaml.cs">
+    <Compile Include="View\Sprites\EnemySprites\Enemy1Sprite.xaml.cs">
       <DependentUpon>Enemy1Sprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\Enemy2Sprite.xaml.cs">
+    <Compile Include="View\Sprites\EnemySprites\Enemy2Sprite.xaml.cs">
       <DependentUpon>Enemy2Sprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\Enemy3Sprite.xaml.cs">
+    <Compile Include="View\Sprites\EnemySprites\Enemy3Sprite.xaml.cs">
       <DependentUpon>Enemy3Sprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\EnemySprites\Enemy4Sprite.xaml.cs">
+      <DependentUpon>Enemy4Sprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
@@ -189,15 +194,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\Enemy1Sprite.xaml">
+    <Page Include="View\Sprites\EnemySprites\Enemy1Sprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\Enemy2Sprite.xaml">
+    <Page Include="View\Sprites\EnemySprites\Enemy2Sprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\Enemy3Sprite.xaml">
+    <Page Include="View\Sprites\EnemySprites\Enemy3Sprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\EnemySprites\Enemy4Sprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

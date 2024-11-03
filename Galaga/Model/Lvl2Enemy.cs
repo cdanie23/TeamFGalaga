@@ -1,4 +1,5 @@
-﻿using Galaga.View.Sprites;
+﻿
+using Galaga.View.Sprites.EnemySprites;
 
 namespace Galaga.Model
 {

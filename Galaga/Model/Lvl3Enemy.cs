@@ -1,4 +1,4 @@
-﻿using Galaga.View.Sprites;
+﻿using Galaga.View.Sprites.EnemySprites;
 
 
 namespace Galaga.Model
@@ -6,15 +6,12 @@ namespace Galaga.Model
     /// <summary>
     /// The level 3 enemy class, inherits game object
     /// </summary>
-    public class Lvl3Enemy :Enemy
+    public class Lvl3Enemy : ShootingEnemy
     {
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
        
-        /// <summary>
-        /// Get or set the bullet
-        /// </summary>
-        public Bullet Bullet { get; private set; }
+        
         /// <summary>
         /// Creates an instance of a level 3 enemy
         /// PostCondition: Sprite == new Enemy1Sprite(), SpeedX == SpeedXDirection, SpeedY == SpeedYDirection
@@ -23,7 +20,7 @@ namespace Galaga.Model
         {
             Sprite = new Enemy3Sprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
-            this.Bullet = new Bullet(BulletType.Enemy);
+            Bullet = new Bullet(BulletType.Enemy);
 
             Points = 3;
         }
