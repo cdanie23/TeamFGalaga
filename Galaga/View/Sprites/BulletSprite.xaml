@@ -12,7 +12,7 @@
     Width="5">
 
     <Canvas>
-        <Rectangle Name ="border" Height ="10" Width ="5" Stroke="Red" StrokeThickness="3"/>
+        <Rectangle Name="border" Height="10" Width="5" Stroke="Red" StrokeThickness="3" />
 
     </Canvas>
 </custom:BaseSprite>

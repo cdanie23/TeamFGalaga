@@ -4,20 +4,30 @@ using Galaga.View.Sprites;
 namespace Galaga.Model
 {
     /// <summary>
-    /// The shooting enemy class
+    ///     The shooting enemy class
     /// </summary>
     public class ShootingEnemy : Enemy
     {
+        #region Properties
+
         /// <summary>
-        /// Get or set the bullet
+        ///     Get or set the bullet
         /// </summary>
+        /// <param name="value">the bullet</param>
         public Bullet Bullet { get; set; }
+
         /// <summary>
-        /// Gets or sets the array of sprite variants 
+        ///     Gets or sets the array of sprite variants
         /// </summary>
         public BaseSprite[] SpriteAnimations { get; set; }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Flips the sprite back and forth 
+        ///     Flips the sprite back and forth
+        ///     PostCondition: Sprite != @prev
         /// </summary>
         public void UpdateSprite()
         {
@@ -34,5 +44,7 @@ namespace Galaga.Model
                 Sprite = this.SpriteAnimations[0];
             }
         }
+
+        #endregion
     }
 }

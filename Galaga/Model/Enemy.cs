@@ -1,17 +1,18 @@
-﻿
-
-
-namespace Galaga.Model
+﻿namespace Galaga.Model
 {
     /// <summary>
-    /// The enemy class which inherits game object
+    ///     The enemy class which inherits game object
     /// </summary>
     public class Enemy : GameObject
     {
-        /// <summary>
-        /// Gets or sets the points associated with the enemy
-        /// </summary>
-        public int Points { get; set; } = 0;
+        #region Properties
 
+        /// <summary>
+        ///     Gets or sets the points associated with the enemy
+        ///     <param name="value">the value to set points to</param>
+        /// </summary>
+        public int Points { get; set; }
+
+        #endregion
     }
 }

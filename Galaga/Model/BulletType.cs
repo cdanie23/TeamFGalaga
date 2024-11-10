@@ -1,18 +1,17 @@
-﻿
-
-namespace Galaga.Model
+﻿namespace Galaga.Model
 {
     /// <summary>
-    /// The enum for the type of bullet
+    ///     The enum for the type of bullet
     /// </summary>
     public enum BulletType
     {
         /// <summary>
-        /// The player's bullet
+        ///     The player's bullet
         /// </summary>
         Player,
+
         /// <summary>
-        /// An enemy bullet
+        ///     An enemy bullet
         /// </summary>
         Enemy
     }

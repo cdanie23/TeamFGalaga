@@ -1,34 +1,41 @@
-﻿
-
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a Player in the game.
+    ///     Represents a Player in the game.
     /// </summary>
     public class Player : GameObject
     {
         #region Data members
 
+        /// <summary>
+        ///     The number of lives a player can have
+        /// </summary>
+        public const int NumOfLives = 3;
+
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
-       
+
         private const int MaxNumOfBullets = 3;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// The available bullets of the player
+        ///     The available bullets of the player
         /// </summary>
-        public Stack<Bullet> BulletsAvailable { get;}
+        public Stack<Bullet> BulletsAvailable { get; }
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Player"/> class.
+        ///     Initializes a new instance of the <see cref="Player" /> class.
+        ///     Post-condition: Sprite == PlayerSprite, this.BulletsAvailable != null,
         /// </summary>
         public Player()
         {
@@ -37,8 +44,11 @@ namespace Galaga.Model
 
             this.BulletsAvailable = new Stack<Bullet>();
             this.setupActiveBullets();
-
         }
+
+        #endregion
+
+        #region Methods
 
         private void setupActiveBullets()
         {
@@ -46,7 +56,7 @@ namespace Galaga.Model
             {
                 this.BulletsAvailable.Push(new Bullet(BulletType.Player));
             }
-        } 
+        }
 
         #endregion
     }

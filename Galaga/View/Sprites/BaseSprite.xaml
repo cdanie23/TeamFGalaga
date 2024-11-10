@@ -8,7 +8,6 @@
     d:DesignHeight="60"
     d:DesignWidth="50"
     Height="60"
-    Width="50"
-    >
-    
+    Width="50">
+
 </UserControl>

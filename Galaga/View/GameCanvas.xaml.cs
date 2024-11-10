@@ -16,11 +16,16 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class GameCanvas
     {
-
         #region Data members
 
+        private const int MillisecondsForTimer = 50;
+
         private readonly GameManager gameManager;
-        
+        private readonly DispatcherTimer timer;
+        private bool isLeft;
+        private bool isRight;
+        private bool isSpace;
+
         #endregion
 
         #region Constructors
@@ -39,51 +44,98 @@ namespace Galaga.View
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
-
+            Window.Current.CoreWindow.KeyUp += this.onKeyUpEvent;
             this.gameManager = new GameManager(this.canvas);
+
             this.gameManager.EnemyStruck += this.onScoreUpdate;
-            this.gameManager.PlayerStruck += this.onPlayerDeath;
             this.gameManager.EnemyStruck += this.onAllEnemiesDead;
+
+            this.gameManager.PlayerStruck += this.onPlayerDeath;
+            this.gameManager.PlayerStruck += this.onLivesUpdate;
+
+            this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MillisecondsForTimer) };
+            this.timer.Tick += this.timerTickEvent;
+            this.timer.Start();
         }
 
         #endregion
 
         #region Methods
 
-       
-
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             switch (args.VirtualKey)
             {
                 case VirtualKey.Left:
-                    this.gameManager.MovePlayerLeft();
+                    this.isLeft = true;
                     break;
                 case VirtualKey.Right:
-                    this.gameManager.MovePlayerRight();
+                    this.isRight = true;
                     break;
                 case VirtualKey.Space:
-                    this.gameManager.ShootPlayerBullet();
+                    this.isSpace = true;
                     break;
             }
         }
 
-        private void onScoreUpdate(Object sender, GameManager.EnemyDeathEventArgs args)
+        private void onKeyUpEvent(CoreWindow sender, KeyEventArgs args)
         {
-            this.gameManager.Score += args.Enemy.Points;
-            this.scoreTextBlock.Text = this.gameManager.GetFormattedScore();
+            switch (args.VirtualKey)
+            {
+                case VirtualKey.Left:
+                    this.isLeft = false;
+                    break;
+                case VirtualKey.Right:
+                    this.isRight = false;
+                    break;
+                case VirtualKey.Space:
+                    this.isSpace = false;
+                    break;
+            }
         }
 
-        private void onAllEnemiesDead(Object sender, GameManager.EnemyDeathEventArgs args)
+        private void timerTickEvent(object sender, object e)
+        {
+            if (this.isLeft)
+            {
+                this.gameManager.MovePlayerLeft();
+            }
+
+            if (this.isRight)
+            {
+                this.gameManager.MovePlayerRight();
+            }
+
+            if (this.isSpace)
+            {
+                this.gameManager.ShootPlayerBullet();
+            }
+        }
+
+        private void onScoreUpdate(object sender, GameManager.EnemyDeathEventArgs args)
+        {
+            this.scoreTextBlock.Text = this.gameManager.Score;
+        }
+
+        private void onLivesUpdate(object sender, object e)
+        {
+            this.playerLivesTextBlock.Text = this.gameManager.PlayerLives;
+        }
+
+        private void onAllEnemiesDead(object sender, GameManager.EnemyDeathEventArgs args)
         {
             if (this.gameManager.AreAllEnemiesDestroyed)
             {
                 this.showWinDialog();
             }
         }
-        private void onPlayerDeath(Object sender, EventArgs e)
+
+        private void onPlayerDeath(object sender, EventArgs e)
         {
-            this.showGameOverDialog();
+            if (this.gameManager.PlayerLives.EndsWith('0'))
+            {
+                this.showGameOverDialog();
+            }
         }
 
         private async void showWinDialog()
@@ -105,8 +157,6 @@ namespace Galaga.View
             };
             await dialog.ShowAsync();
         }
-
-     
 
         #endregion
     }

@@ -92,6 +92,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Gets or sets the original placement of the game object
         /// </summary>
+        /// <param name="value">the original location</param>
         public Point OriginalLocation { get; set; }
 
         #endregion
@@ -146,15 +147,24 @@ namespace Galaga.Model
 
             render?.RenderAt(this.X, this.Y);
         }
+
         /// <summary>
-        /// Checks if the game object was collided with by a bullet
+        ///     Checks if the game object was collided with by a bullet
+        ///     Precondition: bullet != null
         /// </summary>
         /// <param name="bullet">the bullet to check for</param>
+        /// <exception cref="ArgumentNullException">Thrown if the bullet is null</exception>
         /// <returns>true or false based on if the bullet collided with the game object</returns>
-        public Boolean CollisionDetected(Bullet bullet)
+        public bool CollisionDetected(Bullet bullet)
         {
+            if (bullet == null)
+            {
+                throw new ArgumentNullException(nameof(bullet));
+            }
+
             return this.Sprite.Boundary.IntersectsWith(bullet.Sprite.Boundary);
         }
+
         /// <summary>
         ///     Sets the speed of the game object.
         ///     Precondition: speedX >= 0 AND speedY >=0

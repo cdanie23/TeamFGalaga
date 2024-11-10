@@ -9,16 +9,17 @@
     d:DesignHeight="60"
     d:DesignWidth="50"
     Height="60"
-    Width="50"
-    >
-    
+    Width="50">
+
     <UserControl.Resources>
-        <SolidColorBrush x:Key="WingConnector2Color" Color="White"/>
+        <SolidColorBrush x:Key="WingConnector2Color" Color="White" />
     </UserControl.Resources>
 
     <Canvas Width="50" Height="60">
-    <custom:Enemy1Sprite/>
-    <Rectangle Height ="5" Width="6" Stroke ="{StaticResource WingConnector2Color}" StrokeThickness="3" Canvas.Left="6" Canvas.Top="19"/>
-    <Rectangle Height ="5" Width="6" Stroke ="{StaticResource WingConnector2Color}" StrokeThickness="3" Canvas.Left="38" Canvas.Top="19"/>
+        <custom:Enemy1Sprite />
+        <Rectangle Height="5" Width="6" Stroke="{StaticResource WingConnector2Color}" StrokeThickness="3"
+                   Canvas.Left="6" Canvas.Top="19" />
+        <Rectangle Height="5" Width="6" Stroke="{StaticResource WingConnector2Color}" StrokeThickness="3"
+                   Canvas.Left="38" Canvas.Top="19" />
     </Canvas>
 </custom:Enemy1Sprite>

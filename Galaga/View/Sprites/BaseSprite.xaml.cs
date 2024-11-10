@@ -1,15 +1,12 @@
 ﻿using System.Drawing;
-
 using Windows.UI.Xaml.Controls;
-
-
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Galaga.View.Sprites
 {
     /// <summary>
-    /// Defines BaseSprite from which all sprites inherit.
+    ///     Defines BaseSprite from which all sprites inherit.
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
@@ -17,28 +14,33 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Galaga.View.Sprites.ISpriteRenderer" />
     public abstract partial class BaseSprite : ISpriteRenderer
     {
+        #region Properties
+
         /// <summary>
-        /// Gets the boundary rectangle for the sprite
+        ///     Gets the boundary rectangle for the sprite
         /// </summary>
         public Rectangle Boundary { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseSprite"/> class.
+        ///     Initializes a new instance of the <see cref="BaseSprite" /> class.
         /// </summary>
         protected BaseSprite()
         {
             this.InitializeComponent();
             this.Boundary = new Rectangle(0, 0, 0, 0);
-
-
         }
 
-        
+        #endregion
 
+        #region Methods
 
-        
         /// <summary>
-        /// Renders sprite at the specified (x,y) location in relation
-        /// to the top, left part of the canvas.
+        ///     Renders sprite at the specified (x,y) location in relation
+        ///     to the top, left part of the canvas.
         /// </summary>
         /// <param name="x">x location</param>
         /// <param name="y">y location</param>
@@ -49,7 +51,6 @@ namespace Galaga.View.Sprites
             this.Boundary = new Rectangle((int)x, (int)y, (int)ActualWidth, (int)ActualHeight);
         }
 
+        #endregion
     }
-
-
 }
