@@ -47,11 +47,10 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyUp += this.onKeyUpEvent;
             this.gameManager = new GameManager(this.canvas);
 
+            this.gameManager.PlayerStruck += this.onLivesUpdate;
+            this.gameManager.PlayerStruck += this.onPlayerDeath;
             this.gameManager.EnemyStruck += this.onScoreUpdate;
             this.gameManager.EnemyStruck += this.onAllEnemiesDead;
-
-            this.gameManager.PlayerStruck += this.onPlayerDeath;
-            this.gameManager.PlayerStruck += this.onLivesUpdate;
 
             this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MillisecondsForTimer) };
             this.timer.Tick += this.timerTickEvent;
@@ -112,29 +111,35 @@ namespace Galaga.View
             }
         }
 
-        private void onScoreUpdate(object sender, GameManager.EnemyDeathEventArgs args)
+        private void onScoreUpdate(object sender, Enemy enemy)
         {
-            this.scoreTextBlock.Text = this.gameManager.Score;
+            var score = this.gameManager.PlayerScore;
+            this.scoreTextBlock.Text = $"Score : {score}";
         }
 
         private void onLivesUpdate(object sender, object e)
         {
-            this.playerLivesTextBlock.Text = this.gameManager.PlayerLives;
+            var lives = this.gameManager.PlayerLives;
+            this.playerLivesTextBlock.Text = $"Lives : {lives}";
         }
 
-        private void onAllEnemiesDead(object sender, GameManager.EnemyDeathEventArgs args)
+        private void onAllEnemiesDead(object sender, Enemy enemy)
         {
             if (this.gameManager.AreAllEnemiesDestroyed)
             {
                 this.showWinDialog();
+                this.gameManager.StopGame();
+                Window.Current.CoreWindow.KeyDown -= this.coreWindowOnKeyDown;
             }
         }
 
         private void onPlayerDeath(object sender, EventArgs e)
         {
-            if (this.gameManager.PlayerLives.EndsWith('0'))
+            if (this.gameManager.PlayerLives == 0)
             {
                 this.showGameOverDialog();
+                this.timer.Stop();
+                this.gameManager.StopGame();
             }
         }
 

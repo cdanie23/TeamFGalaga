@@ -12,14 +12,22 @@
     Width="50">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="WingConnector2Color" Color="White" />
+        <SolidColorBrush x:Key="Enemy2ShipBaseColor" Color="DarkRed" />
+        <SolidColorBrush x:Key="Enemy2WingTipColor" Color="Orange" />
+        <SolidColorBrush x:Key="GunColor" Color="Gray" />
     </UserControl.Resources>
 
-    <Canvas Width="50" Height="60">
+    <Canvas>
         <custom:Enemy1Sprite />
-        <Rectangle Height="5" Width="6" Stroke="{StaticResource WingConnector2Color}" StrokeThickness="3"
-                   Canvas.Left="6" Canvas.Top="19" />
-        <Rectangle Height="5" Width="6" Stroke="{StaticResource WingConnector2Color}" StrokeThickness="3"
-                   Canvas.Left="38" Canvas.Top="19" />
+        <Line X1="10" Y1="40" X2="10" Y2="50" Stroke="{StaticResource Enemy2ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="45" X2="5" Y2="55" Stroke="{StaticResource Enemy2ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="55" X2="5" Y2="58" Stroke="{StaticResource Enemy2WingTipColor}" StrokeThickness="5" />
+
+        <Line X1="40" Y1="40" X2="40" Y2="50" Stroke="{StaticResource Enemy2ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="45" X2="45" Y2="55" Stroke="{StaticResource Enemy2ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="55" X2="45" Y2="58" Stroke="{StaticResource Enemy2WingTipColor}" StrokeThickness="5" />
+
+        <Line X1="25" Y1="55" X2="25" Y2="60" Stroke="{StaticResource GunColor}" StrokeThickness="5" />
+
     </Canvas>
 </custom:Enemy1Sprite>

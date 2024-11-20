@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -12,6 +13,9 @@ namespace Galaga.Model
 
         private const double PlayerOffsetFromBottom = 30;
 
+        private const int TimeBetweenSpriteFlash = 200;
+        private const int MillisecondDelayBetweenBullets = 500;
+
         private readonly Canvas canvas;
 
         private readonly double canvasWidth;
@@ -19,6 +23,8 @@ namespace Galaga.Model
 
         private DateTime dateTimeOfLastPlayerBullet;
         private readonly TimeSpan delayBetweenBullets;
+        private readonly DispatcherTimer invulnerabilityTimer;
+        private int invulnerabilityTimerTickCount;
 
         #endregion
 
@@ -45,14 +51,10 @@ namespace Galaga.Model
                                        DateTime.Now - this.dateTimeOfLastPlayerBullet > this.delayBetweenBullets;
 
         /// <summary>
-        ///     Gets the formatted version of the players lives
+        ///     Gets or sets if the player is invulernable
         /// </summary>
-        public string FormattedLives => "Lives : " + this.NumOfLives;
-
-        /// <summary>
-        ///     Gets the formatted version of the players score
-        /// </summary>
-        public string FormattedScore => "Score : " + this.Score;
+        /// <param name="value">the value to set</param>
+        public bool IsInvulnerable { get; set; }
 
         #endregion
 
@@ -60,20 +62,24 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Creates an instance of the player manager
-        ///     PreCondition: canvas != null
-        ///     PostCondition: this.canvas == canvas, this.canvasHeight == canvasHeight, this.canvasWidth == canvasWidth,
+        ///     PreCondition: Canvas != null
+        ///     PostCondition: this.Canvas == Canvas, this.canvasHeight == canvasHeight, this.canvasWidth == canvasWidth,
         ///     this.delayBetweenBullets != null, this.NumOfLives == Player.NumOfLives;
         /// </summary>
-        /// <param name="canvas">the canvas of the game</param>
-        /// <exception cref="ArgumentNullException">thrown if the canvas is null</exception>
+        /// <param name="canvas">the Canvas of the game</param>
+        /// <exception cref="ArgumentNullException">thrown if the Canvas is null</exception>
         public PlayerManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.delayBetweenBullets = new TimeSpan(0, 0, 0, 0, 500);
+            this.delayBetweenBullets = new TimeSpan(0, 0, 0, 0, MillisecondDelayBetweenBullets);
+            this.invulnerabilityTimer = new DispatcherTimer
+                { Interval = new TimeSpan(0, 0, 0, 0, TimeBetweenSpriteFlash) };
+            this.invulnerabilityTimer.Tick += this.invulnerabilityTimerTick;
             this.NumOfLives = Player.NumOfLives;
+            this.IsInvulnerable = false;
         }
 
         #endregion
@@ -86,6 +92,20 @@ namespace Galaga.Model
         public void SetupPlayer()
         {
             this.createAndPlacePlayer();
+        }
+
+        private void invulnerabilityTimerTick(object sender, object e)
+        {
+            this.flashPlayerSprite();
+
+            if (this.invulnerabilityTimerTickCount == 5)
+            {
+                this.invulnerabilityTimer.Stop();
+                this.invulnerabilityTimerTickCount = 0;
+                this.IsInvulnerable = false;
+            }
+
+            this.invulnerabilityTimerTickCount++;
         }
 
         /// <summary>
@@ -101,12 +121,15 @@ namespace Galaga.Model
             {
                 this.canvas.Children.Remove(this.Player.Sprite);
             }
+
+            this.IsInvulnerable = true;
+            this.invulnerabilityTimer.Start();
         }
 
         /// <summary>
         ///     Shoots the Bullet of the Player of they are permitted to shoot
         ///     Pre:Condition: this.canPlayerShoot()
-        ///     PostCondition: this.canvas.Children == @prev + 1, this.dateTimeOfLastPlayerBullet == DateTime.Now
+        ///     PostCondition: this.Canvas.Children == @prev + 1, this.dateTimeOfLastPlayerBullet == DateTime.Now
         /// </summary>
         /// <returns>The bullet that was shot or null otherwise</returns>
         public Bullet ShootPlayerBullet()
@@ -122,22 +145,6 @@ namespace Galaga.Model
             }
 
             return null;
-        }
-
-        /// <summary>
-        ///     Check is the player is struck by a bullet
-        /// </summary>
-        /// <param name="bullet">the bullet to check for</param>
-        /// <exception cref="ArgumentNullException">thrown if the bullet is null</exception>
-        /// <returns>True or false based on if the player is struck</returns>
-        public bool IsPlayerStruck(Bullet bullet)
-        {
-            if (bullet == null)
-            {
-                throw new ArgumentNullException(nameof(bullet));
-            }
-
-            return this.Player.Sprite.Boundary.IntersectsWith(bullet.Sprite.Boundary);
         }
 
         private void createAndPlacePlayer()
@@ -178,6 +185,12 @@ namespace Galaga.Model
             {
                 this.Player.MoveRight();
             }
+        }
+
+        private void flashPlayerSprite()
+        {
+            this.Player.Sprite.Visibility =
+                this.invulnerabilityTimerTickCount % 2 == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #endregion

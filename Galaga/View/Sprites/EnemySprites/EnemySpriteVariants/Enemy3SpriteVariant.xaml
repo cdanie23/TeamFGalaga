@@ -9,37 +9,11 @@
     d:DesignHeight="60"
     d:DesignWidth="50">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="WindColor" Color="White" />
+        <SolidColorBrush x:Key="AccentColor" Color="Red" />
     </UserControl.Resources>
+
     <Canvas>
-        <local:Enemy3Sprite HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <Rectangle Height="1" Width="15" Stroke="{StaticResource WindColor}" Canvas.Left="9.651" Canvas.Top="11.002"
-                   StrokeThickness="0.5" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False"
-                   d:LayoutRounding="Auto">
-            <Rectangle.RenderTransform>
-                <CompositeTransform Rotation="29.038" />
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Height="1" Width="15" Stroke="{StaticResource WindColor}" Canvas.Left="24.9" Canvas.Top="10.764"
-                   StrokeThickness="0.5" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False"
-                   d:LayoutRounding="Auto">
-            <Rectangle.RenderTransform>
-                <CompositeTransform Rotation="146.493" />
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Height="1" Width="15" Stroke="{StaticResource WindColor}" Canvas.Left="26.314" Canvas.Top="52.016"
-                   StrokeThickness="0.5" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False"
-                   d:LayoutRounding="Auto">
-            <Rectangle.RenderTransform>
-                <CompositeTransform Rotation="29.038" />
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Height="1" Width="15" Stroke="{StaticResource WindColor}" Canvas.Left="8.278" Canvas.Top="51.691"
-                   StrokeThickness="0.5" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False"
-                   d:LayoutRounding="Auto">
-            <Rectangle.RenderTransform>
-                <CompositeTransform Rotation="153.59" />
-            </Rectangle.RenderTransform>
-        </Rectangle>
+        <local:Enemy3Sprite />
+        <Line X1="12.5" Y1="42" X2="37.5" Y2="42" Stroke="{StaticResource AccentColor}" StrokeThickness="5" />
     </Canvas>
 </local:Enemy3Sprite>

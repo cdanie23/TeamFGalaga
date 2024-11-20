@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
+using Galaga.View.Sprites.EnemySprites;
+using Galaga.View.Sprites.EnemySprites.EnemySpriteVariants;
 
 namespace Galaga.Model
 {
@@ -25,7 +28,7 @@ namespace Galaga.Model
         private const int EnemyRow3 = 100;
         private const int EnemyRow4 = 0;
 
-        private const int MoveTimerMilliseconds = 200;
+        private const int MoveTimerMilliseconds = 20;
         private const int NumOfStepsInEachDirectionOfOrigin = 10;
 
         private readonly Collection<Enemy> enemies;
@@ -44,12 +47,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Checks if all enemy ships are destroyed
         /// </summary>
-        public bool AreAllEnemiesDestroyed => this.Count == 0;
-
-        /// <summary>
-        ///     Gets the count
-        /// </summary>
-        public int Count => this.enemies.Count;
+        public bool AreAllEnemiesDestroyed => this.enemies.Count == 0;
 
         private bool EnemiesDoneMovingInDirection => this.stepsTaken == this.numOfStepsInEachDirection;
 
@@ -59,11 +57,11 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Creates an instance of the enemy manager class
-        ///     Precondition: canvas != null
-        ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5, this.canvas ==
-        ///     canvas, this.canvasHeight == canvas.Height, this.canvasWidth == canvas.Width
+        ///     Precondition: Canvas != null
+        ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5, this.Canvas ==
+        ///     Canvas, this.canvasHeight == Canvas.Height, this.canvasWidth == Canvas.Width
         ///     , this.bulletManager != null, this.moveTimer != null
-        ///     <param name="canvas">the canvas of the game</param>
+        ///     <param name="canvas">the Canvas of the game</param>
         /// </summary>
         public EnemiesManager(Canvas canvas)
         {
@@ -105,33 +103,35 @@ namespace Galaga.Model
         {
             for (var i = 0; i < NumOfLvl1Enemies; i++)
             {
-                this.enemies.Add(new Lvl1Enemy());
+                this.enemies.Add(new Enemy(1, 1, 4, 0, new Enemy1Sprite()));
             }
 
             for (var i = 0; i < NumOfLvl2Enemies; i++)
             {
-                this.enemies.Add(new Lvl2Enemy());
+                this.enemies.Add(new Enemy(2, 2, 4, 0, new Enemy2Sprite()));
             }
 
             for (var i = 0; i < NumOfLvl3Enemies; i++)
             {
-                this.enemies.Add(new Lvl3Enemy());
+                BaseSprite[] level3EnemySprites = { new Enemy3Sprite(), new Enemy3SpriteVariant() };
+                this.enemies.Add(new ShootingEnemy(3, 3, 5, 0, new Enemy3Sprite(), level3EnemySprites));
             }
 
             for (var i = 0; i < NumOfLvl4Enemies; i++)
             {
-                this.enemies.Add(new Lvl4Enemy());
+                BaseSprite[] level4EnemySprites = { new Enemy4Sprite(), new Enemy4SpriteVariant() };
+                this.enemies.Add(new ShootingEnemy(4, 4, 5, 0, new Enemy4Sprite(), level4EnemySprites));
             }
         }
 
         /// <summary>
         ///     Shoots a randomly selected enemy weapon
         ///     Precondition: bulletManager != null
-        ///     Post-condition: this.canvas.Children++
+        ///     Post-condition: this.Canvas.Children++
         /// </summary>
         /// <exception cref="ArgumentNullException">thrown if the bullet manager is null</exception>
         /// <param name="bulletManager">the bullet manager to add the bullet to</param>
-        public void ShootRandomEnemyWeapon(BulletManager bulletManager)
+        public void ShootRandomEnemyWeapon(EnemyBulletManager bulletManager)
         {
             if (bulletManager == null)
             {
@@ -150,6 +150,7 @@ namespace Galaga.Model
 
         private void timerTickMoveLeft(object sender, object e)
         {
+            //TODO debug this
             if (this.EnemiesDoneMovingInDirection)
             {
                 this.moveTimer.Tick -= this.timerTickMoveLeft;
@@ -207,24 +208,24 @@ namespace Galaga.Model
 
             foreach (var enemy in this.enemies)
             {
-                switch (enemy)
+                switch (enemy.Level)
                 {
-                    case Lvl1Enemy _:
+                    case 1:
                         enemy.X = startXLvl1;
                         enemy.Y = EnemyRow1;
                         startXLvl1 += enemy.Width + spaceBetweenLvl1Enemies;
                         break;
-                    case Lvl2Enemy _:
+                    case 2:
                         enemy.X = startXLvl2;
                         enemy.Y = EnemyRow2;
                         startXLvl2 += enemy.Width + spaceBetweenLvl2Enemies;
                         break;
-                    case Lvl3Enemy _:
+                    case 3:
                         enemy.X = startXLvl3;
                         enemy.Y = EnemyRow3;
                         startXLvl3 += enemy.Width + spaceBetweenLvl3Enemies;
                         break;
-                    case Lvl4Enemy _:
+                    case 4:
                         enemy.X = startXLvl4;
                         enemy.Y = EnemyRow4;
                         startXLvl4 += enemy.Width + spaceBetweenLvl4Enemies;
@@ -259,47 +260,21 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Removes the struck enemy by the player
-        ///     Precondition: playerManager != null, bulletManager != null
+        ///     Removes the enemy from the canvas and the collection
         /// </summary>
-        /// <param name="playerManager">the player manager of the game</param>
-        /// <param name="bulletManager">the bullet manager to remove the bullet from</param>
-        /// <exception cref="ArgumentNullException">thrown if player manager or bullet manager is null</exception>
-        /// <returns>the enemy which was struck or null if no one was struck</returns>
-        public Enemy RemoveStruckEnemy(PlayerManager playerManager, BulletManager bulletManager)
+        /// Precondition: enemy != null
+        /// Post-condition: this.enemies.Count == @prev - 1, this.canvas.Children.Count == @prev -1
+        /// <param name="enemy">the enemy to remove</param>
+        /// <exception cref="ArgumentNullException">thrown if the enemy is null</exception>
+        public void RemoveEnemy(Enemy enemy)
         {
-            if (playerManager == null)
+            if (enemy == null)
             {
-                throw new ArgumentNullException(nameof(playerManager));
+                throw new ArgumentNullException(nameof(enemy));
             }
 
-            if (bulletManager == null)
-            {
-                throw new ArgumentNullException(nameof(bulletManager));
-            }
-
-            foreach (var enemy in this.enemies)
-            {
-                foreach (var bullet in bulletManager)
-                {
-                    if (bullet.BulletType == BulletType.Player && enemy.CollisionDetected(bullet))
-                    {
-                        this.canvas.Children.Remove(enemy.Sprite);
-                        this.enemies.Remove(enemy);
-                        this.updateBullets(playerManager, bulletManager, bullet);
-
-                        return enemy;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private void updateBullets(PlayerManager playerManager, BulletManager bulletManager, Bullet bullet)
-        {
-            bulletManager.RemoveBullet(bullet);
-            playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+            this.enemies.Remove(enemy);
+            this.canvas.Children.Remove(enemy.Sprite);
         }
 
         private ShootingEnemy getRandomShootingEnemy()
@@ -359,6 +334,15 @@ namespace Galaga.Model
             }
 
             this.stepsTaken++;
+        }
+
+        /// <summary>
+        ///     Stops the enemy move timer
+        ///     Post-condition: this.moveTimer.IsEnabled == false
+        /// </summary>
+        public void StopEnemyMoveTimer()
+        {
+            this.moveTimer.Stop();
         }
 
         #endregion

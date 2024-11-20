@@ -13,19 +13,22 @@
     Width="50">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BackWing" Color="Aqua" />
-        <SolidColorBrush x:Key="BackWingFlap" Color="AliceBlue" />
+        <SolidColorBrush x:Key="Enemy4ShipBaseColor" Color="Blue" />
+        <SolidColorBrush x:Key="Enemy4WingTipColor" Color="LimeGreen" />
+        <SolidColorBrush x:Key="GunColor" Color="Gray" />
     </UserControl.Resources>
 
     <Canvas>
+
         <sprites1:Enemy3Sprite />
-        <Rectangle Height="8" Width="3" Stroke="{StaticResource BackWing}" StrokeThickness="2" Canvas.Left="19"
-                   Canvas.Top="9" RenderTransformOrigin="0.6,0.142" />
-        <Rectangle Height="8" Width="3" Stroke="{StaticResource BackWing}" StrokeThickness="2" Canvas.Left="27"
-                   Canvas.Top="9" RenderTransformOrigin="0.6,0.142" />
-        <Rectangle Height="3" Width="8" Stroke="{StaticResource BackWingFlap}" Canvas.Left="27" Canvas.Top="6"
-                   StrokeThickness="2" />
-        <Rectangle Height="3" Width="8" Stroke="{StaticResource BackWingFlap}" Canvas.Left="14" Canvas.Top="6"
-                   StrokeThickness="2" />
+        <Line X1="10" Y1="40" X2="10" Y2="50" Stroke="{StaticResource Enemy4ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="45" X2="5" Y2="55" Stroke="{StaticResource Enemy4ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="55" X2="5" Y2="58" Stroke="{StaticResource Enemy4WingTipColor}" StrokeThickness="5" />
+
+        <Line X1="40" Y1="40" X2="40" Y2="50" Stroke="{StaticResource Enemy4ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="45" X2="45" Y2="55" Stroke="{StaticResource Enemy4ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="55" X2="45" Y2="58" Stroke="{StaticResource Enemy4WingTipColor}" StrokeThickness="5" />
+
+        <Line X1="25" Y1="55" X2="25" Y2="60" Stroke="{StaticResource GunColor}" StrokeThickness="5" />
     </Canvas>
 </sprites1:Enemy3Sprite>

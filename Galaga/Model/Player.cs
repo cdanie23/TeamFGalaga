@@ -15,7 +15,7 @@ namespace Galaga.Model
         /// </summary>
         public const int NumOfLives = 3;
 
-        private const int SpeedXDirection = 3;
+        private const int SpeedXDirection = 8;
         private const int SpeedYDirection = 0;
 
         private const int MaxNumOfBullets = 3;
@@ -41,7 +41,6 @@ namespace Galaga.Model
         {
             Sprite = new PlayerSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
-
             this.BulletsAvailable = new Stack<Bullet>();
             this.setupActiveBullets();
         }

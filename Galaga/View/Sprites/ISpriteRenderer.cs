@@ -11,7 +11,7 @@
 
         /// <summary>
         ///     Renders sprite at the specified (x,y) location in relation
-        ///     to the top, left part of the canvas.
+        ///     to the top, left part of the Canvas.
         /// </summary>
         /// <param name="x">x location</param>
         /// <param name="y">y location</param>

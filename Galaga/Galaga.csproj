@@ -126,13 +126,11 @@
     <Compile Include="Model\BulletType.cs" />
     <Compile Include="Model\EnemiesManager.cs" />
     <Compile Include="Model\Enemy.cs" />
+    <Compile Include="Model\EnemyBulletManager.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
-    <Compile Include="Model\Lvl4Enemy.cs" />
-    <Compile Include="Model\Lvl2Enemy.cs" />
-    <Compile Include="Model\Lvl1Enemy.cs" />
-    <Compile Include="Model\Lvl3Enemy.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\PlayerBulletManager.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
@@ -142,8 +140,8 @@
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\BulletSprite.xaml.cs">
-      <DependentUpon>BulletSprite.xaml</DependentUpon>
+    <Compile Include="View\Sprites\EnemyBulletSprite.xaml.cs">
+      <DependentUpon>EnemyBulletSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\EnemySprites\Enemy1Sprite.xaml.cs">
       <DependentUpon>Enemy1Sprite.xaml</DependentUpon>
@@ -164,6 +162,9 @@
       <DependentUpon>Enemy4SpriteVariant.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
+    <Compile Include="View\Sprites\PlayerBulletSprite.xaml.cs">
+      <DependentUpon>PlayerBulletSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
     </Compile>
@@ -196,7 +197,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\BulletSprite.xaml">
+    <Page Include="View\Sprites\EnemyBulletSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy4SpriteVariant.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PlayerBulletSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -101,7 +101,7 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Moves the game object right
-        ///     Precondition: the game object cannot move past the border of the game canvas
+        ///     Precondition: the game object cannot move past the border of the game Canvas
         ///     Post-condition: X += SpeedX
         /// </summary>
         public void MoveRight()
@@ -112,7 +112,7 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Moves the game object left.
-        ///     Precondition: the game object cannot move past the border of the game canvas
+        ///     Precondition: the game object cannot move past the border of the game Canvas
         ///     Post-condition: X == X@prev + SpeedX
         /// </summary>
         public void MoveLeft()

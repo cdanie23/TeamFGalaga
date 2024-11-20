@@ -5,14 +5,14 @@ namespace Galaga.View.Sprites
     /// <summary>
     ///     The bullet sprite class
     /// </summary>
-    public sealed partial class BulletSprite
+    public sealed partial class EnemyBulletSprite
     {
         #region Constructors
 
         /// <summary>
         ///     Instantiates an instance of a bullet sprite
         /// </summary>
-        public BulletSprite()
+        public EnemyBulletSprite()
         {
             this.InitializeComponent();
         }

@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
@@ -20,6 +21,37 @@ namespace Galaga.Model
         ///     Gets or sets the array of sprite variants
         /// </summary>
         public BaseSprite[] SpriteAnimations { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates a new instance of a shooting enemy
+        ///     PreConditions: baseSprite != null, spriteAnimations != null
+        ///     PostConditions: Points == points, Level == level, SpeedX == speedX, SpeedY == speedY,
+        ///     Sprite == baseSprite, this.SpriteAnimations == spriteAnimations,
+        ///     this.Bullet.BulletType == BulletType.Enemy
+        /// </summary>
+        /// <param name="points">the points</param>
+        /// <param name="level">the level</param>
+        /// <param name="speedX">the speed in the x plane</param>
+        /// <param name="speedY">the speed in the y plane</param>
+        /// <param name="baseSprite">the sprite of the enemy</param>
+        /// <param name="spriteAnimations">the variation sprites of the enemy</param>
+        /// <exception cref="ArgumentNullException">thrown if the base sprite or spriteAnimations are null</exception>
+        public ShootingEnemy(int points, int level, int speedX, int speedY, BaseSprite baseSprite,
+            BaseSprite[] spriteAnimations) : base(points, level, speedX, speedY, baseSprite)
+        {
+            if (baseSprite == null)
+            {
+                throw new ArgumentNullException(nameof(baseSprite));
+            }
+
+            this.SpriteAnimations = spriteAnimations ?? throw new ArgumentNullException(nameof(spriteAnimations));
+            this.Bullet = new Bullet(BulletType.Enemy);
+            Sprite = spriteAnimations[0];
+        }
 
         #endregion
 

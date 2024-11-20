@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -12,16 +13,13 @@ namespace Galaga.Model
 
         private readonly PlayerManager playerManager;
         private readonly EnemiesManager enemyManager;
-        private readonly BulletManager bulletManager;
+        private readonly PlayerBulletManager playerBulletManager;
+        private readonly DispatcherTimer gameTimer;
+        private readonly EnemyBulletManager enemyBulletManager;
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        ///     Pass through property to get the formatted score from the player manager
-        /// </summary>
-        public string Score => this.playerManager.FormattedScore;
 
         /// <summary>
         ///     Checks if all enemies are destroyed in the enemy manager
@@ -29,9 +27,14 @@ namespace Galaga.Model
         public bool AreAllEnemiesDestroyed => this.enemyManager.AreAllEnemiesDestroyed;
 
         /// <summary>
-        ///     Pass through property to get the formatted player lives in the player manager
+        ///     Pass thru property to access the number of lives of the player
         /// </summary>
-        public string PlayerLives => this.playerManager.FormattedLives;
+        public int PlayerLives => this.playerManager.NumOfLives;
+
+        /// <summary>
+        ///     Pass thru property to access the player's score
+        /// </summary>
+        public int PlayerScore => this.playerManager.Score;
 
         #endregion
 
@@ -39,11 +42,11 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
-        ///     Precondition: canvas != null
+        ///     Precondition: Canvas != null
         ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.bulletManager != null
         /// </summary>
-        /// <param name="canvas">the canvas of the game</param>
-        /// <exception cref="ArgumentNullException">thrown if the canvas is null</exception>
+        /// <param name="canvas">the Canvas of the game</param>
+        /// <exception cref="ArgumentNullException">thrown if the Canvas is null</exception>
         public GameManager(Canvas canvas)
         {
             if (canvas == null)
@@ -53,7 +56,9 @@ namespace Galaga.Model
 
             this.playerManager = new PlayerManager(canvas);
             this.enemyManager = new EnemiesManager(canvas);
-            this.bulletManager = new BulletManager(canvas, this.playerManager);
+            this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager);
+            this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
+            this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.initializeGame();
         }
@@ -63,27 +68,46 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     The event of an enemy being killed
+        ///     Pass thru property used to access the player struck event in the enemy bullet manager
         /// </summary>
-        public event EventHandler<EnemyDeathEventArgs> EnemyStruck;
+        public event EventHandler<EventArgs> PlayerStruck
+        {
+            add => this.enemyBulletManager.PlayerStruck += value;
+            remove => this.enemyBulletManager.PlayerStruck -= value;
+        }
 
         /// <summary>
-        ///     The event of the player being struck
+        ///     Pass thru property used to access the enemy struck event in the player bullet manager
         /// </summary>
-        public event EventHandler<EventArgs> PlayerStruck;
+        public event EventHandler<Enemy> EnemyStruck
+        {
+            add => this.playerBulletManager.EnemyStruck += value;
+            remove => this.playerBulletManager.EnemyStruck -= value;
+        }
 
         private void initializeGame()
         {
             this.playerManager.SetupPlayer();
-            this.PlayerStruck += this.playerManager.OnPlayerStruck;
-
             this.enemyManager.SetupEnemies();
+            this.setupTimers();
 
-            this.bulletManager.SetupBulletTimers();
-            this.bulletManager.BulletMoveTimer.Tick += this.checkForStruckEnemyTickEvent;
-            this.bulletManager.BulletMoveTimer.Tick += this.checkForStruckPlayerTickEvent;
-            this.bulletManager.EnemyRandomShootTimer.Tick += this.shootRandomLevel3EnemyWeaponTickEvent;
-            this.bulletManager.EnemyRandomShootTimer.Start();
+            this.playerBulletManager.EnemyStruck += this.onEnemyStruck;
+            this.enemyBulletManager.PlayerStruck += this.playerManager.OnPlayerStruck;
+        }
+
+        private void setupTimers()
+        {
+            this.enemyBulletManager.EnemyRandomShootTimer.Tick += this.shootEnemyBulletTickEvent;
+            this.enemyBulletManager.EnemyRandomShootTimer.Start();
+
+            this.gameTimer.Tick += this.moveBulletTickEvent;
+            this.gameTimer.Start();
+        }
+
+        private void moveBulletTickEvent(object sender, object e)
+        {
+            this.playerBulletManager.MoveBullet();
+            this.enemyBulletManager.MoveBullet();
         }
 
         /// <summary>
@@ -110,66 +134,31 @@ namespace Galaga.Model
             var bullet = this.playerManager.ShootPlayerBullet();
             if (bullet != null)
             {
-                this.bulletManager.AddBullet(bullet);
+                this.playerBulletManager.AddBullet(bullet);
             }
         }
 
-        private void checkForStruckPlayerTickEvent(object sender, object e)
+        private void shootEnemyBulletTickEvent(object sender, object e)
         {
-            foreach (var bullet in this.bulletManager)
-            {
-                if (bullet.BulletType == BulletType.Enemy && this.playerManager.IsPlayerStruck(bullet))
-                {
-                    this.bulletManager.RemoveBullet(bullet);
-                    this.PlayerStruck?.Invoke(this, EventArgs.Empty);
-                    break;
-                }
-            }
+            this.enemyManager.ShootRandomEnemyWeapon(this.enemyBulletManager);
         }
 
-        private void checkForStruckEnemyTickEvent(object sender, object e)
+        private void onEnemyStruck(object sender, Enemy enemy)
         {
-            var enemy = this.enemyManager.RemoveStruckEnemy(this.playerManager, this.bulletManager);
-
-            if (enemy != null)
-            {
-                this.playerManager.Score += enemy.Points;
-                this.EnemyStruck?.Invoke(this, new EnemyDeathEventArgs(enemy));
-            }
-        }
-
-        private void shootRandomLevel3EnemyWeaponTickEvent(object sender, object e)
-        {
-            this.enemyManager.ShootRandomEnemyWeapon(this.bulletManager);
-            this.bulletManager.EnemyRandomShootTimer.Interval = this.bulletManager.GetRandomInterval();
+            this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+            this.playerManager.Score += enemy.Points;
+            this.enemyManager.RemoveEnemy(enemy);
         }
 
         /// <summary>
-        ///     Event args for an enemy death even
+        ///     Stops the game
+        ///     PostCondition: this.gameTimer.IsEnabled == false, this.enemyBulletManager.EnemyRandomShootTimer.IsEnabled == false
         /// </summary>
-        public class EnemyDeathEventArgs : EventArgs
+        public void StopGame()
         {
-            #region Properties
-
-            /// <summary>
-            ///     Gets the enemy
-            /// </summary>
-            public Enemy Enemy { get; }
-
-            #endregion
-
-            #region Constructors
-
-            /// <summary>
-            ///     Creates an instance of the enemy death event args
-            /// </summary>
-            /// <param name="enemy">the enemy that was killed</param>
-            public EnemyDeathEventArgs(Enemy enemy)
-            {
-                this.Enemy = enemy;
-            }
-
-            #endregion
+            this.gameTimer.Stop();
+            this.enemyBulletManager.EnemyRandomShootTimer.Stop();
+            this.enemyManager.StopEnemyMoveTimer();
         }
 
         #endregion

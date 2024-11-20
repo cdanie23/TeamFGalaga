@@ -9,11 +9,11 @@
     d:DesignHeight="60"
     d:DesignWidth="50">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="VariantCockpitColor" Color="Red" />
+        <SolidColorBrush x:Key="AccentColor" Color="Red" />
     </UserControl.Resources>
+
     <Canvas>
         <local:Enemy4Sprite />
-        <Rectangle Width="10" Height="20" Stroke="{StaticResource VariantCockpitColor}" StrokeThickness="5"
-                   Canvas.Left="20" Canvas.Top="22" />
+        <Line X1="12.5" Y1="42" X2="37.5" Y2="42" Stroke="{StaticResource AccentColor}" StrokeThickness="5" />
     </Canvas>
 </local:Enemy4Sprite>

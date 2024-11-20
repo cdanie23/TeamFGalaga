@@ -11,28 +11,47 @@
     Height="60"
     Width="50">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="ShipBaseColor" Color="Red" />
-        <SolidColorBrush x:Key="InnerBaseColor" Color="LightSlateGray" />
-        <SolidColorBrush x:Key="OuterShipColor" Color="IndianRed" />
-        <SolidColorBrush x:Key="WingConnectorColor" Color="Gray" />
-        <SolidColorBrush x:Key="WingColor" Color="Gray" />
-        <SolidColorBrush x:Key="CockpitColor" Color="CadetBlue" />
+        <SolidColorBrush x:Key="ShipBaseColor" Color="DarkRed" />
+        <SolidColorBrush x:Key="CockpitColor" Color="Black" />
+        <SolidColorBrush x:Key="EngineFireColor" Color="Red" />
+        <SolidColorBrush x:Key="WingTipColor" Color="Orange" />
+        <SolidColorBrush x:Key="MainAccentColor" Color="Yellow" />
+        <SolidColorBrush x:Key="SecondaryAccentColor" Color="OrangeRed" />
     </UserControl.Resources>
+
     <Canvas>
-        <Line X1="25" Y1="0" X2="25" Y2="60" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
-        <Line X1="20" Y1="5" X2="20" Y2="55" Stroke="{StaticResource InnerBaseColor}" StrokeThickness="4" />
-        <Line X1="30" Y1="5" X2="30" Y2="55" Stroke="{StaticResource InnerBaseColor}" StrokeThickness="4" />
-        <Rectangle Width="6" Height="5" Canvas.Left="6" Canvas.Top="28" Fill="{StaticResource WingConnectorColor}" />
-        <Rectangle Width="6" Height="5" Canvas.Left="38" Canvas.Top="28" Fill="{StaticResource WingConnectorColor}" />
-        <Line X1="13" Y1="10" X2="13" Y2="55" Stroke="{StaticResource WingColor}" StrokeThickness="5"
-              HorizontalAlignment="Left" Canvas.Left="-10" VerticalAlignment="Center" />
-        <Line X1="38" Y1="10" X2="38" Y2="55" Stroke="{StaticResource WingColor}" StrokeThickness="5"
-              HorizontalAlignment="Left" Canvas.Left="9" VerticalAlignment="Center" />
-        <Line X1="25" Y1="10" X2="25" Y2="50" Stroke="{StaticResource OuterShipColor}" StrokeThickness="5"
-              HorizontalAlignment="Left" Canvas.Left="-10" VerticalAlignment="Center" />
-        <Line X1="40" Y1="10" X2="40" Y2="50" Stroke="{StaticResource OuterShipColor}" StrokeThickness="5"
-              Canvas.Left="-5" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Rectangle Height="8" Width="4" Stroke="{StaticResource CockpitColor}" Canvas.Left="23" Canvas.Top="26"
-                   StrokeThickness="3" />
+        <Line X1="25" Y1="60" X2="25" Y2="17" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="25" Y1="40" X2="25" Y2="30" Stroke="{StaticResource CockpitColor}" StrokeThickness="5" />
+        <Line X1="25" Y1="60" X2="25" Y2="55" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="20" Y1="50" X2="20" Y2="15" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="20" Y1="32" X2="20" Y2="23" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="15" Y1="45" X2="15" Y2="13" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="15" Y1="28" X2="15" Y2="20" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="30" Y1="50" X2="30" Y2="15" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="30" Y1="32" X2="30" Y2="23" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="35" Y1="45" X2="35" Y2="13" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="35" Y1="28" X2="35" Y2="20" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="10" Y1="35" X2="10" Y2="8" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="10" Y1="23" X2="10" Y2="15" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="40" Y1="35" X2="40" Y2="8" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="40" Y1="23" X2="40" Y2="15" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+
+        <Line X1="5" Y1="25" X2="5" Y2="2" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="19" X2="5" Y2="12" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="28" X2="5" Y2="25" Stroke="{StaticResource WingTipColor}" StrokeThickness="5" />
+        <Line X1="5" Y1="5" X2="5" Y2="0" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" />
+
+        <Line X1="45" Y1="25" X2="45" Y2="2" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="19" X2="45" Y2="12" Stroke="{StaticResource SecondaryAccentColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="28" X2="45" Y2="25" Stroke="{StaticResource WingTipColor}" StrokeThickness="5" />
+        <Line X1="45" Y1="5" X2="45" Y2="0" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" />
+
+        <Line X1="12.5" Y1="42" X2="37.5" Y2="42" Stroke="{StaticResource MainAccentColor}" StrokeThickness="5" />
     </Canvas>
 </sprites:BaseSprite>
