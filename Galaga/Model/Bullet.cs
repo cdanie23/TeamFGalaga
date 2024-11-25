@@ -8,12 +8,7 @@ namespace Galaga.Model
     /// </summary>
     public class Bullet : GameObject
     {
-        #region Data members
-
-        private const int BulletYSpeed = 10;
-
-        #endregion
-
+        
         #region Properties
 
         /// <summary>
@@ -30,10 +25,10 @@ namespace Galaga.Model
         ///     PostCondition: this.BulletType == BulletType, this.Sprite == EnemyBulletSprite, this.SpeedX == 0, this.SpeedY ==
         ///     this.BulletYSpeed
         /// </summary>
-        public Bullet(BulletType bulletType)
+        public Bullet(BulletType bulletType, int bulletSpeed)
         {
             this.BulletType = bulletType;
-            SetSpeed(0, BulletYSpeed);
+            SetSpeed(0, bulletSpeed);
             if (bulletType == BulletType.Player)
             {
                 Sprite = new PlayerBulletSprite();

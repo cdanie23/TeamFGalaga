@@ -19,7 +19,7 @@ namespace Galaga.Model
         private const int SpeedYDirection = 0;
 
         private const int MaxNumOfBullets = 3;
-
+        public const int PlayerBulletSpeed = 10;
         #endregion
 
         #region Properties
@@ -53,7 +53,7 @@ namespace Galaga.Model
         {
             for (var i = 0; i < MaxNumOfBullets; i++)
             {
-                this.BulletsAvailable.Push(new Bullet(BulletType.Player));
+                this.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
             }
         }
 

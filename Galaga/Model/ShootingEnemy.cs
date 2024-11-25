@@ -39,9 +39,10 @@ namespace Galaga.Model
         /// <param name="speedY">the speed in the y plane</param>
         /// <param name="baseSprite">the sprite of the enemy</param>
         /// <param name="spriteAnimations">the variation sprites of the enemy</param>
+        /// <param name="bulletSpeed">the speed of the bullet</param>
         /// <exception cref="ArgumentNullException">thrown if the base sprite or spriteAnimations are null</exception>
         public ShootingEnemy(int points, int level, int speedX, int speedY, BaseSprite baseSprite,
-            BaseSprite[] spriteAnimations) : base(points, level, speedX, speedY, baseSprite)
+            BaseSprite[] spriteAnimations, int bulletSpeed) : base(points, level, speedX, speedY, baseSprite)
         {
             if (baseSprite == null)
             {
@@ -49,7 +50,7 @@ namespace Galaga.Model
             }
 
             this.SpriteAnimations = spriteAnimations ?? throw new ArgumentNullException(nameof(spriteAnimations));
-            this.Bullet = new Bullet(BulletType.Enemy);
+            this.Bullet = new Bullet(BulletType.Enemy, bulletSpeed);
             Sprite = spriteAnimations[0];
         }
 

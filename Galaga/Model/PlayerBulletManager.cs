@@ -57,7 +57,7 @@ namespace Galaga.Model
                 if (!bullet.Move(Canvas))
                 {
                     flaggedBullets.Add(bullet);
-                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
                 }
 
                 foreach (var enemy in this.enemyManager)

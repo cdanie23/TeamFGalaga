@@ -18,22 +18,12 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private readonly int[] numOfEachEnemy = { 3, 4, 4, 5 };
+        private int[] numOfEachEnemy = { 3, 4, 4, 5 };
 
         private const int EnemyRow1 = 300;
         private const int EnemyRow2 = 200;
         private const int EnemyRow3 = 100;
         private const int EnemyRow4 = 0;
-
-        private const int Level1EnemyPoints = 5;
-        private const int Level2EnemyPoints = 10;
-        private const int Level3EnemyPoints = 15;
-        private const int Level4EnemyPoints = 20;
-
-        private const int Level1EnemyXSpeed = 4;
-        private const int Level2EnemyXSpeed = 4;
-        private const int Level3EnemyXSpeed = 5;
-        private const int Level4EnemyXSpeed = 5;
 
         private const int MoveTimerMilliseconds = 20;
         private const int NumOfStepsInEachDirectionOfOrigin = 10;
@@ -47,6 +37,7 @@ namespace Galaga.Model
 
         private int stepsTaken;
         private int numOfStepsInEachDirection;
+        private const int StartingNumOfStepsInEachDirection = 5;
 
         #endregion
 
@@ -78,7 +69,7 @@ namespace Galaga.Model
             this.createEnemies(); 
 
             this.stepsTaken = 0;
-            this.numOfStepsInEachDirection = 5;
+            this.numOfStepsInEachDirection = StartingNumOfStepsInEachDirection;
 
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.canvasWidth = canvas.Width;
@@ -90,6 +81,13 @@ namespace Galaga.Model
         #endregion
 
         #region Methods
+
+        public void ChangeEnemyAttributes(int gameLevel)
+        {
+            this.enemyFactory.ChangeEnemyAttributes(gameLevel);
+            this.numOfEachEnemy = new [] { 4, 4, 5, 6 };
+        }
+
 
         /// <summary>
         ///     Gets the enumerator for the collection
@@ -111,51 +109,19 @@ namespace Galaga.Model
 
         private void createEnemies()
         {
-            for (var iteration = 0; iteration < this.numOfEachEnemy.Length; iteration++)
+            for (var iteration = 1; iteration <= this.numOfEachEnemy.Length; iteration++)
             {
-                switch (iteration)
+                
+                for (var i = 0; i < this.numOfEachEnemy[iteration - 1]; i++)
                 {
-                    case 0:
-                    {
-                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
-                        {
-                            this.enemies.Add(new Enemy(Level1EnemyPoints, iteration + 1, Level1EnemyXSpeed, 0, new Enemy1Sprite()));
-                        }
-
-                        break;
-                    }
-                    case 1:
-                    {
-                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
-                        {
-                            this.enemies.Add(new Enemy(Level2EnemyPoints, iteration + 1, Level2EnemyXSpeed, 0, new Enemy2Sprite()));
-                        }
-
-                        break;
-                    }
-                    case 2:
-                    {
-                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
-                        {
-                            BaseSprite[] level3EnemySprites = { new Enemy3Sprite(), new Enemy3SpriteVariant() };
-                            this.enemies.Add(new ShootingEnemy(Level3EnemyPoints, iteration + 1, Level3EnemyXSpeed, 0, new Enemy3Sprite(), level3EnemySprites));
-                        }
-
-                        break;
-                    }
-                    case 3:
-                    {
-                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
-                        {
-                            BaseSprite[] level4EnemySprites = { new Enemy4Sprite(), new Enemy4SpriteVariant() };
-                            this.enemies.Add(new ShootingEnemy(Level4EnemyPoints, iteration + 1, Level4EnemyXSpeed, 0, new Enemy4Sprite(), level4EnemySprites));
-                        }
-
-                        break;
-                    }
+                    this.enemies.Add(this.enemyFactory.CreateNewEnemy(iteration));
                 }
+
+                       
             }
         }
+            
+        
 
         /// <summary>
         ///     Shoots a randomly selected enemy weapon

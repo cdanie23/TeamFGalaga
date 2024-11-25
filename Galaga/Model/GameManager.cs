@@ -145,7 +145,7 @@ namespace Galaga.Model
 
         private void onEnemyStruck(object sender, Enemy enemy)
         {
-            this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player));
+            this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
             this.playerManager.Score += enemy.Points;
             this.enemyManager.RemoveEnemy(enemy);
         }
