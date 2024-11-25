@@ -127,6 +127,7 @@
     <Compile Include="Model\EnemiesManager.cs" />
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="Model\EnemyBulletManager.cs" />
+    <Compile Include="Model\EnemyFactory.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\Player.cs" />

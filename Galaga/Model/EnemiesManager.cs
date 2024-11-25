@@ -36,6 +36,7 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private readonly DispatcherTimer moveTimer;
+        private readonly EnemyFactory enemyFactory;
 
         private int stepsTaken;
         private int numOfStepsInEachDirection;
@@ -66,7 +67,8 @@ namespace Galaga.Model
         public EnemiesManager(Canvas canvas)
         {
             this.enemies = new Collection<Enemy>();
-            this.createEnemies();
+            this.enemyFactory = new EnemyFactory();
+            this.createEnemies(); 
 
             this.stepsTaken = 0;
             this.numOfStepsInEachDirection = 5;
@@ -75,6 +77,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveTimerMilliseconds) };
+
         }
 
         #endregion
@@ -103,24 +106,22 @@ namespace Galaga.Model
         {
             for (var i = 0; i < NumOfLvl1Enemies; i++)
             {
-                this.enemies.Add(new Enemy(1, 1, 4, 0, new Enemy1Sprite()));
+                this.enemies.Add(this.enemyFactory.CreateNewEnemy(1));
             }
 
             for (var i = 0; i < NumOfLvl2Enemies; i++)
             {
-                this.enemies.Add(new Enemy(2, 2, 4, 0, new Enemy2Sprite()));
+                this.enemies.Add(this.enemyFactory.CreateNewEnemy(2));
             }
 
             for (var i = 0; i < NumOfLvl3Enemies; i++)
             {
-                BaseSprite[] level3EnemySprites = { new Enemy3Sprite(), new Enemy3SpriteVariant() };
-                this.enemies.Add(new ShootingEnemy(3, 3, 5, 0, new Enemy3Sprite(), level3EnemySprites));
+                this.enemies.Add(this.enemyFactory.CreateNewEnemy(3));
             }
 
             for (var i = 0; i < NumOfLvl4Enemies; i++)
             {
-                BaseSprite[] level4EnemySprites = { new Enemy4Sprite(), new Enemy4SpriteVariant() };
-                this.enemies.Add(new ShootingEnemy(4, 4, 5, 0, new Enemy4Sprite(), level4EnemySprites));
+                this.enemies.Add(this.enemyFactory.CreateNewEnemy(4));
             }
         }
 
