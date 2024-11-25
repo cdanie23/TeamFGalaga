@@ -18,15 +18,22 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const int NumOfLvl1Enemies = 3;
-        private const int NumOfLvl2Enemies = 4;
-        private const int NumOfLvl3Enemies = 4;
-        private const int NumOfLvl4Enemies = 5;
+        private readonly int[] numOfEachEnemy = { 3, 4, 4, 5 };
 
         private const int EnemyRow1 = 300;
         private const int EnemyRow2 = 200;
         private const int EnemyRow3 = 100;
         private const int EnemyRow4 = 0;
+
+        private const int Level1EnemyPoints = 5;
+        private const int Level2EnemyPoints = 10;
+        private const int Level3EnemyPoints = 15;
+        private const int Level4EnemyPoints = 20;
+
+        private const int Level1EnemyXSpeed = 4;
+        private const int Level2EnemyXSpeed = 4;
+        private const int Level3EnemyXSpeed = 5;
+        private const int Level4EnemyXSpeed = 5;
 
         private const int MoveTimerMilliseconds = 20;
         private const int NumOfStepsInEachDirectionOfOrigin = 10;
@@ -104,24 +111,49 @@ namespace Galaga.Model
 
         private void createEnemies()
         {
-            for (var i = 0; i < NumOfLvl1Enemies; i++)
+            for (var iteration = 0; iteration < this.numOfEachEnemy.Length; iteration++)
             {
-                this.enemies.Add(this.enemyFactory.CreateNewEnemy(1));
-            }
+                switch (iteration)
+                {
+                    case 0:
+                    {
+                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
+                        {
+                            this.enemies.Add(new Enemy(Level1EnemyPoints, iteration + 1, Level1EnemyXSpeed, 0, new Enemy1Sprite()));
+                        }
 
-            for (var i = 0; i < NumOfLvl2Enemies; i++)
-            {
-                this.enemies.Add(this.enemyFactory.CreateNewEnemy(2));
-            }
+                        break;
+                    }
+                    case 1:
+                    {
+                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
+                        {
+                            this.enemies.Add(new Enemy(Level2EnemyPoints, iteration + 1, Level2EnemyXSpeed, 0, new Enemy2Sprite()));
+                        }
 
-            for (var i = 0; i < NumOfLvl3Enemies; i++)
-            {
-                this.enemies.Add(this.enemyFactory.CreateNewEnemy(3));
-            }
+                        break;
+                    }
+                    case 2:
+                    {
+                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
+                        {
+                            BaseSprite[] level3EnemySprites = { new Enemy3Sprite(), new Enemy3SpriteVariant() };
+                            this.enemies.Add(new ShootingEnemy(Level3EnemyPoints, iteration + 1, Level3EnemyXSpeed, 0, new Enemy3Sprite(), level3EnemySprites));
+                        }
 
-            for (var i = 0; i < NumOfLvl4Enemies; i++)
-            {
-                this.enemies.Add(this.enemyFactory.CreateNewEnemy(4));
+                        break;
+                    }
+                    case 3:
+                    {
+                        for (var i = 0; i < this.numOfEachEnemy[iteration]; i++)
+                        {
+                            BaseSprite[] level4EnemySprites = { new Enemy4Sprite(), new Enemy4SpriteVariant() };
+                            this.enemies.Add(new ShootingEnemy(Level4EnemyPoints, iteration + 1, Level4EnemyXSpeed, 0, new Enemy4Sprite(), level4EnemySprites));
+                        }
+
+                        break;
+                    }
+                }
             }
         }
 
@@ -151,7 +183,6 @@ namespace Galaga.Model
 
         private void timerTickMoveLeft(object sender, object e)
         {
-            //TODO debug this
             if (this.EnemiesDoneMovingInDirection)
             {
                 this.moveTimer.Tick -= this.timerTickMoveLeft;
@@ -195,16 +226,16 @@ namespace Galaga.Model
 
         private void centerEnemiesNearTopOfCanvas()
         {
-            var spaceBetweenLvl1Enemies = this.canvasWidth / NumOfLvl1Enemies / 2.0;
+            var spaceBetweenLvl1Enemies = this.canvasWidth / this.numOfEachEnemy[0] / 2.0;
             var startXLvl1 = spaceBetweenLvl1Enemies;
 
-            var spaceBetweenLvl2Enemies = this.canvasWidth / NumOfLvl2Enemies / 2.0;
+            var spaceBetweenLvl2Enemies = this.canvasWidth / this.numOfEachEnemy[1] / 2.0;
             var startXLvl2 = spaceBetweenLvl2Enemies;
 
-            var spaceBetweenLvl3Enemies = this.canvasWidth / NumOfLvl3Enemies / 2.0;
+            var spaceBetweenLvl3Enemies = this.canvasWidth / this.numOfEachEnemy[2] / 2.0;
             var startXLvl3 = spaceBetweenLvl3Enemies;
 
-            var spaceBetweenLvl4Enemies = this.canvasWidth / NumOfLvl4Enemies / 2.0;
+            var spaceBetweenLvl4Enemies = this.canvasWidth / this.numOfEachEnemy[3] / 2.0;
             var startXLvl4 = spaceBetweenLvl4Enemies;
 
             foreach (var enemy in this.enemies)

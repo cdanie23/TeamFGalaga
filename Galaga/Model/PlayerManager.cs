@@ -15,6 +15,7 @@ namespace Galaga.Model
 
         private const int TimeBetweenSpriteFlash = 200;
         private const int MillisecondDelayBetweenBullets = 500;
+        private const int NumOfFlashes = 5;
 
         private readonly Canvas canvas;
 
@@ -98,7 +99,7 @@ namespace Galaga.Model
         {
             this.flashPlayerSprite();
 
-            if (this.invulnerabilityTimerTickCount == 5)
+            if (this.invulnerabilityTimerTickCount == NumOfFlashes)
             {
                 this.invulnerabilityTimer.Stop();
                 this.invulnerabilityTimerTickCount = 0;
