@@ -15,11 +15,16 @@ namespace Galaga.Model
         /// </summary>
         public const int NumOfLives = 3;
 
+        /// <summary>
+        ///     The players bullet speed
+        /// </summary>
+        public const int PlayerBulletSpeed = 10;
+
         private const int SpeedXDirection = 8;
         private const int SpeedYDirection = 0;
 
         private const int MaxNumOfBullets = 3;
-        public const int PlayerBulletSpeed = 10;
+
         #endregion
 
         #region Properties
@@ -42,18 +47,22 @@ namespace Galaga.Model
             Sprite = new PlayerSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
             this.BulletsAvailable = new Stack<Bullet>();
-            this.setupActiveBullets();
+            this.SetupActiveBullets();
         }
 
         #endregion
 
         #region Methods
 
-        private void setupActiveBullets()
+        /// <summary>
+        ///     Sets up the specified number of bullets a player can have
+        ///     PostCondition: this.BulletsAvailable.Count == MaxNumOfBullets
+        /// </summary>
+        public void SetupActiveBullets()
         {
             for (var i = 0; i < MaxNumOfBullets; i++)
             {
-                this.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
+                this.BulletsAvailable.Push(new Bullet(BulletType.Player, PlayerBulletSpeed));
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -50,7 +51,7 @@ namespace Galaga.View
             this.gameManager.PlayerStruck += this.onLivesUpdate;
             this.gameManager.PlayerStruck += this.onPlayerDeath;
             this.gameManager.EnemyStruck += this.onScoreUpdate;
-            this.gameManager.EnemyStruck += this.onAllEnemiesDead;
+            this.gameManager.LevelOver += this.onLevelOver;
 
             this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MillisecondsForTimer) };
             this.timer.Tick += this.timerTickEvent;
@@ -123,13 +124,22 @@ namespace Galaga.View
             this.playerLivesTextBlock.Text = $"Lives : {lives}";
         }
 
-        private void onAllEnemiesDead(object sender, Enemy enemy)
+        private async void onLevelOver(object sender, int level)
         {
-            if (this.gameManager.AreAllEnemiesDestroyed)
+            if (this.gameManager.AreAllEnemiesDestroyed && level == GameManager.LastLevel)
             {
                 this.showWinDialog();
                 this.gameManager.StopGame();
                 Window.Current.CoreWindow.KeyDown -= this.coreWindowOnKeyDown;
+            }
+            else
+            {
+                this.gameOverTextBlock.Visibility = Visibility.Visible;
+                this.gameOverTextBlock.Text = $"Round: {this.gameManager.GameLevel}";
+
+                await Task.Delay(1000);
+
+                this.gameOverTextBlock.Visibility = Visibility.Collapsed;
             }
         }
 

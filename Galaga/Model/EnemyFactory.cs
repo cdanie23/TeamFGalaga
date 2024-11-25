@@ -1,32 +1,43 @@
-﻿using Galaga.View.Sprites;
+﻿using System;
+using Galaga.View.Sprites;
 using Galaga.View.Sprites.EnemySprites;
 using Galaga.View.Sprites.EnemySprites.EnemySpriteVariants;
-using System;
 
 namespace Galaga.Model
 {
     /// <summary>
-    /// The enemy factory class
+    ///     The enemy factory class
     /// </summary>
     public class EnemyFactory
     {
-        
-        private const int Level1EnemyPoints = 5;
-        private const int Level2EnemyPoints = 10;
-        private const int Level3EnemyPoints = 15;
-        private const int Level4EnemyPoints = 20;
-
-        private  int level1EnemyXSpeed;
-        private  int level2EnemyXSpeed;
-        private  int level3EnemyXSpeed;
-        private  int level4EnemyXSpeed;
-
-        private  int shootingEnemyBulletSpeed;
+        #region Data members
 
         private const int EnemyLevelOne = 1;
         private const int EnemyLevelTwo = 2;
         private const int EnemyLevelThree = 3;
         private const int EnemyLevelFour = 4;
+
+        private readonly GameSettings gameSettings;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates an instance of the enemy factory
+        ///     PreCondition: gameSettings != null
+        ///     PostCondition: this.gameSettings == gameSettings
+        /// </summary>
+        /// <param name="gameSettings">the game settings of the enemies</param>
+        /// <exception cref="ArgumentNullException">thrown if game settings is null</exception>
+        public EnemyFactory(GameSettings gameSettings)
+        {
+            this.gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Creates an enemy
@@ -50,49 +61,26 @@ namespace Galaga.Model
             switch (levelEnemy)
             {
                 case EnemyLevelOne:
-                    return new Enemy(Level1EnemyPoints, EnemyLevelOne, this.level1EnemyXSpeed, 0, new Enemy1Sprite());
+                    return new Enemy(EnemiesManager.Level1EnemyPoints, EnemyLevelOne,
+                        this.gameSettings.Level1EnemyXSpeed, 0, new Enemy1Sprite());
                 case EnemyLevelTwo:
-                    return new Enemy(Level2EnemyPoints, EnemyLevelTwo, this.level2EnemyXSpeed, 0, new Enemy2Sprite());
+                    return new Enemy(EnemiesManager.Level2EnemyPoints, EnemyLevelTwo,
+                        this.gameSettings.Level2EnemyXSpeed, 0, new Enemy2Sprite());
                 case EnemyLevelThree:
                     BaseSprite[] level3EnemySprites = { new Enemy3Sprite(), new Enemy3SpriteVariant() };
-                    return new ShootingEnemy(Level3EnemyPoints, EnemyLevelThree, this.level3EnemyXSpeed, 0, new Enemy3Sprite(), level3EnemySprites, this.shootingEnemyBulletSpeed);
+                    return new ShootingEnemy(EnemiesManager.Level3EnemyPoints, EnemyLevelThree,
+                        this.gameSettings.Level3EnemyXSpeed, 0, new Enemy3Sprite(), level3EnemySprites,
+                        this.gameSettings.ShootingEnemyBulletSpeed);
                 case EnemyLevelFour:
                     BaseSprite[] level4EnemySprites = { new Enemy4Sprite(), new Enemy4SpriteVariant() };
-                    return new ShootingEnemy(Level4EnemyPoints, EnemyLevelFour, this.level4EnemyXSpeed, 0, new Enemy4Sprite(), level4EnemySprites, this.shootingEnemyBulletSpeed);
+                    return new ShootingEnemy(EnemiesManager.Level4EnemyPoints, EnemyLevelFour,
+                        this.gameSettings.Level4EnemyXSpeed, 0, new Enemy4Sprite(), level4EnemySprites,
+                        this.gameSettings.ShootingEnemyBulletSpeed);
             }
 
             return null;
         }
 
-        public void ChangeEnemyAttributes(int gamelevel)
-        {
-            switch (gamelevel)
-            {
-                case 1:
-                    this.level1EnemyXSpeed = 2;
-                    this.level2EnemyXSpeed = 2;
-                    this.level3EnemyXSpeed = 2;
-                    this.level4EnemyXSpeed = 2;
-
-                    this.shootingEnemyBulletSpeed = 8;
-                    break;
-                case 2:
-                    this.level1EnemyXSpeed = 3;
-                    this.level2EnemyXSpeed = 3;
-                    this.level3EnemyXSpeed = 4;
-                    this.level4EnemyXSpeed = 4;
-
-                    this.shootingEnemyBulletSpeed = 9;
-                    break;
-                case 3:
-                    this.level1EnemyXSpeed = 5;
-                    this.level2EnemyXSpeed = 5;
-                    this.level3EnemyXSpeed = 6;
-                    this.level4EnemyXSpeed = 7;
-
-                    this.shootingEnemyBulletSpeed = 10;
-                    break;
-            }
-        }
+        #endregion
     }
 }

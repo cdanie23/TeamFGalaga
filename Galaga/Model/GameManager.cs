@@ -11,6 +11,11 @@ namespace Galaga.Model
     {
         #region Data members
 
+        /// <summary>
+        ///     The last level of the game
+        /// </summary>
+        public const int LastLevel = 3;
+
         private readonly PlayerManager playerManager;
         private readonly EnemiesManager enemyManager;
         private readonly PlayerBulletManager playerBulletManager;
@@ -36,6 +41,12 @@ namespace Galaga.Model
         /// </summary>
         public int PlayerScore => this.playerManager.Score;
 
+        /// <summary>
+        ///     Gets or sets the current game level
+        /// </summary>
+        /// <param name="value">the value to set</param>
+        public int GameLevel { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -59,6 +70,8 @@ namespace Galaga.Model
             this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager);
             this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
+
+            this.GameLevel = 1;
 
             this.initializeGame();
         }
@@ -85,6 +98,11 @@ namespace Galaga.Model
             remove => this.playerBulletManager.EnemyStruck -= value;
         }
 
+        /// <summary>
+        ///     The level over event
+        /// </summary>
+        public event EventHandler<int> LevelOver;
+
         private void initializeGame()
         {
             this.playerManager.SetupPlayer();
@@ -93,6 +111,9 @@ namespace Galaga.Model
 
             this.playerBulletManager.EnemyStruck += this.onEnemyStruck;
             this.enemyBulletManager.PlayerStruck += this.playerManager.OnPlayerStruck;
+
+            this.LevelOver += this.onLevelOver;
+            this.LevelOver += this.enemyManager.OnLevelOver;
         }
 
         private void setupTimers()
@@ -148,6 +169,11 @@ namespace Galaga.Model
             this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
             this.playerManager.Score += enemy.Points;
             this.enemyManager.RemoveEnemy(enemy);
+
+            if (this.enemyManager.Count == 0)
+            {
+                this.LevelOver?.Invoke(this, this.GameLevel);
+            }
         }
 
         /// <summary>
@@ -159,6 +185,14 @@ namespace Galaga.Model
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
             this.enemyManager.StopEnemyMoveTimer();
+        }
+
+        private void onLevelOver(object sender, int level)
+        {
+            this.GameLevel++;
+            this.enemyManager.SetEnemySettings(this.GameLevel);
+            this.enemyBulletManager.Clear();
+            this.playerBulletManager.Clear();
         }
 
         #endregion

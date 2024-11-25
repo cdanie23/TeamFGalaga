@@ -8,7 +8,6 @@ namespace Galaga.Model
     /// </summary>
     public class Bullet : GameObject
     {
-        
         #region Properties
 
         /// <summary>

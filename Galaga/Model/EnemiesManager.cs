@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
-using Galaga.View.Sprites.EnemySprites;
-using Galaga.View.Sprites.EnemySprites.EnemySpriteVariants;
 
 namespace Galaga.Model
 {
@@ -18,7 +16,25 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private int[] numOfEachEnemy = { 3, 4, 4, 5 };
+        /// <summary>
+        ///     The points of the level one enemy
+        /// </summary>
+        public const int Level1EnemyPoints = 5;
+
+        /// <summary>
+        ///     The points of the level two enemy
+        /// </summary>
+        public const int Level2EnemyPoints = 10;
+
+        /// <summary>
+        ///     The points of the level three enemy
+        /// </summary>
+        public const int Level3EnemyPoints = 15;
+
+        /// <summary>
+        ///     The points of the level four enemy
+        /// </summary>
+        public const int Level4EnemyPoints = 20;
 
         private const int EnemyRow1 = 300;
         private const int EnemyRow2 = 200;
@@ -27,6 +43,9 @@ namespace Galaga.Model
 
         private const int MoveTimerMilliseconds = 20;
         private const int NumOfStepsInEachDirectionOfOrigin = 10;
+        private const int StartingNumOfStepsInEachDirection = 5;
+
+        private readonly int[] numOfEachEnemy = { 3, 4, 4, 5 };
 
         private readonly Collection<Enemy> enemies;
         private readonly Canvas canvas;
@@ -37,7 +56,8 @@ namespace Galaga.Model
 
         private int stepsTaken;
         private int numOfStepsInEachDirection;
-        private const int StartingNumOfStepsInEachDirection = 5;
+
+        private readonly GameSettings gameSettings;
 
         #endregion
 
@@ -49,6 +69,11 @@ namespace Galaga.Model
         public bool AreAllEnemiesDestroyed => this.enemies.Count == 0;
 
         private bool EnemiesDoneMovingInDirection => this.stepsTaken == this.numOfStepsInEachDirection;
+
+        /// <summary>
+        ///     The count of the enemies in the enemy manager
+        /// </summary>
+        public int Count => this.enemies.Count;
 
         #endregion
 
@@ -65,8 +90,11 @@ namespace Galaga.Model
         public EnemiesManager(Canvas canvas)
         {
             this.enemies = new Collection<Enemy>();
-            this.enemyFactory = new EnemyFactory();
-            this.createEnemies(); 
+
+            this.gameSettings = new GameSettings();
+            this.enemyFactory = new EnemyFactory(this.gameSettings);
+
+            this.createEnemies();
 
             this.stepsTaken = 0;
             this.numOfStepsInEachDirection = StartingNumOfStepsInEachDirection;
@@ -76,18 +104,13 @@ namespace Galaga.Model
 
             this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveTimerMilliseconds) };
 
+            this.moveTimer.Tick += this.timerTickMoveLeft;
+            this.moveTimer.Start();
         }
 
         #endregion
 
         #region Methods
-
-        public void ChangeEnemyAttributes(int gameLevel)
-        {
-            this.enemyFactory.ChangeEnemyAttributes(gameLevel);
-            this.numOfEachEnemy = new [] { 4, 4, 5, 6 };
-        }
-
 
         /// <summary>
         ///     Gets the enumerator for the collection
@@ -107,21 +130,38 @@ namespace Galaga.Model
             return enumerator;
         }
 
+        /// <summary>
+        ///     updates the current game settings
+        ///     PostConditions: the game settings properties != @prev
+        /// </summary>
+        /// <param name="gameLevel"></param>
+        public void SetEnemySettings(int gameLevel)
+        {
+            this.gameSettings.SetGameSettings(gameLevel);
+        }
+
+        /// <summary>
+        ///     Creates and places centered enemies when the level is over
+        /// </summary>
+        /// <param name="sender">the sender of the event provoked</param>
+        /// <param name="level">the current level when the event was provoked</param>
+        public async void OnLevelOver(object sender, int level)
+        {
+            await Task.Delay(1500);
+            this.createEnemies();
+            this.SetupEnemies();
+        }
+
         private void createEnemies()
         {
             for (var iteration = 1; iteration <= this.numOfEachEnemy.Length; iteration++)
             {
-                
                 for (var i = 0; i < this.numOfEachEnemy[iteration - 1]; i++)
                 {
                     this.enemies.Add(this.enemyFactory.CreateNewEnemy(iteration));
                 }
-
-                       
             }
         }
-            
-        
 
         /// <summary>
         ///     Shoots a randomly selected enemy weapon
@@ -185,9 +225,6 @@ namespace Galaga.Model
         {
             this.placeCenteredEnemies();
             this.setupFirstEnemyAnimation();
-
-            this.moveTimer.Tick += this.timerTickMoveLeft;
-            this.moveTimer.Start();
         }
 
         private void centerEnemiesNearTopOfCanvas()

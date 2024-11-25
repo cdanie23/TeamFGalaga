@@ -86,6 +86,7 @@ namespace Galaga.Model
 
             this.Bullets.Add(bullet);
         }
+
         /// <summary>
         ///     Removes the bullets which were flagged
         ///     PostCondition: this.Bullets.Count != @prev, this.Canvas.Children.Count != @prev
@@ -98,6 +99,20 @@ namespace Galaga.Model
                 this.Bullets.Remove(bullet);
                 this.Canvas.Children.Remove(bullet.Sprite);
             }
+        }
+
+        /// <summary>
+        ///     Clears all bullets from the collection and canvas
+        ///     PostConditions: this.Bullets.Count == 0, this.canvas.Children.Count != @prev
+        /// </summary>
+        public virtual void Clear()
+        {
+            foreach (var bullet in this.Bullets)
+            {
+                this.Canvas.Children.Remove(bullet.Sprite);
+            }
+
+            this.Bullets.Clear();
         }
 
         #endregion

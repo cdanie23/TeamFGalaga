@@ -15,6 +15,7 @@ namespace Galaga.Model
         ///     <param name="value">the value to set points to</param>
         /// </summary>
         public int Points { get; set; }
+
         /// <summary>
         ///     Gets the level associated with the enemy
         /// </summary>

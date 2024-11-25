@@ -57,7 +57,8 @@ namespace Galaga.Model
                 if (!bullet.Move(Canvas))
                 {
                     flaggedBullets.Add(bullet);
-                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
+                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player,
+                        Player.PlayerBulletSpeed));
                 }
 
                 foreach (var enemy in this.enemyManager)
@@ -77,6 +78,17 @@ namespace Galaga.Model
             }
 
             RemoveFlaggedBullets(flaggedBullets);
+        }
+
+        /// <summary>
+        ///     Clears all the bullets and resets the players number of bullets available
+        ///     PostConditions: this.Bullets.Count == 0, this.playerManager.Player.BulletsAvailable.Count == 3
+        /// </summary>
+        public override void Clear()
+        {
+            base.Clear();
+            this.playerManager.Player.BulletsAvailable.Clear();
+            this.playerManager.Player.SetupActiveBullets();
         }
 
         #endregion
