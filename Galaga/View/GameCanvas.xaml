@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Canvas x:Name="canvas" Width="720" Height="600" Background="Black">
+    <Canvas x:Name="canvas" Width="800" Height="620" Background="Black">
         <TextBlock Name="scoreTextBlock" Canvas.Left="641" TextWrapping="Wrap" Text="Score: 0" Canvas.Top="551"
                    FocusVisualPrimaryBrush="#FFE8E3E3" Foreground="#FFE8E3E3" HorizontalAlignment="Left" Height="18"
                    VerticalAlignment="Top" />
