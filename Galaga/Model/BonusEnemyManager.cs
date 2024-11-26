@@ -77,6 +77,7 @@ namespace Galaga.Model
             {
                 this.Shoot();
                 this.Move();
+                SoundPlayer.playBonusActiveSound();
             }
             else
             {

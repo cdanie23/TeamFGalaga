@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites.EnemySprites;
 
 namespace Galaga.Model
 {
@@ -65,6 +66,10 @@ namespace Galaga.Model
                 {
                     if (enemy.CollisionDetected(bullet))
                     {
+                        if (enemy.Sprite is BonusEnemySprite)
+                        {
+                            SoundPlayer.playBonusGottenSound();
+                        }
                         flaggedBullets.Add(bullet);
                         invokeEvent = true;
                         hitEnemy = enemy;

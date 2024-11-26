@@ -52,13 +52,37 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Plays the lose sound.
+        ///     Plays the lose sound.
         /// </summary>
         public static void playLoseSound()
         {
             mediaPlayer = new MediaPlayer();
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
             var fullPath = Path.Combine(basePath, "Audio/lose.wav");
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
+            mediaPlayer.Play();
+        }
+
+        /// <summary>
+        ///     Plays the bonus active sound.
+        /// </summary>
+        public static void playBonusActiveSound()
+        {
+            mediaPlayer = new MediaPlayer();
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fullPath = Path.Combine(basePath, "Audio/bonusactive.wav");
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
+            mediaPlayer.Play();
+        }
+
+        /// <summary>
+        ///     Plays the bonus gotten sound.
+        /// </summary>
+        public static void playBonusGottenSound()
+        {
+            mediaPlayer = new MediaPlayer();
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fullPath = Path.Combine(basePath, "Audio/bonusgotten.wav");
             mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
             mediaPlayer.Play();
         }
