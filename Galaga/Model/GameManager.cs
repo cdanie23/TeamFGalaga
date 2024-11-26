@@ -16,12 +16,15 @@ namespace Galaga.Model
         /// </summary>
         public const int LastLevel = 3;
 
+        private const int BonusEnemyLevel = 0;
+
         private readonly PlayerManager playerManager;
         private readonly EnemiesManager enemyManager;
         private readonly PlayerBulletManager playerBulletManager;
         private readonly DispatcherTimer gameTimer;
         private readonly EnemyBulletManager enemyBulletManager;
         private readonly BonusEnemyManager bonusEnemyManager;
+        private readonly Canvas canvas;
 
         #endregion
 
@@ -61,16 +64,14 @@ namespace Galaga.Model
         /// <exception cref="ArgumentNullException">thrown if the Canvas is null</exception>
         public GameManager(Canvas canvas)
         {
-            if (canvas == null)
-            {
-                throw new ArgumentNullException(nameof(canvas));
-            }
-
+            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+            var gameSettings = new GameSettings();
             this.playerManager = new PlayerManager(canvas);
-            this.enemyManager = new EnemiesManager(canvas);
+            this.enemyManager = new EnemiesManager(canvas, gameSettings);
             this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager);
             this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
-            this.bonusEnemyManager = new BonusEnemyManager(canvas, this.enemyManager);
+            this.bonusEnemyManager =
+                new BonusEnemyManager(canvas, this.enemyManager, this.enemyBulletManager, gameSettings);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.GameLevel = 1;
@@ -81,6 +82,11 @@ namespace Galaga.Model
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///     The players lives changed event
+        /// </summary>
+        public event EventHandler<int> LivesChanged;
 
         /// <summary>
         ///     Pass thru property used to access the player struck event in the enemy bullet manager
@@ -110,12 +116,15 @@ namespace Galaga.Model
             this.playerManager.SetupPlayer();
             this.enemyManager.SetupEnemies();
             this.setupTimers();
+            this.bonusEnemyManager.SetUpTimers();
 
             this.playerBulletManager.EnemyStruck += this.onEnemyStruck;
-            this.enemyBulletManager.PlayerStruck += this.playerManager.OnPlayerStruck;
+            this.enemyBulletManager.PlayerStruck += this.onPlayerStruck;
 
             this.LevelOver += this.onLevelOver;
             this.LevelOver += this.enemyManager.OnLevelOver;
+
+            this.LivesChanged += this.onLivesChanged;
         }
 
         private void setupTimers()
@@ -131,6 +140,20 @@ namespace Galaga.Model
         {
             this.playerBulletManager.MoveBullet();
             this.enemyBulletManager.MoveBullet();
+        }
+
+        private void onPlayerStruck(object sender, object e)
+        {
+            this.LivesChanged?.Invoke(this, -1);
+            if (this.playerManager.NumOfLives == 0)
+            {
+                this.canvas.Children.Remove(this.playerManager.Player.Sprite);
+            }
+
+            this.playerManager.IsInvulnerable = true;
+            this.playerManager.InvulnerabilityTimer.Start();
+
+            SoundPlayer.playExplodeSound();
         }
 
         /// <summary>
@@ -174,10 +197,20 @@ namespace Galaga.Model
             this.enemyManager.RemoveEnemy(enemy);
             SoundPlayer.playExplodeSound();
 
+            if (enemy.Level == BonusEnemyLevel)
+            {
+                this.LivesChanged?.Invoke(this, 1);
+            }
+
             if (this.enemyManager.Count == 0)
             {
                 this.LevelOver?.Invoke(this, this.GameLevel);
             }
+        }
+
+        private void onLivesChanged(object sender, int lives)
+        {
+            this.playerManager.NumOfLives += lives;
         }
 
         /// <summary>

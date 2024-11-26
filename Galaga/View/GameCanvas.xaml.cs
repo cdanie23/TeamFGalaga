@@ -48,7 +48,7 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyUp += this.onKeyUpEvent;
             this.gameManager = new GameManager(this.canvas);
 
-            this.gameManager.PlayerStruck += this.onLivesUpdate;
+            this.gameManager.LivesChanged += this.onLivesUpdate;
             this.gameManager.PlayerStruck += this.onPlayerDeath;
             this.gameManager.EnemyStruck += this.onScoreUpdate;
             this.gameManager.LevelOver += this.onLevelOver;
@@ -118,10 +118,10 @@ namespace Galaga.View
             this.scoreTextBlock.Text = $"Score : {score}";
         }
 
-        private void onLivesUpdate(object sender, object e)
+        private void onLivesUpdate(object sender, int lives)
         {
-            var lives = this.gameManager.PlayerLives;
-            this.playerLivesTextBlock.Text = $"Lives : {lives}";
+            var numOfLives = this.gameManager.PlayerLives;
+            this.playerLivesTextBlock.Text = $"Lives : {numOfLives}";
         }
 
         private async void onLevelOver(object sender, int level)

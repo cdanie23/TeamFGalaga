@@ -18,7 +18,7 @@ namespace Galaga.Model
         /// <summary>
         ///     The players bullet speed
         /// </summary>
-        public const int PlayerBulletSpeed = 10;
+        public const int PlayerBulletSpeed = 15;
 
         private const int SpeedXDirection = 8;
         private const int SpeedYDirection = 0;

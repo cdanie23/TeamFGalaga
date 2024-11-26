@@ -24,7 +24,6 @@ namespace Galaga.Model
 
         private DateTime dateTimeOfLastPlayerBullet;
         private readonly TimeSpan delayBetweenBullets;
-        private readonly DispatcherTimer invulnerabilityTimer;
         private int invulnerabilityTimerTickCount;
 
         #endregion
@@ -52,10 +51,15 @@ namespace Galaga.Model
                                        DateTime.Now - this.dateTimeOfLastPlayerBullet > this.delayBetweenBullets;
 
         /// <summary>
-        ///     Gets or sets if the player is invulernable
+        ///     Gets or sets if the player is invulnerable
         /// </summary>
         /// <param name="value">the value to set</param>
         public bool IsInvulnerable { get; set; }
+
+        /// <summary>
+        ///     Get the timer for the invulnerability of the player
+        /// </summary>
+        public DispatcherTimer InvulnerabilityTimer { get; }
 
         #endregion
 
@@ -76,9 +80,10 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.delayBetweenBullets = new TimeSpan(0, 0, 0, 0, MillisecondDelayBetweenBullets);
-            this.invulnerabilityTimer = new DispatcherTimer
+            this.InvulnerabilityTimer = new DispatcherTimer
                 { Interval = new TimeSpan(0, 0, 0, 0, TimeBetweenSpriteFlash) };
-            this.invulnerabilityTimer.Tick += this.invulnerabilityTimerTick;
+            this.InvulnerabilityTimer.Tick += this.invulnerabilityTimerTick;
+
             this.NumOfLives = Player.NumOfLives;
             this.IsInvulnerable = false;
         }
@@ -101,32 +106,12 @@ namespace Galaga.Model
 
             if (this.invulnerabilityTimerTickCount == NumOfFlashes)
             {
-                this.invulnerabilityTimer.Stop();
+                this.InvulnerabilityTimer.Stop();
                 this.invulnerabilityTimerTickCount = 0;
                 this.IsInvulnerable = false;
             }
 
             this.invulnerabilityTimerTickCount++;
-        }
-
-        /// <summary>
-        ///     Updates the number of lives and removes the player if dead
-        ///     Post-Condition: this.NumOfLives @prev - 1
-        /// </summary>
-        /// <param name="sender">the sender of the event</param>
-        /// <param name="e">the event arguments</param>
-        public void OnPlayerStruck(object sender, object e)
-        {
-            this.NumOfLives--;
-            if (this.NumOfLives == 0)
-            {
-                this.canvas.Children.Remove(this.Player.Sprite);
-            }
-
-            this.IsInvulnerable = true;
-            this.invulnerabilityTimer.Start();
-
-            SoundPlayer.playExplodeSound();
         }
 
         /// <summary>

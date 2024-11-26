@@ -91,13 +91,14 @@ namespace Galaga.Model
         ///     Post-conditions: this.enemies != null , this.stepsTaken == 0, this.numOfStepsInEachDirection == 5, this.Canvas ==
         ///     Canvas, this.canvasHeight == Canvas.Height, this.canvasWidth == Canvas.Width
         ///     , this.bulletManager != null, this.moveTimer != null
-        ///     <param name="canvas">the Canvas of the game</param>
         /// </summary>
-        public EnemiesManager(Canvas canvas)
+        /// <param name="canvas">the Canvas of the game</param>
+        /// <param name="gameSettings">the game settings to assign to the enemy</param>
+        public EnemiesManager(Canvas canvas, GameSettings gameSettings)
         {
             this.enemies = new Collection<Enemy>();
 
-            this.gameSettings = new GameSettings();
+            this.gameSettings = gameSettings;
             this.enemyFactory = new EnemyFactory(this.gameSettings);
 
             this.createEnemies();
