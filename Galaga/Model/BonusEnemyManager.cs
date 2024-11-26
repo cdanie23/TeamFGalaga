@@ -107,6 +107,7 @@ namespace Galaga.Model
             if (this.bonusActive)
             {
                 this.Move();
+                SoundPlayer.playBonusActiveSound();
             }
             else
             {
