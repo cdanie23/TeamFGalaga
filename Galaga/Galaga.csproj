@@ -135,6 +135,7 @@
     <Compile Include="Model\PlayerBulletManager.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
+    <Compile Include="Model\SoundPlayer.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
@@ -177,6 +178,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Audio\explosion.wav" />
+    <Content Include="Audio\lose.wav" />
+    <Content Include="Audio\shot.wav" />
+    <Content Include="Audio\win.wav" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

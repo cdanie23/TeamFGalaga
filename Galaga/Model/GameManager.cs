@@ -156,6 +156,7 @@ namespace Galaga.Model
             if (bullet != null)
             {
                 this.playerBulletManager.AddBullet(bullet);
+                SoundPlayer.playShootSound();
             }
         }
 
@@ -169,6 +170,7 @@ namespace Galaga.Model
             this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player, Player.PlayerBulletSpeed));
             this.playerManager.Score += enemy.Points;
             this.enemyManager.RemoveEnemy(enemy);
+            SoundPlayer.playExplodeSound();
 
             if (this.enemyManager.Count == 0)
             {
@@ -182,6 +184,10 @@ namespace Galaga.Model
         /// </summary>
         public void StopGame()
         {
+            if (this.GameLevel != 4)
+            {
+                SoundPlayer.playLoseSound();
+            }
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
             this.enemyManager.StopEnemyMoveTimer();
@@ -193,6 +199,8 @@ namespace Galaga.Model
             this.enemyManager.SetEnemySettings(this.GameLevel);
             this.enemyBulletManager.Clear();
             this.playerBulletManager.Clear();
+
+            SoundPlayer.playWinSound();
         }
 
         #endregion

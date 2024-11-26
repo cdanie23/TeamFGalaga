@@ -184,6 +184,8 @@ namespace Galaga.Model
                 enemy.Bullet.X = enemy.X + enemy.Width / 2;
                 enemy.Bullet.Y = enemy.Y + enemy.Height;
                 bulletManager.AddBullet(enemy.Bullet);
+
+                SoundPlayer.playShootSound();
             }
         }
 

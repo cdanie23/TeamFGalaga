@@ -125,6 +125,8 @@ namespace Galaga.Model
 
             this.IsInvulnerable = true;
             this.invulnerabilityTimer.Start();
+
+            SoundPlayer.playExplodeSound();
         }
 
         /// <summary>
