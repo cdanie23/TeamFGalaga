@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\BonusEnemyManager.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
     <Compile Include="Model\BulletType.cs" />
@@ -145,6 +146,9 @@
     </Compile>
     <Compile Include="View\Sprites\EnemyBulletSprite.xaml.cs">
       <DependentUpon>EnemyBulletSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\EnemySprites\BonusEnemySprite.xaml.cs">
+      <DependentUpon>BonusEnemySprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\EnemySprites\Enemy1Sprite.xaml.cs">
       <DependentUpon>Enemy1Sprite.xaml</DependentUpon>
@@ -205,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\EnemyBulletSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\EnemySprites\BonusEnemySprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

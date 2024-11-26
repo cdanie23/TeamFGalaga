@@ -12,6 +12,7 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private const int BonusEnemy = 0;
         private const int EnemyLevelOne = 1;
         private const int EnemyLevelTwo = 2;
         private const int EnemyLevelThree = 3;
@@ -53,13 +54,18 @@ namespace Galaga.Model
                 throw new ArgumentException(nameof(levelEnemy));
             }
 
-            if (levelEnemy < EnemyLevelOne)
+            if (levelEnemy < BonusEnemy)
             {
                 throw new ArgumentException(nameof(levelEnemy));
             }
 
             switch (levelEnemy)
             {
+                case BonusEnemy:
+                    BaseSprite[] bonusEnemySprites = { new BonusEnemySprite(), new BonusEnemySprite() };
+                    return new ShootingEnemy(EnemiesManager.BonusEnemyPoints, BonusEnemy,
+                        this.gameSettings.BonusEnemyXSpeed, 0, new BonusEnemySprite(), bonusEnemySprites,
+                        this.gameSettings.ShootingEnemyBulletSpeed);
                 case EnemyLevelOne:
                     return new Enemy(EnemiesManager.Level1EnemyPoints, EnemyLevelOne,
                         this.gameSettings.Level1EnemyXSpeed, 0, new Enemy1Sprite());

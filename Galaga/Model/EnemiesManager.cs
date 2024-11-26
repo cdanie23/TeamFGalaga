@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites.EnemySprites;
 
 namespace Galaga.Model
 {
@@ -35,6 +36,11 @@ namespace Galaga.Model
         ///     The points of the level four enemy
         /// </summary>
         public const int Level4EnemyPoints = 20;
+
+        /// <summary>
+        ///     The points of the bonus enemy
+        /// </summary>
+        public const int BonusEnemyPoints = 50;
 
         private const int EnemyRow1 = 300;
         private const int EnemyRow2 = 200;
@@ -348,7 +354,13 @@ namespace Galaga.Model
                     shootingEnemy.UpdateSprite();
                 }
 
-                enemy.MoveLeft();
+                if (enemy.Sprite is BonusEnemySprite)
+                {
+                }
+                else
+                {
+                    enemy.MoveLeft();
+                }
             }
 
             this.stepsTaken++;
@@ -367,7 +379,13 @@ namespace Galaga.Model
                     shootingEnemy.UpdateSprite();
                 }
 
-                enemy.MoveRight();
+                if (enemy.Sprite is BonusEnemySprite)
+                {
+                }
+                else
+                {
+                    enemy.MoveRight();
+                }
             }
 
             this.stepsTaken++;
@@ -380,6 +398,15 @@ namespace Galaga.Model
         public void StopEnemyMoveTimer()
         {
             this.moveTimer.Stop();
+        }
+
+        /// <summary>
+        ///     Adds the bonus enemy to the enemies collection
+        /// </summary>
+        /// <param name="enemy"></param>
+        public void AddBonusEnemy(Enemy enemy)
+        {
+            this.enemies.Add(enemy);
         }
 
         #endregion

@@ -28,6 +28,11 @@
         public int Level4EnemyXSpeed { get; private set; }
 
         /// <summary>
+        ///     Get the setting of the speed of the bonus enemy
+        /// </summary>
+        public int BonusEnemyXSpeed { get; private set; }
+
+        /// <summary>
         ///     Get the setting of the bullet speed of the shooting enemies
         /// </summary>
         public int ShootingEnemyBulletSpeed { get; private set; }
@@ -47,6 +52,7 @@
             this.Level2EnemyXSpeed = 2;
             this.Level3EnemyXSpeed = 2;
             this.Level4EnemyXSpeed = 2;
+            this.BonusEnemyXSpeed = 5;
 
             this.ShootingEnemyBulletSpeed = 8;
         }

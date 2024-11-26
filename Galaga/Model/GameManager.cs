@@ -21,6 +21,7 @@ namespace Galaga.Model
         private readonly PlayerBulletManager playerBulletManager;
         private readonly DispatcherTimer gameTimer;
         private readonly EnemyBulletManager enemyBulletManager;
+        private readonly BonusEnemyManager bonusEnemyManager;
 
         #endregion
 
@@ -69,6 +70,7 @@ namespace Galaga.Model
             this.enemyManager = new EnemiesManager(canvas);
             this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager);
             this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
+            this.bonusEnemyManager = new BonusEnemyManager(canvas, this.enemyManager);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.GameLevel = 1;
@@ -188,6 +190,7 @@ namespace Galaga.Model
             {
                 SoundPlayer.playLoseSound();
             }
+
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
             this.enemyManager.StopEnemyMoveTimer();

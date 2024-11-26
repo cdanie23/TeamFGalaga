@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Galaga.View.Sprites;
+using Galaga.View.Sprites.EnemySprites;
 
 namespace Galaga.Model
 {
@@ -64,6 +65,11 @@ namespace Galaga.Model
         /// </summary>
         public void UpdateSprite()
         {
+            if (Sprite is BonusEnemySprite)
+            {
+                return;
+            }
+
             if (Sprite == this.SpriteAnimations[0])
             {
                 this.SpriteAnimations[0].Visibility = Visibility.Collapsed;
