@@ -284,7 +284,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.enemies)
             {
-                this.canvas.Children.Add(enemy.Sprite);
+                if (!(enemy.Sprite is BonusEnemySprite))
+                {
+                    this.canvas.Children.Add(enemy.Sprite);
+                }
             }
 
             this.centerEnemiesNearTopOfCanvas();
