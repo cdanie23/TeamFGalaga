@@ -186,6 +186,7 @@
     <Content Include="Audio\bonusgotten.wav" />
     <Content Include="Audio\explosion.wav" />
     <Content Include="Audio\lose.wav" />
+    <Content Include="Audio\powerup.mp3" />
     <Content Include="Audio\shot.wav" />
     <Content Include="Audio\win.wav" />
     <Content Include="Properties\Default.rd.xml" />

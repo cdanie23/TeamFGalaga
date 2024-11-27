@@ -18,6 +18,7 @@ namespace Galaga.Model
         private const string LosePath = "Audio/lose.wav";
         private const string BonusActivePath = "Audio/bonusactive.wav";
         private const string BonusGottenPath = "Audio/bonusgotten.wav";
+        private const string PowerUpPath = "Audio/powerup.mp3";
         private const double VolumeDecrease = 0.05;
 
         #endregion
@@ -79,6 +80,14 @@ namespace Galaga.Model
         public static void playBonusGottenSound()
         {
             setUpMediaPlayer(BonusGottenPath).Play();
+        }
+
+        /// <summary>
+        ///     Plays the power up sound.
+        /// </summary>
+        public static void playPowerUpSound()
+        {
+            setUpMediaPlayer(PowerUpPath).Play();
         }
 
         /// <summary>

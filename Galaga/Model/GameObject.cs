@@ -55,7 +55,7 @@ namespace Galaga.Model
         /// <value>
         ///     The speed x.
         /// </value>
-        public int SpeedX { get; private set; }
+        public int SpeedX { get; protected set; }
 
         /// <summary>
         ///     Gets the y speed of the game object.

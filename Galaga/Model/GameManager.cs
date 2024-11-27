@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -200,6 +201,7 @@ namespace Galaga.Model
             if (enemy.Level == BonusEnemyLevel)
             {
                 this.LivesChanged?.Invoke(this, 1);
+                this.playerManager.TemporaryPowerUp();
             }
 
             if (this.enemyManager.Count == 0)
