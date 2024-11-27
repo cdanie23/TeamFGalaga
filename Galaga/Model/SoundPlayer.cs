@@ -10,21 +10,33 @@ namespace Galaga.Model
     /// </summary>
     public static class SoundPlayer
     {
-        /// <summary>
-        ///     The media player
-        /// </summary>
-        private static MediaPlayer mediaPlayer;
+        #region Data members
+
+        private const string ShootPath = "Audio/shot.wav";
+        private const string ExplosionPath = "Audio/explosion.wav";
+        private const string WinPath = "Audio/win.wav";
+        private const string LosePath = "Audio/lose.wav";
+        private const string BonusActivePath = "Audio/bonusactive.wav";
+        private const string BonusGottenPath = "Audio/bonusgotten.wav";
+        private const double VolumeDecrease = 0.05;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Plays the shoot sound.
         /// </summary>
         public static void playShootSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/shot.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
+            var mediaPlayer = setUpMediaPlayer(ShootPath);
+            decreaseVolume(mediaPlayer);
             mediaPlayer.Play();
+        }
+
+        private static void decreaseVolume(MediaPlayer mediaPlayer)
+        {
+            mediaPlayer.Volume = VolumeDecrease;
         }
 
         /// <summary>
@@ -32,10 +44,8 @@ namespace Galaga.Model
         /// </summary>
         public static void playExplodeSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/explosion.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
+            var mediaPlayer = setUpMediaPlayer(ExplosionPath);
+            decreaseVolume(mediaPlayer);
             mediaPlayer.Play();
         }
 
@@ -44,11 +54,7 @@ namespace Galaga.Model
         /// </summary>
         public static void playWinSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/win.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
-            mediaPlayer.Play();
+            setUpMediaPlayer(WinPath).Play();
         }
 
         /// <summary>
@@ -56,11 +62,7 @@ namespace Galaga.Model
         /// </summary>
         public static void playLoseSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/lose.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
-            mediaPlayer.Play();
+            setUpMediaPlayer(LosePath).Play();
         }
 
         /// <summary>
@@ -68,11 +70,7 @@ namespace Galaga.Model
         /// </summary>
         public static void playBonusActiveSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/bonusactive.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
-            mediaPlayer.Play();
+            setUpMediaPlayer(BonusActivePath).Play();
         }
 
         /// <summary>
@@ -80,12 +78,23 @@ namespace Galaga.Model
         /// </summary>
         public static void playBonusGottenSound()
         {
-            mediaPlayer = new MediaPlayer();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(basePath, "Audio/bonusgotten.wav");
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
-            mediaPlayer.Play();
+            setUpMediaPlayer(BonusGottenPath).Play();
         }
 
+        /// <summary>
+        ///     Sets up media player.
+        /// </summary>
+        /// <param name="audioPath">The audio path.</param>
+        /// <returns> the media player </returns>
+        private static MediaPlayer setUpMediaPlayer(string audioPath)
+        {
+            var mediaPlayer = new MediaPlayer();
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fullPath = Path.Combine(basePath, audioPath);
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(fullPath));
+            return mediaPlayer;
+        }
+
+        #endregion
     }
 }
