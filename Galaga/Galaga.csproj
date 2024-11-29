@@ -133,6 +133,7 @@
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="Model\EnemyBulletManager.cs" />
     <Compile Include="Model\EnemyFactory.cs" />
+    <Compile Include="Model\ExplosionAnimator.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\GameSettings.cs" />
@@ -177,6 +178,15 @@
     </Compile>
     <Compile Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy4SpriteVariant.xaml.cs">
       <DependentUpon>Enemy4SpriteVariant.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\ExplosionSprites\FirstExplosionSprite.xaml.cs">
+      <DependentUpon>FirstExplosionSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\ExplosionSprites\SecondExplosionSprite.xaml.cs">
+      <DependentUpon>SecondExplosionSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\ExplosionSprites\ThirdExplosionSprite.xaml.cs">
+      <DependentUpon>ThirdExplosionSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\PlayerBulletSprite.xaml.cs">
@@ -254,6 +264,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\EnemySprites\EnemySpriteVariants\Enemy4SpriteVariant.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\ExplosionSprites\FirstExplosionSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\ExplosionSprites\SecondExplosionSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\ExplosionSprites\ThirdExplosionSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

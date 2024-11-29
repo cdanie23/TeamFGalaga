@@ -154,6 +154,8 @@ namespace Galaga.Model
             this.playerManager.IsInvulnerable = true;
             this.playerManager.InvulnerabilityTimer.Start();
 
+            ExplosionAnimator.PlayExplosion(this.canvas, this.playerManager.Player.X, this.playerManager.Player.Y);
+
             SoundPlayer.playExplodeSound();
         }
 

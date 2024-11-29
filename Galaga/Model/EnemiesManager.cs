@@ -271,6 +271,7 @@ namespace Galaga.Model
 
             this.enemies.Remove(enemy);
             this.canvas.Children.Remove(enemy.Sprite);
+            ExplosionAnimator.PlayExplosion(this.canvas, enemy.X, enemy.Y);
         }
 
         private ShootingEnemy getRandomShootingEnemy()

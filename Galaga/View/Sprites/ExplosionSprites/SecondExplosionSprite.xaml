@@ -1,0 +1,20 @@
+﻿<sprites:BaseSprite
+    x:Class="Galaga.View.Sprites.ExplosionSprites.SecondExplosionSprite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sprites="using:Galaga.View.Sprites"
+    mc:Ignorable="d"
+    d:DesignHeight="60"
+    d:DesignWidth="50"
+    Height="60"
+    Width="50">
+
+    <Canvas>
+        <Ellipse Height="55" Fill="Brown" Width="42" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="4" Canvas.Top="3"/>
+        <Ellipse Height="35" Fill="Red " Width="29" Canvas.Left="11" Canvas.Top="13"/>
+        <Ellipse Height="28" Fill="Orange " Width="22" Canvas.Left="14" Canvas.Top="16"/>
+        <Ellipse Height="16" Fill="Yellow " Width="13" Canvas.Left="19" Canvas.Top="23"/>
+    </Canvas>
+</sprites:BaseSprite>
