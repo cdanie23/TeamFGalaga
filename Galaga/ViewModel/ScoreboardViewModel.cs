@@ -13,7 +13,7 @@ namespace Galaga.ViewModel
         #region Data members
 
         private readonly ScoresFileManager scoresFileManager;
-        private readonly ScoreEntries scoreEntries;
+        private ScoreEntries scoreEntries;
 
         #endregion
 
@@ -46,14 +46,50 @@ namespace Galaga.ViewModel
         public ScoreboardViewModel()
         {
             this.scoresFileManager = new ScoresFileManager();
+            this.LoadData();
+        }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Loads in all the data from the file containing all the scores
+        /// </summary>
+        public async void LoadData()
+        {
+            await this.scoresFileManager.CreateFileManagement();
             this.scoreEntries = this.scoresFileManager.ReadScoreEntries();
-
+            this.SortByScore();
             this.scoresFileManager.WriteScores(this.scoreEntries);
 
             this.Names = this.scoreEntries.Names.ToObservableCollection();
             this.Scores = this.scoreEntries.Scores.ToObservableCollection();
             this.Levels = this.scoreEntries.Levels.ToObservableCollection();
+        }
+
+        /// <summary>
+        ///     Sorts the entries by score
+        /// </summary>
+        public void SortByScore()
+        {
+            this.scoreEntries.SortByScoresDescending();
+        }
+
+        /// <summary>
+        ///     Sorts the entries by name
+        /// </summary>
+        public void SortByNameDescending()
+        {
+            this.scoreEntries.SortByNameDescending();
+        }
+
+        /// <summary>
+        ///     Sorts the entries by level
+        /// </summary>
+        public void SortByLevelDescending()
+        {
+            this.scoreEntries.SortByLevelDescending();
         }
 
         #endregion

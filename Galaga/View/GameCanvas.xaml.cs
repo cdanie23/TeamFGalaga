@@ -29,7 +29,7 @@ namespace Galaga.View
         private bool isSpace;
 
         private readonly ScoresFileManager scoresFileManager;
-        private readonly ScoreEntries scoreEntries;
+        private ScoreEntries scoreEntries;
         private string playerName;
 
         #endregion
@@ -51,7 +51,10 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.onKeyUpEvent;
+
             this.gameManager = new GameManager(this.canvas);
+            this.scoresFileManager = new ScoresFileManager();
+            this.setupFileManagement();
 
             this.gameManager.LivesChanged += this.onLivesUpdate;
             this.gameManager.PlayerStruck += this.onPlayerDeath;
@@ -62,9 +65,6 @@ namespace Galaga.View
             this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MillisecondsForTimer) };
             this.timer.Tick += this.timerTickEvent;
             this.timer.Start();
-
-            this.scoresFileManager = new ScoresFileManager();
-            this.scoreEntries = this.scoresFileManager.ReadScoreEntries();
         }
 
         #endregion
@@ -73,14 +73,15 @@ namespace Galaga.View
 
         private event EventHandler<EventArgs> PlayerMadeScoreboard;
 
+        private async void setupFileManagement()
+        {
+            await this.scoresFileManager.CreateFileManagement();
+            this.scoreEntries = this.scoresFileManager.ReadScoreEntries();
+        }
+
         private async void onPlayerMadeScoreboard(object sender, EventArgs e)
         {
-            //TODO figure out a way to show the scoreboard only after the user has put in their name, as soon as you navigate to the frame of the scoreboard it intializes it. 
-            await this.promptUserForName();
-            var scoreboardEntry =
-                new ScoreboardEntry(this.playerName, this.gameManager.GameLevel, this.gameManager.PlayerScore);
-            this.scoreEntries.Add(scoreboardEntry);
-            this.scoresFileManager.WriteScores(this.scoreEntries);
+            await this.promptUserToAddScoreAndNavigateToScoreboard();
         }
 
         private async Task promptUserForName()
@@ -93,7 +94,7 @@ namespace Galaga.View
             };
             var contentDialog = new ContentDialog
             {
-                Title = "Scoreboard Entry",
+                Title = "Congratulations you made the scoreboard",
                 Content = textBox,
                 PrimaryButtonText = "Submit"
             };
@@ -168,15 +169,17 @@ namespace Galaga.View
         {
             if (this.gameManager.AreAllEnemiesDestroyed && level == GameManager.LastLevel)
             {
+                this.timer.Stop();
                 this.gameManager.StopGame();
                 Window.Current.CoreWindow.KeyDown -= this.coreWindowOnKeyDown;
                 if (this.scoreEntries.IsScoreInTop10(this.gameManager.PlayerScore))
                 {
                     this.PlayerMadeScoreboard?.Invoke(this, EventArgs.Empty);
                 }
-
-                Frame rootFrame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(rootFrame));
-                rootFrame.Navigate(typeof(ScoreBoard));
+                else
+                {
+                    this.navigateToScoreboard();
+                }
             }
             else
             {
@@ -187,6 +190,30 @@ namespace Galaga.View
 
                 this.gameOverTextBlock.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private async Task promptUserToAddScoreAndNavigateToScoreboard()
+        {
+            await this.promptUserForName();
+            var scoreboardEntry =
+                new ScoreboardEntry(this.playerName, this.gameManager.GameLevel, this.gameManager.PlayerScore);
+            if (this.scoreEntries.Count == ScoreEntries.MaxNumberOfScores)
+            {
+                this.scoreEntries.ReplaceLowestScoreEntry(scoreboardEntry);
+            }
+            else
+            {
+                this.scoreEntries.Add(scoreboardEntry);
+            }
+
+            this.scoresFileManager.WriteScores(this.scoreEntries);
+            this.navigateToScoreboard();
+        }
+
+        private void navigateToScoreboard()
+        {
+            Frame rootFrame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(rootFrame));
+            rootFrame.Navigate(typeof(ScoreBoard));
         }
 
         private void onPlayerDeath(object sender, EventArgs e)
@@ -201,8 +228,7 @@ namespace Galaga.View
                     this.PlayerMadeScoreboard?.Invoke(this, EventArgs.Empty);
                 }
 
-                Frame rootFrame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(rootFrame));
-                rootFrame.Navigate(typeof(ScoreBoard));
+                this.navigateToScoreboard();
             }
         }
 

@@ -71,7 +71,7 @@ namespace Galaga.Model
         /// </summary>
         public void SetPlayerSpeed(int speed)
         {
-            this.SpeedX = speed;
+            SpeedX = speed;
         }
 
         #endregion

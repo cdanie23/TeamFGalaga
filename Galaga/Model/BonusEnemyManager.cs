@@ -146,11 +146,10 @@ namespace Galaga.Model
             {
                 var bullet = this.bonusBullets.Pop();
                 this.bulletManager.AddBullet(bullet);
-                this.canvas.Children.Add(bullet.Sprite); 
+                this.canvas.Children.Add(bullet.Sprite);
                 bullet.X = this.bonusEnemy.X + this.bonusEnemy.Width / 2;
                 bullet.Y = this.bonusEnemy.Y + BulletManager.SpaceInBetweenBulletAndShip;
             }
-            
         }
 
         /// <summary>
@@ -168,6 +167,18 @@ namespace Galaga.Model
                 this.enemiesManager.RemoveEnemy(this.bonusEnemy);
                 this.bonusActive = false;
             }
+        }
+
+        /// <summary>
+        ///     Stops all behaviours of the bonus enemy
+        ///     PostConditions: this.bonusTimer.IsEnabled == false, this.moveTimer.IsEnabled == false,
+        ///     this.shootingTimer.IsEnabled == false
+        /// </summary>
+        public void StopBonusEnemyTimers()
+        {
+            this.bonusTimer.Stop();
+            this.moveTimer.Stop();
+            this.shootingTimer.Stop();
         }
 
         #endregion

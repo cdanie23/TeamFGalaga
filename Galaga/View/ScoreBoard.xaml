@@ -13,7 +13,7 @@
         <viewModel:ScoreboardViewModel />
     </Page.DataContext>
     <Grid>
-        <ListView Height="300" Width="200" Background="Black" HorizontalAlignment="Left" ItemsSource="{Binding Names}"
+        <ListView Height="400" Width="200" Background="Black" HorizontalAlignment="Left" ItemsSource="{Binding Names}"
                   Margin="100,0,0,0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -27,7 +27,7 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <ListView Height="300" Width="200" Background="Black" HorizontalAlignment="Center"
+        <ListView Height="400" Width="200" Background="Black" HorizontalAlignment="Center"
                   ItemsSource="{Binding Levels}" Margin="0,0,0,0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -41,7 +41,7 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <ListView Height="300" Width="200" Background="Black" HorizontalAlignment="Right"
+        <ListView Height="400" Width="200" Background="Black" HorizontalAlignment="Right"
                   ItemsSource="{Binding Scores}" Margin="0,0,100,0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -55,11 +55,11 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <TextBlock HorizontalAlignment="Left" Margin="155,107,0,0" TextWrapping="Wrap" Text="Name"
-                   VerticalAlignment="Top" Foreground="#FF34C520" FontSize="24" />
-        <TextBlock HorizontalAlignment="Left" Margin="346,107,0,0" TextWrapping="Wrap" Text="Level"
+        <TextBlock HorizontalAlignment="Left" Margin="152,78,0,0" TextWrapping="Wrap" Text="Name"
+                   VerticalAlignment="Top" Foreground="#FF34C520" FontSize="24" RenderTransformOrigin="0.514,-0.89" />
+        <TextBlock HorizontalAlignment="Left" Margin="346,78,0,0" TextWrapping="Wrap" Text="Level"
                    VerticalAlignment="Top" FontSize="24" Foreground="#FF18E62E" />
-        <TextBlock HorizontalAlignment="Left" Margin="553,107,0,0" TextWrapping="Wrap" Text="Score"
+        <TextBlock HorizontalAlignment="Left" Margin="553,78,0,0" TextWrapping="Wrap" Text="Score"
                    VerticalAlignment="Top" Foreground="#FF1EF300" FontSize="24" />
         <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" TextWrapping="Wrap" Text="Scoreboard"
                    VerticalAlignment="Top" Width="237" Height="48" FontSize="36" Foreground="#FF40EA12" />

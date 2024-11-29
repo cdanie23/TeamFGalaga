@@ -5,7 +5,7 @@ namespace Galaga.Model
     /// <summary>
     ///     The scoreboard entry class
     /// </summary>
-    public class ScoreboardEntry
+    public class ScoreboardEntry : IComparable<ScoreboardEntry>
     {
         #region Properties
 
@@ -54,6 +54,16 @@ namespace Galaga.Model
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///     Compares the entries by their natural score
+        /// </summary>
+        /// <param name="other">the object to compare to</param>
+        /// <returns>the int corresponding to which entry comes first</returns>
+        public int CompareTo(ScoreboardEntry other)
+        {
+            return other.Score.CompareTo(this.Score);
+        }
 
         /// <summary>
         ///     Gets a string representation of this

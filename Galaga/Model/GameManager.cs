@@ -229,6 +229,7 @@ namespace Galaga.Model
 
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
+            this.bonusEnemyManager.StopBonusEnemyTimers();
         }
 
         private void onLevelOver(object sender, int level)

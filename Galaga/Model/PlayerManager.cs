@@ -212,7 +212,5 @@ namespace Galaga.Model
         }
 
         #endregion
-
-
     }
 }
