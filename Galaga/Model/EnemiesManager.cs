@@ -304,8 +304,6 @@ namespace Galaga.Model
             this.enemies.Add(enemy);
         }
 
-        #endregion
-
         /// <summary>
         ///     Moves the enemy tick event.
         /// </summary>
@@ -326,5 +324,7 @@ namespace Galaga.Model
                 }
             }
         }
+
+        #endregion
     }
 }

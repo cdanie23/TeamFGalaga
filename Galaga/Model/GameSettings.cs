@@ -5,11 +5,12 @@
     /// </summary>
     public class GameSettings
     {
-        #region Properties        
+        #region Properties
+
         /// <summary>
         ///     Gets the level.
         /// </summary>
-        public int Level{ get; private set; }
+        public int Level { get; private set; }
 
         /// <summary>
         ///     Get the setting of the speed of the level one enemy
@@ -67,7 +68,7 @@
 
             this.ShootingEnemyBulletSpeed = 8;
 
-            this.NumberOfEachEnemy = new [] { 2, 3, 3, 4 };
+            this.NumberOfEachEnemy = new[] { 2, 3, 3, 4 };
         }
 
         #endregion

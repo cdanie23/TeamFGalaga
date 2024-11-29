@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Galaga.Model;
 
@@ -11,33 +12,30 @@ namespace Galaga.Datatier
     {
         #region Data members
 
-        private readonly ScoreReader scoreReader;
-        private readonly ScoreWriter scoreWriter;
+        private ScoreReader scoreReader;
+        private ScoreWriter scoreWriter;
         private StorageFile scoreFile;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        ///     Creates an instance of the scores file manager class
-        ///     PostCondition: this.scoreFile != null, this.scoreReader != null, this.scoreWriter != null
-        /// </summary>
-        public ScoresFileManager()
-        {
-            this.createScoresFile();
-            this.scoreReader = new ScoreReader(this.scoreFile.Path);
-            this.scoreWriter = new ScoreWriter(this.scoreFile.Path);
-        }
 
         #endregion
 
         #region Methods
 
-        private async void createScoresFile()
+        private async Task createScoresFileAsync()
         {
             var storageFolder = ApplicationData.Current.LocalFolder;
             this.scoreFile = await storageFolder.CreateFileAsync("Scores", CreationCollisionOption.OpenIfExists);
+        }
+
+        /// <summary>
+        ///     Creates the file and reader and writes to the file
+        ///     PostCondition: this.scoreFile != null, this.scoreReader != null, this.scoreWriter != null
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateFileManagement()
+        {
+            await this.createScoresFileAsync();
+            this.scoreReader = new ScoreReader(this.scoreFile.Path);
+            this.scoreWriter = new ScoreWriter(this.scoreFile.Path);
         }
 
         /// <summary>

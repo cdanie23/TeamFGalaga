@@ -125,6 +125,7 @@
     <Compile Include="Datatier\ScoresFileManager.cs" />
     <Compile Include="Datatier\ScoreWriter.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Model\BonusEnemyManager.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />

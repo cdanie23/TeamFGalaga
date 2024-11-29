@@ -8,6 +8,14 @@ namespace Galaga.Model
     /// </summary>
     public class Enemy : GameObject
     {
+        #region Data members
+
+        private const int MaxMoves = 10;
+
+        private int numOfMoves;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -20,9 +28,6 @@ namespace Galaga.Model
         ///     Gets the level associated with the enemy
         /// </summary>
         public int Level { get; }
-
-        private int numOfMoves;
-        private const int MaxMoves = 10;
 
         #endregion
 
@@ -48,6 +53,10 @@ namespace Galaga.Model
             Sprite = baseSprite ?? throw new ArgumentNullException(nameof(baseSprite));
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///     Moves the enemy back and forth by the MaxMoves
         /// </summary>
@@ -69,7 +78,7 @@ namespace Galaga.Model
                 case 2:
                     this.gameLevel2Movement(direction);
                     break;
-                case 3: 
+                case 3:
                     this.gameLevel3Movement(direction);
                     break;
             }

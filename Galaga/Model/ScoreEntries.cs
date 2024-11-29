@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Galaga.Extensions;
 
 namespace Galaga.Model
 {
@@ -11,7 +13,12 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private readonly IList<ScoreboardEntry> scoreEntries;
+        /// <summary>
+        ///     The max number of scores on the leaderboards
+        /// </summary>
+        public const int MaxNumberOfScores = 10;
+
+        private readonly List<ScoreboardEntry> scoreEntries;
 
         #endregion
 
@@ -40,7 +47,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Checks if the score entries are read only
         /// </summary>
-        public bool IsReadOnly => this.scoreEntries.IsReadOnly;
+        public bool IsReadOnly => false;
 
         /// <summary>
         ///     Gets or sets the item at the specified index
@@ -80,11 +87,6 @@ namespace Galaga.Model
             var enumerator = this.scoreEntries.GetEnumerator();
             enumerator.Dispose();
             return enumerator;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
 
         /// <summary>
@@ -149,7 +151,7 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Inserts the item at the specified index
-        ///     @PreCondition: this.scoreEntries.Count != @prev
+        ///     @PreCondition: this.scoreEntries != @prev
         /// </summary>
         /// <param name="index">the index to put the item at</param>
         /// <param name="item">the item to insert</param>
@@ -168,6 +170,25 @@ namespace Galaga.Model
             this.scoreEntries.RemoveAt(index);
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        /// <summary>
+        ///     Replaces the lowest score in the scores entries with the higher score
+        ///     Uses a extension method in ListExtensions.cs
+        ///     PostCondition: this.scoreEntries != @prev
+        /// </summary>
+        /// <param name="highScore">the score to replace the lower score</param>
+        /// <returns>true or false based on if the score was replaced</returns>
+        public bool ReplaceLowestScoreEntry(ScoreboardEntry highScore)
+        {
+            var lowestScore = this.getScoreEntryWithLowestScore();
+
+            return this.scoreEntries.Replace(lowestScore, highScore);
+        }
+
         /// <summary>
         ///     Checks if the score is in the top 10 of all scores
         /// </summary>
@@ -176,6 +197,40 @@ namespace Galaga.Model
         public bool IsScoreInTop10(int score)
         {
             return this.scoreEntries.Count < 10 || this.scoreEntries.Min(scoreEntry => scoreEntry.Score) < score;
+        }
+
+        /// <summary>
+        ///     Gets the score entry with the lowest score.
+        /// </summary>
+        /// <returns>The score entry with the lowest score.</returns>
+        private ScoreboardEntry getScoreEntryWithLowestScore()
+        {
+            return this.scoreEntries.OrderBy(scoreEntry => scoreEntry.Score).FirstOrDefault();
+        }
+
+        /// <summary>
+        ///     Sorts the entries by their score
+        /// </summary>
+        public void SortByScoresDescending()
+        {
+            this.scoreEntries.Sort();
+        }
+
+        /// <summary>
+        ///     Sorts the scores by their Name
+        /// </summary>
+        public void SortByNameDescending()
+        {
+            this.scoreEntries.Sort((entry1, entry2) =>
+                string.Compare(entry1.Name, entry2.Name, StringComparison.Ordinal));
+        }
+
+        /// <summary>
+        ///     Sorts the scores by their Level
+        /// </summary>
+        public void SortByLevelDescending()
+        {
+            this.scoreEntries.Sort((entry1, entry2) => entry2.Level.CompareTo(entry1.Level));
         }
 
         #endregion
