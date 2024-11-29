@@ -13,6 +13,7 @@
                    VerticalAlignment="Top" />
         <TextBlock x:Name="playerLivesTextBlock" Canvas.Left="641" TextWrapping="Wrap" Text="Lives : 3"
                    Canvas.Top="573" Foreground="#FFF7F2F2" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBlock x:Name="gameOverTextBlock" Canvas.Left="255" TextWrapping="Wrap" Text="" Canvas.Top="130" Height="79" Width="280" FontSize="48" Foreground="#FFFBF8F8"/>
+        <TextBlock x:Name="gameOverTextBlock" Canvas.Left="255" TextWrapping="Wrap" Text="" Canvas.Top="130"
+                   Height="79" Width="280" FontSize="48" Foreground="#FFFBF8F8" />
     </Canvas>
 </Page>

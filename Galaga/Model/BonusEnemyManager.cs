@@ -99,6 +99,8 @@ namespace Galaga.Model
 
                 this.shootingTimer.Start();
                 this.moveTimer.Start();
+
+                SoundPlayer.playBonusActiveSound();
             }
         }
 

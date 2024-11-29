@@ -121,6 +121,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Datatier\ScoreReader.cs" />
+    <Compile Include="Datatier\ScoresFileManager.cs" />
+    <Compile Include="Datatier\ScoreWriter.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Model\BonusEnemyManager.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
@@ -135,8 +139,14 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerBulletManager.cs" />
     <Compile Include="Model\PlayerManager.cs" />
+    <Compile Include="Model\ScoreboardEntry.cs" />
+    <Compile Include="Model\ScoreEntries.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="Model\SoundPlayer.cs" />
+    <Compile Include="ViewModel\ScoreboardViewModel.cs" />
+    <Compile Include="View\ScoreBoard.xaml.cs">
+      <DependentUpon>ScoreBoard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
@@ -202,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\ScoreBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\GameCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

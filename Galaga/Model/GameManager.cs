@@ -200,6 +200,7 @@ namespace Galaga.Model
             if (enemy.Level == BonusEnemyLevel)
             {
                 this.LivesChanged?.Invoke(this, 1);
+                SoundPlayer.playBonusGottenSound();
             }
 
             if (this.enemyManager.Count == 0)

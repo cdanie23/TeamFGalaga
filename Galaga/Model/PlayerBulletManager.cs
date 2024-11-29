@@ -70,6 +70,7 @@ namespace Galaga.Model
                         {
                             SoundPlayer.playBonusGottenSound();
                         }
+
                         flaggedBullets.Add(bullet);
                         invokeEvent = true;
                         hitEnemy = enemy;
