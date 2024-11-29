@@ -202,6 +202,7 @@ namespace Galaga.Model
             {
                 this.LivesChanged?.Invoke(this, 1);
                 this.playerManager.TemporaryPowerUp();
+                SoundPlayer.playBonusGottenSound();
             }
 
             if (this.enemyManager.Count == 0)
