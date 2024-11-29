@@ -21,6 +21,9 @@ namespace Galaga.Model
         /// </summary>
         public int Level { get; }
 
+        private int numOfMoves;
+        private const int MaxMoves = 10;
+
         #endregion
 
         #region Constructors
@@ -43,6 +46,97 @@ namespace Galaga.Model
             this.Level = level;
             SetSpeed(speedX, speedY);
             Sprite = baseSprite ?? throw new ArgumentNullException(nameof(baseSprite));
+        }
+
+        /// <summary>
+        ///     Moves the enemy back and forth by the MaxMoves
+        /// </summary>
+        public void Move(int gameLevel)
+        {
+            this.numOfMoves++;
+            var direction = this.numOfMoves / MaxMoves % 2 == 0;
+
+            if (direction && this.numOfMoves == MaxMoves * 2)
+            {
+                this.numOfMoves = 0;
+            }
+
+            switch (gameLevel)
+            {
+                case 1:
+                    this.gameLevel1Movement(direction);
+                    break;
+                case 2:
+                    this.gameLevel2Movement(direction);
+                    break;
+                case 3: 
+                    this.gameLevel3Movement(direction);
+                    break;
+            }
+        }
+
+        private void gameLevel1Movement(bool direction)
+        {
+            if (direction)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
+
+        private void gameLevel2Movement(bool direction)
+        {
+            if (this.Level == 1 || this.Level == 2)
+            {
+                if (direction)
+                {
+                    MoveLeft();
+                }
+                else
+                {
+                    MoveRight();
+                }
+            }
+            else
+            {
+                if (direction)
+                {
+                    MoveRight();
+                }
+                else
+                {
+                    MoveLeft();
+                }
+            }
+        }
+
+        private void gameLevel3Movement(bool direction)
+        {
+            if (this.Level == 1 || this.Level == 3)
+            {
+                if (direction)
+                {
+                    MoveLeft();
+                }
+                else
+                {
+                    MoveRight();
+                }
+            }
+            else
+            {
+                if (direction)
+                {
+                    MoveRight();
+                }
+                else
+                {
+                    MoveLeft();
+                }
+            }
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -134,6 +133,7 @@ namespace Galaga.Model
             this.enemyBulletManager.EnemyRandomShootTimer.Start();
 
             this.gameTimer.Tick += this.moveBulletTickEvent;
+            this.gameTimer.Tick += this.enemyManager.MoveEnemyTickEvent;
             this.gameTimer.Start();
         }
 
@@ -228,7 +228,6 @@ namespace Galaga.Model
 
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
-            this.enemyManager.StopEnemyMoveTimer();
         }
 
         private void onLevelOver(object sender, int level)
