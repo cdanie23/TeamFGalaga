@@ -16,6 +16,9 @@ namespace Galaga.Model
         private const int TimeBetweenSpriteFlash = 200;
         private const int MillisecondDelayBetweenBullets = 500;
         private const int NumOfFlashes = 5;
+        private const int PowerUpTimeInSeconds = 20;
+        private const int NormalPlayerSpeed = 8;
+        private const int IncreasedPlayerSpeed = 15;
 
         private readonly Canvas canvas;
 
@@ -25,6 +28,9 @@ namespace Galaga.Model
         private DateTime dateTimeOfLastPlayerBullet;
         private readonly TimeSpan delayBetweenBullets;
         private int invulnerabilityTimerTickCount;
+
+        private DispatcherTimer powerUpTimer;
+        private int powerUpTimerTickCount;
 
         #endregion
 
@@ -181,6 +187,32 @@ namespace Galaga.Model
                 this.invulnerabilityTimerTickCount % 2 == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        /// <summary>
+        ///     Powers up the player
+        /// </summary>
+        public void TemporaryPowerUp()
+        {
+            this.powerUpTimer = new DispatcherTimer
+                { Interval = new TimeSpan(0, 0, 0, 1, 0) };
+            this.powerUpTimer.Tick += this.PowerUpTimer_Tick;
+            this.powerUpTimerTickCount = 0;
+            this.powerUpTimer.Start();
+            this.Player.SetPlayerSpeed(IncreasedPlayerSpeed);
+        }
+
+        private void PowerUpTimer_Tick(object sender, object e)
+        {
+            SoundPlayer.playPowerUpSound();
+            this.powerUpTimerTickCount++;
+            if (this.powerUpTimerTickCount > PowerUpTimeInSeconds)
+            {
+                this.powerUpTimer.Stop();
+                this.Player.SetPlayerSpeed(NormalPlayerSpeed);
+            }
+        }
+
         #endregion
+
+
     }
 }

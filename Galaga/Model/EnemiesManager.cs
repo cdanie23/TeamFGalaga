@@ -47,21 +47,11 @@ namespace Galaga.Model
         private const int EnemyRow3 = 100;
         private const int EnemyRow4 = 0;
 
-        private const int MoveTimerMilliseconds = 20;
-        private const int NumOfStepsInEachDirectionOfOrigin = 10;
-        private const int StartingNumOfStepsInEachDirection = 5;
-
-        private readonly int[] numOfEachEnemy = { 3, 4, 4, 5 };
-
         private readonly Collection<Enemy> enemies;
         private readonly Canvas canvas;
         private readonly double canvasWidth;
 
-        private readonly DispatcherTimer moveTimer;
         private readonly EnemyFactory enemyFactory;
-
-        private int stepsTaken;
-        private int numOfStepsInEachDirection;
 
         private readonly GameSettings gameSettings;
 
@@ -73,8 +63,6 @@ namespace Galaga.Model
         ///     Checks if all enemy ships are destroyed
         /// </summary>
         public bool AreAllEnemiesDestroyed => this.enemies.Count == 0;
-
-        private bool EnemiesDoneMovingInDirection => this.stepsTaken == this.numOfStepsInEachDirection;
 
         /// <summary>
         ///     The count of the enemies in the enemy manager
@@ -103,16 +91,8 @@ namespace Galaga.Model
 
             this.createEnemies();
 
-            this.stepsTaken = 0;
-            this.numOfStepsInEachDirection = StartingNumOfStepsInEachDirection;
-
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.canvasWidth = canvas.Width;
-
-            this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveTimerMilliseconds) };
-
-            this.moveTimer.Tick += this.timerTickMoveLeft;
-            this.moveTimer.Start();
         }
 
         #endregion
@@ -161,9 +141,9 @@ namespace Galaga.Model
 
         private void createEnemies()
         {
-            for (var iteration = 1; iteration <= this.numOfEachEnemy.Length; iteration++)
+            for (var iteration = 1; iteration <= this.gameSettings.NumberOfEachEnemy.Length; iteration++)
             {
-                for (var i = 0; i < this.numOfEachEnemy[iteration - 1]; i++)
+                for (var i = 0; i < this.gameSettings.NumberOfEachEnemy[iteration - 1]; i++)
                 {
                     this.enemies.Add(this.enemyFactory.CreateNewEnemy(iteration));
                 }
@@ -196,37 +176,6 @@ namespace Galaga.Model
             }
         }
 
-        private void timerTickMoveLeft(object sender, object e)
-        {
-            if (this.EnemiesDoneMovingInDirection)
-            {
-                this.moveTimer.Tick -= this.timerTickMoveLeft;
-                this.moveTimer.Tick += this.timerTickMoveRight;
-
-                this.stepsTaken = 0;
-                this.numOfStepsInEachDirection = NumOfStepsInEachDirectionOfOrigin;
-            }
-            else
-            {
-                this.MoveEnemiesLeft();
-            }
-        }
-
-        private void timerTickMoveRight(object sender, object e)
-        {
-            if (this.EnemiesDoneMovingInDirection)
-            {
-                this.moveTimer.Tick -= this.timerTickMoveRight;
-                this.moveTimer.Tick += this.timerTickMoveLeft;
-
-                this.stepsTaken = 0;
-            }
-            else
-            {
-                this.MoveEnemiesRight();
-            }
-        }
-
         /// <summary>
         ///     Sets the enemies up for the game
         /// </summary>
@@ -238,16 +187,16 @@ namespace Galaga.Model
 
         private void centerEnemiesNearTopOfCanvas()
         {
-            var spaceBetweenLvl1Enemies = this.canvasWidth / this.numOfEachEnemy[0] / 2.0;
+            var spaceBetweenLvl1Enemies = this.canvasWidth / this.gameSettings.NumberOfEachEnemy[0] / 2.0;
             var startXLvl1 = spaceBetweenLvl1Enemies;
 
-            var spaceBetweenLvl2Enemies = this.canvasWidth / this.numOfEachEnemy[1] / 2.0;
+            var spaceBetweenLvl2Enemies = this.canvasWidth / this.gameSettings.NumberOfEachEnemy[1] / 2.0;
             var startXLvl2 = spaceBetweenLvl2Enemies;
 
-            var spaceBetweenLvl3Enemies = this.canvasWidth / this.numOfEachEnemy[2] / 2.0;
+            var spaceBetweenLvl3Enemies = this.canvasWidth / this.gameSettings.NumberOfEachEnemy[2] / 2.0;
             var startXLvl3 = spaceBetweenLvl3Enemies;
 
-            var spaceBetweenLvl4Enemies = this.canvasWidth / this.numOfEachEnemy[3] / 2.0;
+            var spaceBetweenLvl4Enemies = this.canvasWidth / this.gameSettings.NumberOfEachEnemy[3] / 2.0;
             var startXLvl4 = spaceBetweenLvl4Enemies;
 
             foreach (var enemy in this.enemies)
@@ -284,7 +233,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.enemies)
             {
-                this.canvas.Children.Add(enemy.Sprite);
+                if (!(enemy.Sprite is BonusEnemySprite))
+                {
+                    this.canvas.Children.Add(enemy.Sprite);
+                }
             }
 
             this.centerEnemiesNearTopOfCanvas();
@@ -343,65 +295,6 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Moves all enemies to the left one step
-        ///     PostCondition: stepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesLeft()
-        {
-            foreach (var enemy in this.enemies)
-            {
-                if (enemy is ShootingEnemy shootingEnemy)
-                {
-                    shootingEnemy.UpdateSprite();
-                }
-
-                if (enemy.Sprite is BonusEnemySprite)
-                {
-                }
-                else
-                {
-                    enemy.MoveLeft();
-                }
-            }
-
-            this.stepsTaken++;
-        }
-
-        /// <summary>
-        ///     Moves all enemies to the right one step
-        ///     PostCondition: stepsTaken == @prev + 1
-        /// </summary>
-        public void MoveEnemiesRight()
-        {
-            foreach (var enemy in this.enemies)
-            {
-                if (enemy is ShootingEnemy shootingEnemy)
-                {
-                    shootingEnemy.UpdateSprite();
-                }
-
-                if (enemy.Sprite is BonusEnemySprite)
-                {
-                }
-                else
-                {
-                    enemy.MoveRight();
-                }
-            }
-
-            this.stepsTaken++;
-        }
-
-        /// <summary>
-        ///     Stops the enemy move timer
-        ///     Post-condition: this.moveTimer.IsEnabled == false
-        /// </summary>
-        public void StopEnemyMoveTimer()
-        {
-            this.moveTimer.Stop();
-        }
-
-        /// <summary>
         ///     Adds the bonus enemy to the enemies collection
         /// </summary>
         /// <param name="enemy"></param>
@@ -411,5 +304,26 @@ namespace Galaga.Model
         }
 
         #endregion
+
+        /// <summary>
+        ///     Moves the enemy tick event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
+        public void MoveEnemyTickEvent(object sender, object e)
+        {
+            foreach (var enemy in this.enemies)
+            {
+                if (enemy is ShootingEnemy shootingEnemy)
+                {
+                    shootingEnemy.UpdateSprite();
+                }
+
+                if (!(enemy.Sprite is BonusEnemySprite))
+                {
+                    enemy.Move(this.gameSettings.Level);
+                }
+            }
+        }
     }
 }

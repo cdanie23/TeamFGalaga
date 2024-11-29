@@ -66,6 +66,14 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Sets the player speed.
+        /// </summary>
+        public void SetPlayerSpeed(int speed)
+        {
+            this.SpeedX = speed;
+        }
+
         #endregion
     }
 }

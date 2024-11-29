@@ -133,6 +133,7 @@ namespace Galaga.Model
             this.enemyBulletManager.EnemyRandomShootTimer.Start();
 
             this.gameTimer.Tick += this.moveBulletTickEvent;
+            this.gameTimer.Tick += this.enemyManager.MoveEnemyTickEvent;
             this.gameTimer.Start();
         }
 
@@ -200,7 +201,7 @@ namespace Galaga.Model
             if (enemy.Level == BonusEnemyLevel)
             {
                 this.LivesChanged?.Invoke(this, 1);
-                SoundPlayer.playBonusGottenSound();
+                this.playerManager.TemporaryPowerUp();
             }
 
             if (this.enemyManager.Count == 0)
@@ -227,7 +228,6 @@ namespace Galaga.Model
 
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
-            this.enemyManager.StopEnemyMoveTimer();
         }
 
         private void onLevelOver(object sender, int level)
