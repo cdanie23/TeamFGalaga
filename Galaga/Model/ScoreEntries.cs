@@ -230,7 +230,7 @@ namespace Galaga.Model
         /// </summary>
         public void SortByLevelDescending()
         {
-            this.scoreEntries.Sort((entry1, entry2) => entry1.Level.CompareTo(entry2.Level));
+            this.scoreEntries.Sort((entry1, entry2) => entry2.Level.CompareTo(entry1.Level));
         }
 
         #endregion

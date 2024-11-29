@@ -1,5 +1,7 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
+using Windows.UI.Xaml;
+
 namespace Galaga.View
 {
     /// <summary>
@@ -15,6 +17,25 @@ namespace Galaga.View
         public ScoreBoard()
         {
             this.InitializeComponent();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void sortByNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortByNameDescending();
+        }
+
+        private void sortByLevelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortByLevelDescending();
+        }
+
+        private void sortByScoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortByScore();
         }
 
         #endregion
