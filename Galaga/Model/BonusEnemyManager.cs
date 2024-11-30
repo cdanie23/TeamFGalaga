@@ -142,14 +142,11 @@ namespace Galaga.Model
         /// </summary>
         public void Shoot()
         {
-            if (this.bonusActive)
-            {
-                var bullet = this.bonusBullets.Pop();
-                this.bulletManager.AddBullet(bullet);
-                this.canvas.Children.Add(bullet.Sprite);
-                bullet.X = this.bonusEnemy.X + this.bonusEnemy.Width / 2;
-                bullet.Y = this.bonusEnemy.Y + BulletManager.SpaceInBetweenBulletAndShip;
-            }
+            var bullet = this.bonusBullets.Pop();
+            this.bulletManager.AddBullet(bullet);
+            this.canvas.Children.Add(bullet.Sprite);
+            bullet.X = this.bonusEnemy.X + this.bonusEnemy.Width / 2;
+            bullet.Y = this.bonusEnemy.Y + BulletManager.SpaceInBetweenBulletAndShip;
         }
 
         /// <summary>
@@ -182,5 +179,14 @@ namespace Galaga.Model
         }
 
         #endregion
+
+        /// <summary>
+        ///     Sets the instance to inactive.
+        /// </summary>
+        public void SetInactive()
+        {
+            this.bonusActive = false;
+            this.StopBonusEnemyTimers();
+        }
     }
 }

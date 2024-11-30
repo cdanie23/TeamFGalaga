@@ -68,10 +68,11 @@ namespace Galaga.Model
             var gameSettings = new GameSettings();
             this.playerManager = new PlayerManager(canvas);
             this.enemyManager = new EnemiesManager(canvas, gameSettings);
-            this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager);
             this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
             this.bonusEnemyManager =
                 new BonusEnemyManager(canvas, this.enemyManager, this.enemyBulletManager, gameSettings);
+
+            this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager, this.bonusEnemyManager);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.GameLevel = 1;

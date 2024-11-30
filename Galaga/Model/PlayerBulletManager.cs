@@ -14,25 +14,35 @@ namespace Galaga.Model
 
         private readonly EnemiesManager enemyManager;
         private readonly PlayerManager playerManager;
+        private readonly BonusEnemyManager bonusEnemyManager;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerBulletManager"/> class.
         ///     Creates an instance of the player manager
         ///     PreCondition: enemyManager != null, playerManager != null
         ///     PostCondition: this.enemyManager == enemyManager, this.playerManager == playerManager
         /// </summary>
-        /// <param name="canvas">the canvas</param>
-        /// <param name="enemyManager">the enemy manager</param>
-        /// <param name="playerManager">the player manager</param>
-        /// <exception cref="ArgumentNullException">thrown if the enemy manager or player manager is null</exception>
-        public PlayerBulletManager(Canvas canvas, EnemiesManager enemyManager, PlayerManager playerManager) :
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="enemyManager">The enemy manager.</param>
+        /// <param name="playerManager">The player manager.</param>
+        /// <param name="bonusEnemyManager">The bonus enemy manager.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// enemyManager
+        /// or
+        /// playerManager
+        /// or
+        /// bonusEnemyManager
+        /// </exception>
+        public PlayerBulletManager(Canvas canvas, EnemiesManager enemyManager, PlayerManager playerManager, BonusEnemyManager bonusEnemyManager) :
             base(canvas)
         {
             this.enemyManager = enemyManager ?? throw new ArgumentNullException(nameof(enemyManager));
             this.playerManager = playerManager ?? throw new ArgumentNullException(nameof(playerManager));
+            this.bonusEnemyManager = bonusEnemyManager ?? throw new ArgumentNullException(nameof(bonusEnemyManager));
         }
 
         #endregion
@@ -69,6 +79,7 @@ namespace Galaga.Model
                         if (enemy.Sprite is BonusEnemySprite)
                         {
                             SoundPlayer.playBonusGottenSound();
+                            this.bonusEnemyManager.SetInactive();
                         }
 
                         flaggedBullets.Add(bullet);
