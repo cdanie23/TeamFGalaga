@@ -56,7 +56,14 @@ namespace Galaga.Datatier
         {
             this.scoreWriter.WriteScore(scoreEntries);
         }
-
+        /// <summary>
+        ///     Clears all scores in the score file
+        ///     PostConditions: this.scoreFile == null
+        /// </summary>
+        public async void ClearAllScores()
+        {
+            await this.scoreFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+        }
         #endregion
     }
 }
