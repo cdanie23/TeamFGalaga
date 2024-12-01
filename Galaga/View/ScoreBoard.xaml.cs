@@ -1,8 +1,6 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 using System;
-using System.Diagnostics;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -42,17 +40,17 @@ namespace Galaga.View
             this.viewModel.SortByScore();
         }
 
-        #endregion
-
         private void playAgainButton_Click(object sender, RoutedEventArgs e)
         {
             Frame frame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(frame));
-            frame.Navigate(typeof(GameCanvas));
+            frame.Navigate(typeof(StartScreen));
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
         }
+
+        #endregion
     }
 }

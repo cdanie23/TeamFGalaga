@@ -4,16 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:playerSprites="using:Galaga.View.Sprites.PlayerSprites"
     mc:Ignorable="d"
     Background="Black"
     Width="800"
     Height="620">
 
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Welcome to Galaga!" VerticalAlignment="Top" Foreground="#FF0BE42C" FontSize="20" Margin="0,30,0,0"/>
-        <Button Content="Start" Margin="0,194,0,0" VerticalAlignment="Top" Foreground="#FFE00606" FontSize="20" HorizontalAlignment="Center" BorderBrush="Green" Background="White" BorderThickness="4" Click="startButton_Click"/>
-        <Button Content="Scoreboard" Margin="0,278,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FFED3005" FontSize="20" BorderBrush="Green" Background="White" BorderThickness="4" Click="scoreboardButton_Click"/>
-        <Button Content="Reset Scoreboard" Margin="0,373,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FFF30707" FontSize="20" BorderBrush="Green" Background="White" BorderThickness="4" Click="resetScoreboardButton_Click"/>
+    <Grid Background="Black">
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Welcome to Galaga!" VerticalAlignment="Top"
+                   Foreground="#FF0BE42C" FontSize="20" Margin="0,30,0,0" />
+        <Button Content="Start" Margin="354,336,0,0" VerticalAlignment="Top" Foreground="#FFE00606" FontSize="20"
+                BorderBrush="Green" Background="White" BorderThickness="4" Click="startButton_Click" />
+        <Button Content="Scoreboard" Margin="148,488,0,0" VerticalAlignment="Top" Foreground="#FFED3005" FontSize="20"
+                BorderBrush="Green" Background="White" BorderThickness="4" Click="scoreboardButton_Click"
+                RenderTransformOrigin="0.498,0.573" />
+        <Button Content="Reset Scoreboard" Margin="476,488,0,0" VerticalAlignment="Top" Foreground="#FFF30707"
+                FontSize="20" BorderBrush="Green" Background="White" BorderThickness="4"
+                Click="resetScoreboardButton_Click" />
 
+        <RadioButton GroupName="SpriteSkins" Checked="onSkin1Checked" Height="68" Margin="116,185,0,0"
+                     VerticalAlignment="Top">
+            <playerSprites:PlayerSprite x:Name="playerSprite1" />
+        </RadioButton>
+        <RadioButton GroupName="SpriteSkins" Checked="onSkin2Checked" Height="68" Margin="335,185,0,0"
+                     VerticalAlignment="Top">
+            <playerSprites:PlayerSprite2 x:Name="playerSprite2" RenderTransformOrigin="1.398,0.594" />
+        </RadioButton>
+        <RadioButton GroupName="SpriteSkins" Checked="onSkin3Checked" Height="68" Margin="535,185,0,0"
+                     VerticalAlignment="Top">
+            <playerSprites:PlayerSprite3 x:Name="playerSprite3" RenderTransformOrigin="0.64,0.448" />
+        </RadioButton>
+        <TextBlock HorizontalAlignment="Left" Margin="311,126,0,0" TextWrapping="Wrap" Text="Choose your skin"
+                   VerticalAlignment="Top" FontSize="20" Foreground="#FFF7F7F7" />
     </Grid>
 </Page>

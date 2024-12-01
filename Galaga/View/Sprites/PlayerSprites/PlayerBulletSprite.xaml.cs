@@ -1,18 +1,18 @@
 ﻿// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace Galaga.View.Sprites
+namespace Galaga.View.Sprites.PlayerSprites
 {
     /// <summary>
-    ///     The bullet sprite class
+    ///     The player bullet sprite class
     /// </summary>
-    public sealed partial class EnemyBulletSprite
+    public sealed partial class PlayerBulletSprite
     {
         #region Constructors
 
         /// <summary>
-        ///     Instantiates an instance of a bullet sprite
+        ///     Creates an instance of the player bullet sprite
         /// </summary>
-        public EnemyBulletSprite()
+        public PlayerBulletSprite()
         {
             this.InitializeComponent();
         }

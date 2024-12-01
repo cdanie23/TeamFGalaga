@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
+using Galaga.View.Sprites.EnemySprites;
+using Galaga.View.Sprites.PlayerSprites;
 
 namespace Galaga.Model
 {
@@ -64,10 +65,10 @@ namespace Galaga.Model
             switch (this.BulletType)
             {
                 case BulletType.Enemy:
-                    Y += SpeedY;
+                    MoveDown();
                     break;
                 case BulletType.Player:
-                    Y -= SpeedY;
+                    MoveUp();
                     break;
             }
 

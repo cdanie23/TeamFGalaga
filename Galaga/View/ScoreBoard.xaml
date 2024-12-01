@@ -14,13 +14,13 @@
     </Page.DataContext>
     <Page.Resources>
         <Style TargetType="ListViewItem" x:Key="ItemStyle">
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="0,0,0,3" />
-        <Setter Property="BorderBrush" Value="Green" />
-        <Setter Property="Width" Value="200" />
-        <Setter Property="Padding" Value="60,0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0,0,0,3" />
+            <Setter Property="BorderBrush" Value="Green" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Padding" Value="60,0" />
         </Style>
     </Page.Resources>
     <Grid>
@@ -28,19 +28,19 @@
                   ItemsSource="{Binding Names, Mode=TwoWay}"
                   Margin="100,0,0,0" SelectionMode="None">
             <ListView.ItemContainerStyle>
-                <StaticResource ResourceKey="ItemStyle"/>
+                <StaticResource ResourceKey="ItemStyle" />
             </ListView.ItemContainerStyle>
         </ListView>
         <ListView Height="400" Width="200" Background="Black" HorizontalAlignment="Center"
                   ItemsSource="{Binding Levels, Mode=TwoWay}" Margin="0,0,0,0" SelectionMode="None">
             <ListView.ItemContainerStyle>
-                <StaticResource ResourceKey="ItemStyle"/>
+                <StaticResource ResourceKey="ItemStyle" />
             </ListView.ItemContainerStyle>
         </ListView>
         <ListView Height="400" Width="200" Background="Black" HorizontalAlignment="Right"
                   ItemsSource="{Binding Scores, Mode=TwoWay}" Margin="0,0,100,0" SelectionMode="None">
             <ListView.ItemContainerStyle>
-                <StaticResource ResourceKey="ItemStyle"/>
+                <StaticResource ResourceKey="ItemStyle" />
             </ListView.ItemContainerStyle>
         </ListView>
         <TextBlock HorizontalAlignment="Left" Margin="152,78,0,0" TextWrapping="Wrap" Text="Name"
@@ -58,11 +58,14 @@
                 Click="sortByLevelButton_Click" />
         <Button x:Name="sortByScoreButton" Content="Score" Margin="173,578,0,0" VerticalAlignment="Top"
                 RenderTransformOrigin="0.2,-0.086" Background="#33FFFFFF" Foreground="White"
-                Click="sortByScoreButton_Click"/>
+                Click="sortByScoreButton_Click" />
         <TextBlock HorizontalAlignment="Left" Margin="26,537,0,0" TextWrapping="Wrap" Text="Sort By:"
-                   VerticalAlignment="Top" Foreground="White" Width="211" FontSize="16" TextAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Left" Margin="500,543,0,0" TextWrapping="Wrap" Text="Play Again?" VerticalAlignment="Top" Foreground="#FFFBFAFA" FontSize="16"/>
-        <Button Content="Yes" Margin="474,581,0,0" VerticalAlignment="Top" Foreground="#FFFBFAFA" Background="#33FFFFFF" Click="playAgainButton_Click"/>
-        <Button Content="No" Margin="553,581,0,0" VerticalAlignment="Top" Foreground="White" Background="#33F3F3F3" Click="closeButton_Click"/>
+                   VerticalAlignment="Top" Foreground="White" Width="211" FontSize="16" TextAlignment="Center" />
+        <TextBlock HorizontalAlignment="Left" Margin="500,543,0,0" TextWrapping="Wrap" Text="Play Again?"
+                   VerticalAlignment="Top" Foreground="#FFFBFAFA" FontSize="16" />
+        <Button Content="Yes" Margin="474,581,0,0" VerticalAlignment="Top" Foreground="#FFFBFAFA"
+                Background="#33FFFFFF" Click="playAgainButton_Click" />
+        <Button Content="No" Margin="553,581,0,0" VerticalAlignment="Top" Foreground="White" Background="#33F3F3F3"
+                Click="closeButton_Click" />
     </Grid>
 </Page>

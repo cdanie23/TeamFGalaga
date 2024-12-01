@@ -34,6 +34,11 @@ namespace Galaga.Model
         /// </summary>
         public Stack<Bullet> BulletsAvailable { get; }
 
+        /// <summary>
+        ///     Get or set the name of the player
+        /// </summary>
+        public string Name { get; set; }
+
         #endregion
 
         #region Constructors
@@ -42,9 +47,9 @@ namespace Galaga.Model
         ///     Initializes a new instance of the <see cref="Player" /> class.
         ///     Post-condition: Sprite == PlayerSprite, this.BulletsAvailable != null,
         /// </summary>
-        public Player()
+        public Player(BaseSprite playerSkin)
         {
-            Sprite = new PlayerSprite();
+            Sprite = playerSkin;
             SetSpeed(SpeedXDirection, SpeedYDirection);
             this.BulletsAvailable = new Stack<Bullet>();
             this.SetupActiveBullets();

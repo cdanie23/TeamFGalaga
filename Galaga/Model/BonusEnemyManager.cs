@@ -178,8 +178,6 @@ namespace Galaga.Model
             this.shootingTimer.Stop();
         }
 
-        #endregion
-
         /// <summary>
         ///     Sets the instance to inactive.
         /// </summary>
@@ -188,5 +186,7 @@ namespace Galaga.Model
             this.bonusActive = false;
             this.StopBonusEnemyTimers();
         }
+
+        #endregion
     }
 }

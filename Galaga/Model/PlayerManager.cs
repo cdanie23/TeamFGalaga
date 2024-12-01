@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -100,10 +101,11 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Sets the player in the game
+        ///     <param name="playerSkin">the skin of the player ship</param>
         /// </summary>
-        public void SetupPlayer()
+        public void SetupPlayer(BaseSprite playerSkin)
         {
-            this.createAndPlacePlayer();
+            this.createAndPlacePlayer(playerSkin);
         }
 
         private void invulnerabilityTimerTick(object sender, object e)
@@ -141,9 +143,9 @@ namespace Galaga.Model
             return null;
         }
 
-        private void createAndPlacePlayer()
+        private void createAndPlacePlayer(BaseSprite playerSkin)
         {
-            this.Player = new Player();
+            this.Player = new Player(playerSkin);
             this.canvas.Children.Add(this.Player.Sprite);
 
             this.placePlayerNearBottomOfBackgroundCentered();

@@ -156,7 +156,7 @@
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\EnemyBulletSprite.xaml.cs">
+    <Compile Include="View\Sprites\EnemySprites\EnemyBulletSprite.xaml.cs">
       <DependentUpon>EnemyBulletSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\EnemySprites\BonusEnemySprite.xaml.cs">
@@ -190,11 +190,17 @@
       <DependentUpon>ThirdExplosionSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
-    <Compile Include="View\Sprites\PlayerBulletSprite.xaml.cs">
+    <Compile Include="View\Sprites\PlayerSprites\PlayerBulletSprite.xaml.cs">
       <DependentUpon>PlayerBulletSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
+    <Compile Include="View\Sprites\PlayerSprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\PlayerSprites\PlayerSprite2.xaml.cs">
+      <DependentUpon>PlayerSprite2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\PlayerSprites\PlayerSprite3.xaml.cs">
+      <DependentUpon>PlayerSprite3.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartScreen.xaml.cs">
       <DependentUpon>StartScreen.xaml</DependentUpon>
@@ -239,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\EnemyBulletSprite.xaml">
+    <Page Include="View\Sprites\EnemySprites\EnemyBulletSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,11 +289,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\PlayerBulletSprite.xaml">
+    <Page Include="View\Sprites\PlayerSprites\PlayerBulletSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\PlayerSprite.xaml">
+    <Page Include="View\Sprites\PlayerSprites\PlayerSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PlayerSprites\PlayerSprite2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PlayerSprites\PlayerSprite3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

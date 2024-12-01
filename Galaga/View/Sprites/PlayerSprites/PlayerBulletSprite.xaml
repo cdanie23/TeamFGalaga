@@ -1,10 +1,11 @@
-﻿<custom:BaseSprite
-    x:Class="Galaga.View.Sprites.EnemyBulletSprite"
+﻿<local:BaseSprite
+    x:Class="Galaga.View.Sprites.PlayerSprites.PlayerBulletSprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:custom="using:Galaga.View.Sprites"
+    xmlns:local="using:Galaga.View.Sprites"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:enemySprites="using:Galaga.View.Sprites.EnemySprites"
     mc:Ignorable="d"
     d:DesignHeight="10"
     d:DesignWidth="5"
@@ -12,6 +13,8 @@
     Width="5">
 
     <Canvas Name="canvas">
-        <Rectangle Name="bullet" Height="10" Width="5" Stroke="LimeGreen" StrokeThickness="3" />
+        <enemySprites:EnemyBulletSprite>
+            <Rectangle Height="10" Width="5" Stroke="White" StrokeThickness="3" />
+        </enemySprites:EnemyBulletSprite>
     </Canvas>
-</custom:BaseSprite>
+</local:BaseSprite>

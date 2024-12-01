@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -30,6 +30,15 @@ namespace Galaga.Model
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Get or set the players name
+        /// </summary>
+        public string PlayerName
+        {
+            get => this.playerManager.Player.Name;
+            set => this.playerManager.Player.Name = value;
+        }
 
         /// <summary>
         ///     Checks if all enemies are destroyed in the enemy manager
@@ -62,8 +71,9 @@ namespace Galaga.Model
         ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.bulletManager != null
         /// </summary>
         /// <param name="canvas">the Canvas of the game</param>
+        /// <param name="playerSkin">the player skin chosen by the user</param>
         /// <exception cref="ArgumentNullException">thrown if the Canvas is null</exception>
-        public GameManager(Canvas canvas)
+        public GameManager(Canvas canvas, BaseSprite playerSkin)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             var gameSettings = new GameSettings();
@@ -73,12 +83,13 @@ namespace Galaga.Model
             this.bonusEnemyManager =
                 new BonusEnemyManager(canvas, this.enemyManager, this.enemyBulletManager, gameSettings);
 
-            this.playerBulletManager = new PlayerBulletManager(canvas, this.enemyManager, this.playerManager, this.bonusEnemyManager);
+            this.playerBulletManager =
+                new PlayerBulletManager(canvas, this.enemyManager, this.playerManager, this.bonusEnemyManager);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.GameLevel = 1;
 
-            this.initializeGame();
+            this.initializeGame(playerSkin);
         }
 
         #endregion
@@ -113,9 +124,9 @@ namespace Galaga.Model
         /// </summary>
         public event EventHandler<int> LevelOver;
 
-        private void initializeGame()
+        private void initializeGame(BaseSprite playerSkin)
         {
-            this.playerManager.SetupPlayer();
+            this.playerManager.SetupPlayer(playerSkin);
             this.enemyManager.SetupEnemies();
             this.setupTimers();
             this.bonusEnemyManager.SetUpTimers();

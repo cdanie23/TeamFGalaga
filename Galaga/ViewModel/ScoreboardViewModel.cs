@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Galaga.Datatier;
@@ -143,26 +142,6 @@ namespace Galaga.ViewModel
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        ///     Sets the field that isubscribed to your property
-        /// </summary>
-        /// <typeparam name="T">the type of the property</typeparam>
-        /// <param name="field">the field that is subscribed</param>
-        /// <param name="value">the new value</param>
-        /// <param name="propertyName">the name of the property</param>
-        /// <returns>true or false based on if the subscribed needs to change</returns>
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
-
-            field = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
         }
 
         #endregion

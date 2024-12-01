@@ -21,7 +21,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerBulletManager"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerBulletManager" /> class.
         ///     Creates an instance of the player manager
         ///     PreCondition: enemyManager != null, playerManager != null
         ///     PostCondition: this.enemyManager == enemyManager, this.playerManager == playerManager
@@ -31,13 +31,14 @@ namespace Galaga.Model
         /// <param name="playerManager">The player manager.</param>
         /// <param name="bonusEnemyManager">The bonus enemy manager.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// enemyManager
-        /// or
-        /// playerManager
-        /// or
-        /// bonusEnemyManager
+        ///     enemyManager
+        ///     or
+        ///     playerManager
+        ///     or
+        ///     bonusEnemyManager
         /// </exception>
-        public PlayerBulletManager(Canvas canvas, EnemiesManager enemyManager, PlayerManager playerManager, BonusEnemyManager bonusEnemyManager) :
+        public PlayerBulletManager(Canvas canvas, EnemiesManager enemyManager, PlayerManager playerManager,
+            BonusEnemyManager bonusEnemyManager) :
             base(canvas)
         {
             this.enemyManager = enemyManager ?? throw new ArgumentNullException(nameof(enemyManager));

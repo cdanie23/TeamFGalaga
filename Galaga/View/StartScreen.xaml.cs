@@ -1,31 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Galaga.Datatier;
-using Windows.UI.ViewManagement;
+using Galaga.View.Sprites;
+using Galaga.View.Sprites.PlayerSprites;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Galaga.View
 {
     /// <summary>
-    /// The start screen page 
+    ///     The start screen page
     /// </summary>
-    public sealed partial class StartScreen : Page
+    public sealed partial class StartScreen
     {
+        #region Data members
+
+        private BaseSprite chosenSkin;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        ///  Creates an instance of a start screen
+        ///     Creates an instance of a start screen
         /// </summary>
         public StartScreen()
         {
@@ -34,12 +34,18 @@ namespace Galaga.View
             ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
+
+            this.chosenSkin = new PlayerSprite();
         }
+
+        #endregion
+
+        #region Methods
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
             Frame frame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(frame));
-            frame.Navigate(typeof(GameCanvas));
+            frame.Navigate(typeof(GameCanvas), this.chosenSkin);
         }
 
         private void scoreboardButton_Click(object sender, RoutedEventArgs e)
@@ -50,9 +56,26 @@ namespace Galaga.View
 
         private async void resetScoreboardButton_Click(object sender, RoutedEventArgs e)
         {
-            ScoresFileManager scoresFileManager = new ScoresFileManager();
+            var scoresFileManager = new ScoresFileManager();
             await scoresFileManager.CreateFileManagement();
             scoresFileManager.ClearAllScores();
         }
+
+        private void onSkin1Checked(object sender, RoutedEventArgs e)
+        {
+            this.chosenSkin = new PlayerSprite();
+        }
+
+        private void onSkin2Checked(object sender, RoutedEventArgs e)
+        {
+            this.chosenSkin = new PlayerSprite2();
+        }
+
+        private void onSkin3Checked(object sender, RoutedEventArgs e)
+        {
+            this.chosenSkin = new PlayerSprite3();
+        }
+
+        #endregion
     }
 }

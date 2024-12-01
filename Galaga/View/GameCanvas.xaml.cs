@@ -6,8 +6,10 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Galaga.Datatier;
 using Galaga.Model;
+using Galaga.View.Sprites;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,7 +24,7 @@ namespace Galaga.View
 
         private const int MillisecondsForTimer = 50;
 
-        private readonly GameManager gameManager;
+        private GameManager gameManager;
         private readonly DispatcherTimer timer;
         private bool isLeft;
         private bool isRight;
@@ -30,7 +32,6 @@ namespace Galaga.View
 
         private readonly ScoresFileManager scoresFileManager;
         private ScoreEntries scoreEntries;
-        private string playerName;
 
         #endregion
 
@@ -38,11 +39,11 @@ namespace Galaga.View
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
+        ///     PostConditions: this.scoresFileManager != null, this.timer.IsEnabled == true
         /// </summary>
         public GameCanvas()
         {
             this.InitializeComponent();
-
             Width = this.canvas.Width;
             Height = this.canvas.Height;
 
@@ -52,15 +53,8 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.onKeyUpEvent;
 
-            this.gameManager = new GameManager(this.canvas);
             this.scoresFileManager = new ScoresFileManager();
             this.setupFileManagement();
-
-            this.gameManager.LivesChanged += this.onLivesUpdate;
-            this.gameManager.PlayerStruck += this.onPlayerDeath;
-            this.gameManager.EnemyStruck += this.onScoreUpdate;
-            this.gameManager.LevelOver += this.onLevelOver;
-            this.PlayerMadeScoreboard += this.onPlayerMadeScoreboard;
 
             this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MillisecondsForTimer) };
             this.timer.Tick += this.timerTickEvent;
@@ -72,6 +66,24 @@ namespace Galaga.View
         #region Methods
 
         private event EventHandler<EventArgs> PlayerMadeScoreboard;
+
+        /// <summary>
+        ///     On navigation the gameManager gets initialized with the skin chosen by the player
+        ///     PostCondition: this.gameManager != null, this.PlayerMadeScoreboard != null
+        /// </summary>
+        /// <param name="e">the event args passed when navigate to is provoked</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var chosenSkin = e.Parameter as BaseSprite;
+
+            this.gameManager = new GameManager(this.canvas, chosenSkin);
+            this.gameManager.LivesChanged += this.onLivesUpdate;
+            this.gameManager.PlayerStruck += this.onPlayerDeath;
+            this.gameManager.EnemyStruck += this.onScoreUpdate;
+            this.gameManager.LevelOver += this.onLevelOver;
+            this.PlayerMadeScoreboard += this.onPlayerMadeScoreboard;
+        }
 
         private async void setupFileManagement()
         {
@@ -100,7 +112,7 @@ namespace Galaga.View
             };
 
             await contentDialog.ShowAsync();
-            this.playerName = textBox.Text;
+            this.gameManager.PlayerName = textBox.Text;
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
@@ -196,7 +208,8 @@ namespace Galaga.View
         {
             await this.promptUserForName();
             var scoreboardEntry =
-                new ScoreboardEntry(this.playerName, this.gameManager.GameLevel, this.gameManager.PlayerScore);
+                new ScoreboardEntry(this.gameManager.PlayerName, this.gameManager.GameLevel,
+                    this.gameManager.PlayerScore);
             if (this.scoreEntries.Count == ScoreEntries.MaxNumberOfScores)
             {
                 this.scoreEntries.ReplaceLowestScoreEntry(scoreboardEntry);
@@ -233,25 +246,5 @@ namespace Galaga.View
         }
 
         #endregion
-
-        //private async void showWinDialog()
-        //{
-        //    var dialog = new ContentDialog
-        //    {
-        //        Title = "Thanks For Playing",
-        //        Content = "Game Over, You Win!"
-        //    };
-        //    await dialog.ShowAsync();
-        //}
-
-        //private async void showGameOverDialog()
-        //{
-        //    var dialog = new ContentDialog
-        //    {
-        //        Title = "Thanks For Playing",
-        //        Content = "Game Over, You lose"
-        //    };
-        //    await dialog.ShowAsync();
-        //}
     }
 }
