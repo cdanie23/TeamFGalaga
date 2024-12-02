@@ -102,7 +102,8 @@ namespace Galaga.View
             {
                 PlaceholderText = "Enter your name",
                 Width = 200,
-                Height = 30
+                Height = 30,
+                MaxLength = 10
             };
             var contentDialog = new ContentDialog
             {

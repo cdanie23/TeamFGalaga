@@ -1,10 +1,4 @@
-﻿using System;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Galaga.Datatier;
-using Galaga.View.Sprites;
+﻿using Windows.UI.Xaml;
 using Galaga.View.Sprites.PlayerSprites;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -16,12 +10,6 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class StartScreen
     {
-        #region Data members
-
-        private BaseSprite chosenSkin;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -30,12 +18,6 @@ namespace Galaga.View
         public StartScreen()
         {
             this.InitializeComponent();
-
-            ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
-
-            this.chosenSkin = new PlayerSprite();
         }
 
         #endregion
@@ -44,36 +26,32 @@ namespace Galaga.View
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame frame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(frame));
-            frame.Navigate(typeof(GameCanvas), this.chosenSkin);
+            this.viewModel.NavigateToGame();
         }
 
         private void scoreboardButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame frame = Window.Current.Content as Frame ?? throw new ArgumentNullException(nameof(frame));
-            frame.Navigate(typeof(ScoreBoard));
+            this.viewModel.NavigateToScoreboard();
         }
 
-        private async void resetScoreboardButton_Click(object sender, RoutedEventArgs e)
+        private void resetScoreboardButton_Click(object sender, RoutedEventArgs e)
         {
-            var scoresFileManager = new ScoresFileManager();
-            await scoresFileManager.CreateFileManagement();
-            scoresFileManager.ClearAllScores();
+            this.viewModel.DeleteScores();
         }
 
         private void onSkin1Checked(object sender, RoutedEventArgs e)
         {
-            this.chosenSkin = new PlayerSprite();
+            this.viewModel.SetChosenSkin(new PlayerSprite());
         }
 
         private void onSkin2Checked(object sender, RoutedEventArgs e)
         {
-            this.chosenSkin = new PlayerSprite2();
+            this.viewModel.SetChosenSkin(new PlayerSprite2());
         }
 
         private void onSkin3Checked(object sender, RoutedEventArgs e)
         {
-            this.chosenSkin = new PlayerSprite3();
+            this.viewModel.SetChosenSkin(new PlayerSprite3());
         }
 
         #endregion

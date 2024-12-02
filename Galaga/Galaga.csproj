@@ -146,6 +146,7 @@
     <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="Model\SoundPlayer.cs" />
     <Compile Include="ViewModel\ScoreboardViewModel.cs" />
+    <Compile Include="ViewModel\StartScreenViewModel.cs" />
     <Compile Include="View\ScoreBoard.xaml.cs">
       <DependentUpon>ScoreBoard.xaml</DependentUpon>
     </Compile>

@@ -5,11 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:playerSprites="using:Galaga.View.Sprites.PlayerSprites"
+    xmlns:viewModel="using:Galaga.ViewModel"
     mc:Ignorable="d"
     Background="Black"
     Width="800"
     Height="620">
 
+    <Page.Resources>
+        <viewModel:StartScreenViewModel x:Name="viewModel" />
+    </Page.Resources>
     <Grid Background="Black">
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Welcome to Galaga!" VerticalAlignment="Top"
                    Foreground="#FF0BE42C" FontSize="20" Margin="0,30,0,0" />
