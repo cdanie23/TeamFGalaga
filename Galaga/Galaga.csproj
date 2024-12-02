@@ -145,6 +145,7 @@
     <Compile Include="Model\ScoreEntries.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="Model\SoundPlayer.cs" />
+    <Compile Include="Model\StarsManager.cs" />
     <Compile Include="ViewModel\ScoreboardViewModel.cs" />
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
     <Compile Include="View\ScoreBoard.xaml.cs">
@@ -202,6 +203,9 @@
     </Compile>
     <Compile Include="View\Sprites\PlayerSprites\PlayerSprite3.xaml.cs">
       <DependentUpon>PlayerSprite3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\StarSprite.xaml.cs">
+      <DependentUpon>StarSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartScreen.xaml.cs">
       <DependentUpon>StartScreen.xaml</DependentUpon>
@@ -303,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\PlayerSprites\PlayerSprite3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\StarSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

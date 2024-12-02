@@ -27,6 +27,8 @@ namespace Galaga.Model
         private readonly BonusEnemyManager bonusEnemyManager;
         private readonly Canvas canvas;
 
+        private readonly StarsManager starsManager;
+
         #endregion
 
         #region Properties
@@ -68,7 +70,8 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
         ///     Precondition: Canvas != null
-        ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.bulletManager != null
+        ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.enemyBulletManager != null, this.canvas != null,
+        ///                    this.playerBulletManager != null, this.starsManager != null, this.gameTimer != null,  this.GameLevel == 1
         /// </summary>
         /// <param name="canvas">the Canvas of the game</param>
         /// <param name="playerSkin">the player skin chosen by the user</param>
@@ -85,6 +88,7 @@ namespace Galaga.Model
 
             this.playerBulletManager =
                 new PlayerBulletManager(canvas, this.enemyManager, this.playerManager, this.bonusEnemyManager);
+            this.starsManager = new StarsManager(canvas);
             this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
 
             this.GameLevel = 1;
@@ -138,6 +142,8 @@ namespace Galaga.Model
             this.LevelOver += this.enemyManager.OnLevelOver;
 
             this.LivesChanged += this.onLivesChanged;
+
+            this.starsManager.InitializeStars();
         }
 
         private void setupTimers()
@@ -245,6 +251,7 @@ namespace Galaga.Model
             this.gameTimer.Stop();
             this.enemyBulletManager.EnemyRandomShootTimer.Stop();
             this.bonusEnemyManager.StopBonusEnemyTimers();
+            this.starsManager.StopStars();
         }
 
         private void onLevelOver(object sender, int level)
