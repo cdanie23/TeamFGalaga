@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
@@ -21,6 +22,11 @@ namespace Galaga.Model
         private const int NormalPlayerSpeed = 8;
         private const int IncreasedPlayerSpeed = 15;
 
+        /// <summary>
+        ///     Gets if the player double is active
+        /// </summary>
+        public bool PlayerDoubleActive;
+
         private readonly Canvas canvas;
 
         private readonly double canvasWidth;
@@ -33,6 +39,8 @@ namespace Galaga.Model
         private DispatcherTimer powerUpTimer;
         private int powerUpTimerTickCount;
 
+        private BaseSprite playerSkin;
+
         #endregion
 
         #region Properties
@@ -41,6 +49,11 @@ namespace Galaga.Model
         ///     Gets the player
         /// </summary>
         public Player Player { get; private set; }
+
+        /// <summary>
+        ///     Gets the player
+        /// </summary>
+        public Player PlayerDouble { get; private set; }
 
         /// <summary>
         ///     Gets or sets the number of lives
@@ -101,11 +114,12 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Sets the player in the game
-        ///     <param name="playerSkin">the skin of the player ship</param>
+        ///     <param name="playerskin">the skin of the player ship</param>
         /// </summary>
-        public void SetupPlayer(BaseSprite playerSkin)
+        public void SetupPlayer(BaseSprite playerskin)
         {
-            this.createAndPlacePlayer(playerSkin);
+            this.playerSkin = playerskin ?? throw new ArgumentNullException(nameof(playerskin));
+            this.createAndPlacePlayer();
         }
 
         private void invulnerabilityTimerTick(object sender, object e)
@@ -128,24 +142,37 @@ namespace Galaga.Model
         ///     PostCondition: this.Canvas.Children == @prev + 1, this.dateTimeOfLastPlayerBullet == DateTime.Now
         /// </summary>
         /// <returns>The bullet that was shot or null otherwise</returns>
-        public Bullet ShootPlayerBullet()
+        public ICollection<Bullet> ShootPlayerBullet()
         {
+            IList<Bullet> bullets = new List<Bullet>();
             if (this.CanPlayerShoot)
             {
-                var bullet = this.Player.BulletsAvailable.Pop();
-                this.canvas.Children.Add(bullet.Sprite);
-                bullet.X = this.Player.X + this.Player.Width / 2;
-                bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
-                this.dateTimeOfLastPlayerBullet = DateTime.Now;
-                return bullet;
+                if (this.PlayerDoubleActive && this.PlayerDouble.BulletsAvailable.Count > 0)
+                {
+                    var doubleBullet = this.PlayerDouble.BulletsAvailable.Pop();
+                    this.canvas.Children.Add(doubleBullet.Sprite);
+                    doubleBullet.X = this.PlayerDouble.X + this.PlayerDouble.Width / 2;
+                    doubleBullet.Y = this.PlayerDouble.Y - BulletManager.SpaceInBetweenBulletAndShip;
+                    bullets.Add(doubleBullet);
+                }
+
+                if (this.Player.BulletsAvailable.Count > 0)
+                {
+                    var bullet = this.Player.BulletsAvailable.Pop();
+                    this.canvas.Children.Add(bullet.Sprite);
+                    bullet.X = this.Player.X + this.Player.Width / 2;
+                    bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
+                    this.dateTimeOfLastPlayerBullet = DateTime.Now;
+                    bullets.Add(bullet);
+                }
             }
 
-            return null;
+            return bullets;
         }
 
-        private void createAndPlacePlayer(BaseSprite playerSkin)
+        private void createAndPlacePlayer()
         {
-            this.Player = new Player(playerSkin);
+            this.Player = new Player(this.playerSkin);
             this.canvas.Children.Add(this.Player.Sprite);
 
             this.placePlayerNearBottomOfBackgroundCentered();
@@ -163,10 +190,22 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            var newLocation = this.Player.X - this.Player.SpeedX;
-            if (newLocation > 0)
+            if (this.PlayerDoubleActive)
             {
-                this.Player.MoveLeft();
+                var newLocation = this.Player.X - this.Player.SpeedX;
+                if (newLocation > 0)
+                {
+                    this.Player.MoveLeft();
+                    this.PlayerDouble.MoveLeft();
+                }
+            }
+            else
+            {
+                var newLocation = this.Player.X - this.Player.SpeedX;
+                if (newLocation > 0)
+                {
+                    this.Player.MoveLeft();
+                }
             }
         }
 
@@ -176,10 +215,22 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            var newLocation = this.Player.X + this.Player.SpeedX;
-            if (newLocation + this.Player.Width < this.canvasWidth)
+            if (this.PlayerDoubleActive)
             {
-                this.Player.MoveRight();
+                var newLocation = this.PlayerDouble.X + this.PlayerDouble.SpeedX;
+                if (newLocation + this.PlayerDouble.Width < this.canvasWidth)
+                {
+                    this.Player.MoveRight();
+                    this.PlayerDouble.MoveRight();
+                }
+            }
+            else
+            {
+                var newLocation = this.Player.X + this.Player.SpeedX;
+                if (newLocation + this.Player.Width < this.canvasWidth)
+                {
+                    this.Player.MoveRight();
+                }
             }
         }
 
@@ -200,6 +251,32 @@ namespace Galaga.Model
             this.powerUpTimerTickCount = 0;
             this.powerUpTimer.Start();
             this.Player.SetPlayerSpeed(IncreasedPlayerSpeed);
+            this.PlayerDouble?.SetPlayerSpeed(IncreasedPlayerSpeed);
+        }
+
+        /// <summary>
+        ///     Doubles up player.
+        /// </summary>
+        public void DoubleUpPlayer()
+        {
+            this.createPlayerDouble();
+            this.placePlayerAndDouble();
+            this.PlayerDoubleActive = true;
+        }
+
+        private void placePlayerAndDouble()
+        {
+            this.Player.X = this.canvasWidth / 2 - this.Player.Width / 2.0 - this.Player.Width;
+            this.Player.Y = this.canvasHeight - this.Player.Height - PlayerOffsetFromBottom;
+
+            this.PlayerDouble.X = this.canvasWidth / 2 - this.Player.Width / 2.0 + this.Player.Width;
+            this.PlayerDouble.Y = this.canvasHeight - this.Player.Height - PlayerOffsetFromBottom;
+        }
+
+        private void createPlayerDouble()
+        {
+            this.PlayerDouble = new Player(this.playerSkin.Clone());
+            this.canvas.Children.Add(this.PlayerDouble.Sprite);
         }
 
         private void PowerUpTimer_Tick(object sender, object e)
@@ -210,6 +287,28 @@ namespace Galaga.Model
             {
                 this.powerUpTimer.Stop();
                 this.Player.SetPlayerSpeed(NormalPlayerSpeed);
+                this.PlayerDouble?.SetPlayerSpeed(NormalPlayerSpeed);
+            }
+        }
+
+        /// <summary>
+        ///     Removes the player double.
+        /// </summary>
+        /// <param name="playerHit">The player hit.</param>
+        public void removePlayerDouble(Player playerHit)
+        {
+            this.PlayerDoubleActive = false;
+            if (playerHit == this.PlayerDouble)
+            {
+                this.canvas.Children.Remove(this.PlayerDouble.Sprite);
+                ExplosionAnimator.PlayExplosion(this.canvas, this.PlayerDouble.X, this.PlayerDouble.Y);
+            }
+            else
+            {
+                var playerToRemove = this.Player;
+                this.canvas.Children.Remove(playerToRemove.Sprite);
+                this.Player = this.PlayerDouble;
+                ExplosionAnimator.PlayExplosion(this.canvas, playerToRemove.X, playerToRemove.Y);
             }
         }
 

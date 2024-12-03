@@ -12,9 +12,9 @@
     Width="50">
 
     <Canvas>
-        <Ellipse Height="60" Fill="Red" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Ellipse Height="44" Fill="Orange " Width="41" Canvas.Left="4" Canvas.Top="8"/>
-        <Ellipse Height="34" Fill="Yellow " Width="28" Canvas.Left="11" Canvas.Top="13"/>
-        <Ellipse Height="24" Fill="White " Width="21" Canvas.Left="15" Canvas.Top="18"/>
+        <Ellipse Height="60" Fill="Red" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Ellipse Height="44" Fill="Orange " Width="41" Canvas.Left="4" Canvas.Top="8" />
+        <Ellipse Height="34" Fill="Yellow " Width="28" Canvas.Left="11" Canvas.Top="13" />
+        <Ellipse Height="24" Fill="White " Width="21" Canvas.Left="15" Canvas.Top="18" />
     </Canvas>
 </sprites:BaseSprite>

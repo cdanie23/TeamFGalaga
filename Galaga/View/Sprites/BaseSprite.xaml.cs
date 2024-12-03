@@ -51,6 +51,12 @@ namespace Galaga.View.Sprites
             this.Boundary = new Rectangle((int)x, (int)y, (int)ActualWidth, (int)ActualHeight);
         }
 
+        /// <summary>
+        ///     Clones the sprite
+        /// </summary>
+        /// <returns> the clone </returns>
+        public abstract BaseSprite Clone();
+
         #endregion
     }
 }

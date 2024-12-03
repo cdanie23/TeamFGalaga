@@ -18,5 +18,20 @@ namespace Galaga.View.Sprites.PlayerSprites
         }
 
         #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Clones the sprite
+        /// </summary>
+        /// <returns>
+        ///     the clone
+        /// </returns>
+        public override BaseSprite Clone()
+        {
+            return new PlayerSprite3();
+        }
+
+        #endregion
     }
 }

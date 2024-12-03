@@ -11,7 +11,11 @@ namespace Galaga.Model
     /// </summary>
     public class ExplosionAnimator
     {
+        #region Data members
+
         private const double AnimationIntervalInMilliseconds = 50;
+
+        #endregion
 
         #region Methods
 

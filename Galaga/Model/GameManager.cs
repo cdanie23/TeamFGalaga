@@ -70,8 +70,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
         ///     Precondition: Canvas != null
-        ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.enemyBulletManager != null, this.canvas != null,
-        ///                    this.playerBulletManager != null, this.starsManager != null, this.gameTimer != null,  this.GameLevel == 1
+        ///     PostCondition: this.playerManager != null, this.enemyManager != null, this.enemyBulletManager != null, this.canvas
+        ///     != null,
+        ///     this.playerBulletManager != null, this.starsManager != null, this.gameTimer != null,  this.GameLevel == 1
         /// </summary>
         /// <param name="canvas">the Canvas of the game</param>
         /// <param name="playerSkin">the player skin chosen by the user</param>
@@ -199,8 +200,8 @@ namespace Galaga.Model
         /// </summary>
         public void ShootPlayerBullet()
         {
-            var bullet = this.playerManager.ShootPlayerBullet();
-            if (bullet != null)
+            var bullets = this.playerManager.ShootPlayerBullet();
+            foreach (var bullet in bullets)
             {
                 this.playerBulletManager.AddBullet(bullet);
                 SoundPlayer.playShootSound();
@@ -221,6 +222,10 @@ namespace Galaga.Model
 
             if (enemy.Level == BonusEnemyLevel)
             {
+                if (this.GameLevel > 1)
+                {
+                    this.playerManager.DoubleUpPlayer();
+                }
                 this.LivesChanged?.Invoke(this, 1);
                 this.playerManager.TemporaryPowerUp();
                 SoundPlayer.playBonusGottenSound();

@@ -65,7 +65,20 @@ namespace Galaga.Model
                     flaggedBullets.Add(bullet);
                 }
 
-                if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+                if (this.playerManager.PlayerDoubleActive)
+                {
+                    if (this.playerManager.PlayerDouble.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+                    {
+                        this.playerManager.removePlayerDouble(this.playerManager.PlayerDouble);
+                        flaggedBullets.Add(bullet);
+                    }
+                    else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+                    {
+                        this.playerManager.removePlayerDouble(this.playerManager.Player);
+                        flaggedBullets.Add(bullet);
+                    }
+                }
+                else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
                 {
                     this.PlayerStruck?.Invoke(this, EventArgs.Empty);
                     flaggedBullets.Add(bullet);

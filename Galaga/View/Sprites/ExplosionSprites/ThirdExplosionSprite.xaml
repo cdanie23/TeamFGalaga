@@ -12,8 +12,8 @@
     Width="50">
 
     <Canvas>
-        <Ellipse Height="35" Fill="Brown " Width="29" Canvas.Left="11" Canvas.Top="13"/>
-        <Ellipse Height="23" Fill="DarkRed " Width="20" Canvas.Left="15" Canvas.Top="19"/>
-        <Ellipse Height="8" Fill="Red " Width="7" Canvas.Left="22" Canvas.Top="26"/>
+        <Ellipse Height="35" Fill="Brown " Width="29" Canvas.Left="11" Canvas.Top="13" />
+        <Ellipse Height="23" Fill="DarkRed " Width="20" Canvas.Left="15" Canvas.Top="19" />
+        <Ellipse Height="8" Fill="Red " Width="7" Canvas.Left="22" Canvas.Top="26" />
     </Canvas>
 </sprites:BaseSprite>
