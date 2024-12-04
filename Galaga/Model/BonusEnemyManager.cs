@@ -142,11 +142,14 @@ namespace Galaga.Model
         /// </summary>
         public void Shoot()
         {
-            var bullet = this.bonusBullets.Pop();
-            this.bulletManager.AddBullet(bullet);
-            this.canvas.Children.Add(bullet.Sprite);
-            bullet.X = this.bonusEnemy.X + this.bonusEnemy.Width / 2;
-            bullet.Y = this.bonusEnemy.Y + BulletManager.SpaceInBetweenBulletAndShip;
+            if (this.bonusBullets.Count > 1)
+            {
+                var bullet = this.bonusBullets.Pop();
+                this.bulletManager.AddBullet(bullet);
+                this.canvas.Children.Add(bullet.Sprite);
+                bullet.X = this.bonusEnemy.X + this.bonusEnemy.Width / 2;
+                bullet.Y = this.bonusEnemy.Y + BulletManager.SpaceInBetweenBulletAndShip;
+            }
         }
 
         /// <summary>
