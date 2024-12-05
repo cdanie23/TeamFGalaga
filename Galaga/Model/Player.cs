@@ -23,7 +23,10 @@ namespace Galaga.Model
         private const int SpeedXDirection = 8;
         private const int SpeedYDirection = 0;
 
-        private const int MaxNumOfBullets = 3;
+        /// <summary>
+        ///     Maximum Number of bullets a player can have
+        /// </summary>
+        public static readonly int MaxNumOfBullets = 3;
 
         #endregion
 

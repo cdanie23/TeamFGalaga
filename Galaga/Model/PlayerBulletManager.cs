@@ -69,9 +69,14 @@ namespace Galaga.Model
                 if (!bullet.Move(Canvas))
                 {
                     flaggedBullets.Add(bullet);
-                    this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player,
-                        Player.PlayerBulletSpeed));
-                    if (this.playerManager.PlayerDoubleActive)
+                    if (this.playerManager.Player.BulletsAvailable.Count < Player.MaxNumOfBullets)
+                    {
+                        this.playerManager.Player.BulletsAvailable.Push(new Bullet(BulletType.Player,
+                            Player.PlayerBulletSpeed));
+                    }
+
+                    if (this.playerManager.PlayerDoubleActive &&
+                        this.playerManager.PlayerDouble.BulletsAvailable.Count < Player.MaxNumOfBullets)
                     {
                         this.playerManager.PlayerDouble.BulletsAvailable.Push(new Bullet(BulletType.Player,
                             Player.PlayerBulletSpeed));
@@ -89,7 +94,8 @@ namespace Galaga.Model
             RemoveFlaggedBullets(flaggedBullets);
         }
 
-        private bool checkCollisionWithEnemies(Bullet bullet, Collection<Bullet> flaggedBullets, bool invokeEvent, ref Enemy hitEnemy)
+        private bool checkCollisionWithEnemies(Bullet bullet, Collection<Bullet> flaggedBullets, bool invokeEvent,
+            ref Enemy hitEnemy)
         {
             foreach (var enemy in this.enemyManager)
             {
