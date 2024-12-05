@@ -29,7 +29,7 @@ namespace Galaga.View.Sprites
         {
             this.InitializeComponent();
             var random = new Random();
-            var starLength = random.Next(0, (int)Height) / 2;
+            var starLength = random.Next(0, (int)Height) / 2.0;
 
             var randomColor = Color.FromArgb(
                 (byte)random.Next(MaxValueOfRgbColor),
@@ -37,7 +37,7 @@ namespace Galaga.View.Sprites
                 (byte)random.Next(MaxValueOfRgbColor),
                 (byte)random.Next(MaxValueOfRgbColor)
             );
-            var origin = (int)this.canvas.Height / 2;
+            var origin = (int)this.canvas.Height / 2.0;
             var randomBrush = new SolidColorBrush(randomColor);
             var line1 = new Line
             {

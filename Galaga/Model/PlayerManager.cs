@@ -151,7 +151,7 @@ namespace Galaga.Model
                 {
                     var doubleBullet = this.PlayerDouble.BulletsAvailable.Pop();
                     this.canvas.Children.Add(doubleBullet.Sprite);
-                    doubleBullet.X = this.PlayerDouble.X + this.PlayerDouble.Width / 2;
+                    doubleBullet.X = this.PlayerDouble.X + this.PlayerDouble.Width / 2.0;
                     doubleBullet.Y = this.PlayerDouble.Y - BulletManager.SpaceInBetweenBulletAndShip;
                     bullets.Add(doubleBullet);
                 }
@@ -160,7 +160,7 @@ namespace Galaga.Model
                 {
                     var bullet = this.Player.BulletsAvailable.Pop();
                     this.canvas.Children.Add(bullet.Sprite);
-                    bullet.X = this.Player.X + this.Player.Width / 2;
+                    bullet.X = this.Player.X + this.Player.Width / 2.0;
                     bullet.Y = this.Player.Y - BulletManager.SpaceInBetweenBulletAndShip;
                     this.dateTimeOfLastPlayerBullet = DateTime.Now;
                     bullets.Add(bullet);
@@ -245,8 +245,9 @@ namespace Galaga.Model
         /// </summary>
         public void TemporaryPowerUp()
         {
+            const int everySecond = 1;
             this.powerUpTimer = new DispatcherTimer
-                { Interval = new TimeSpan(0, 0, 0, 1, 0) };
+                { Interval = new TimeSpan(0, 0, 0, everySecond, 0) };
             this.powerUpTimer.Tick += this.PowerUpTimer_Tick;
             this.powerUpTimerTickCount = 0;
             this.powerUpTimer.Start();

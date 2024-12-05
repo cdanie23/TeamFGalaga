@@ -18,6 +18,8 @@ namespace Galaga.Model
         public const int LastLevel = 3;
 
         private const int BonusEnemyLevel = 0;
+        private const int GameTimerIntervalInMilliseconds = 20;
+        private const int LevelNeededForDoublePlayerShip = 2;
 
         private readonly PlayerManager playerManager;
         private readonly EnemiesManager enemyManager;
@@ -86,11 +88,10 @@ namespace Galaga.Model
             this.enemyBulletManager = new EnemyBulletManager(canvas, this.playerManager);
             this.bonusEnemyManager =
                 new BonusEnemyManager(canvas, this.enemyManager, this.enemyBulletManager, gameSettings);
-
             this.playerBulletManager =
                 new PlayerBulletManager(canvas, this.enemyManager, this.playerManager, this.bonusEnemyManager);
             this.starsManager = new StarsManager(canvas);
-            this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
+            this.gameTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, GameTimerIntervalInMilliseconds) };
 
             this.GameLevel = 1;
 
@@ -134,7 +135,6 @@ namespace Galaga.Model
             this.playerManager.SetupPlayer(playerSkin);
             this.enemyManager.SetupEnemies();
             this.setupTimers();
-            this.bonusEnemyManager.SetUpTimers();
 
             this.playerBulletManager.EnemyStruck += this.onEnemyStruck;
             this.enemyBulletManager.PlayerStruck += this.onPlayerStruck;
@@ -151,6 +151,8 @@ namespace Galaga.Model
         {
             this.enemyBulletManager.EnemyRandomShootTimer.Tick += this.shootEnemyBulletTickEvent;
             this.enemyBulletManager.EnemyRandomShootTimer.Start();
+
+            this.bonusEnemyManager.SetUpTimers();
 
             this.gameTimer.Tick += this.moveBulletTickEvent;
             this.gameTimer.Tick += this.enemyManager.MoveEnemyTickEvent;
@@ -222,7 +224,7 @@ namespace Galaga.Model
 
             if (enemy.Level == BonusEnemyLevel)
             {
-                if (this.GameLevel > 1)
+                if (this.GameLevel >= LevelNeededForDoublePlayerShip)
                 {
                     this.playerManager.DoubleUpPlayer();
                 }

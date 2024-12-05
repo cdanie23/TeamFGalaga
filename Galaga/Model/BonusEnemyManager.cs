@@ -15,6 +15,8 @@ namespace Galaga.Model
         private const int BonusRandomLowerLimit = 5;
         private const int BonusRandomUpperLimit = 80;
         private const int NumOfBonusBullets = 15;
+        private const int ShootingIntervalInMilliseconds = 750;
+        private const int MoveIntervalInMilliseconds = 20;
 
         private readonly EnemyFactory enemyFactory;
         private readonly Canvas canvas;
@@ -56,8 +58,9 @@ namespace Galaga.Model
             var randomNumber = random.Next(BonusRandomLowerLimit, BonusRandomUpperLimit);
 
             this.bonusTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, randomNumber, 0) };
-            this.shootingTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 750) };
-            this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 20) };
+            this.shootingTimer = new DispatcherTimer
+                { Interval = new TimeSpan(0, 0, 0, 0, ShootingIntervalInMilliseconds) };
+            this.moveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, MoveIntervalInMilliseconds) };
             this.SetUpTimers();
 
             this.setupBonusBullets();

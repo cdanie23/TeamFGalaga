@@ -78,21 +78,7 @@ namespace Galaga.Model
                     }
                 }
 
-                foreach (var enemy in this.enemyManager)
-                {
-                    if (enemy.CollisionDetected(bullet))
-                    {
-                        if (enemy.Sprite is BonusEnemySprite)
-                        {
-                            SoundPlayer.playBonusGottenSound();
-                            this.bonusEnemyManager.SetInactive();
-                        }
-
-                        flaggedBullets.Add(bullet);
-                        invokeEvent = true;
-                        hitEnemy = enemy;
-                    }
-                }
+                invokeEvent = this.checkCollisionWithEnemies(bullet, flaggedBullets, invokeEvent, ref hitEnemy);
             }
 
             if (invokeEvent)
@@ -101,6 +87,27 @@ namespace Galaga.Model
             }
 
             RemoveFlaggedBullets(flaggedBullets);
+        }
+
+        private bool checkCollisionWithEnemies(Bullet bullet, Collection<Bullet> flaggedBullets, bool invokeEvent, ref Enemy hitEnemy)
+        {
+            foreach (var enemy in this.enemyManager)
+            {
+                if (enemy.CollisionDetected(bullet))
+                {
+                    if (enemy.Sprite is BonusEnemySprite)
+                    {
+                        SoundPlayer.playBonusGottenSound();
+                        this.bonusEnemyManager.SetInactive();
+                    }
+
+                    flaggedBullets.Add(bullet);
+                    invokeEvent = true;
+                    hitEnemy = enemy;
+                }
+            }
+
+            return invokeEvent;
         }
 
         /// <summary>

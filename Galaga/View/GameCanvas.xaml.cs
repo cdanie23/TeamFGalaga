@@ -23,6 +23,13 @@ namespace Galaga.View
         #region Data members
 
         private const int MillisecondsForTimer = 50;
+        private const double NameTextBoxWidth = 200;
+        private const double NameTextBoxHeight = 30;
+        private const int MaxNameLength = 10;
+        private const string PromptForName = "Enter your name";
+        private static readonly object PromptScoreboard = "Congratulations you made the scoreboard";
+        private const string PrimaryButtonText = "Submit";
+        private const int MillisecondsDelay = 1000;
 
         private GameManager gameManager;
         private readonly DispatcherTimer timer;
@@ -100,16 +107,16 @@ namespace Galaga.View
         {
             var textBox = new TextBox
             {
-                PlaceholderText = "Enter your name",
-                Width = 200,
-                Height = 30,
-                MaxLength = 10
+                PlaceholderText = PromptForName,
+                Width = NameTextBoxWidth,
+                Height = NameTextBoxHeight,
+                MaxLength = MaxNameLength
             };
             var contentDialog = new ContentDialog
             {
-                Title = "Congratulations you made the scoreboard",
+                Title = PromptScoreboard,
                 Content = textBox,
-                PrimaryButtonText = "Submit"
+                PrimaryButtonText = PrimaryButtonText
             };
 
             await contentDialog.ShowAsync();
@@ -199,7 +206,7 @@ namespace Galaga.View
                 this.gameOverTextBlock.Visibility = Visibility.Visible;
                 this.gameOverTextBlock.Text = $"Round: {this.gameManager.GameLevel}";
 
-                await Task.Delay(1000);
+                await Task.Delay(MillisecondsDelay);
 
                 this.gameOverTextBlock.Visibility = Visibility.Collapsed;
             }

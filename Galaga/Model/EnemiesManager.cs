@@ -299,8 +299,14 @@ namespace Galaga.Model
         ///     Adds the bonus enemy to the enemies collection
         /// </summary>
         /// <param name="enemy"></param>
+        /// <exception cref="ArgumentNullException">thrown if the enemy is null</exception>
         public void AddBonusEnemy(Enemy enemy)
         {
+            if (enemy == null)
+            {
+                throw new ArgumentNullException(nameof(enemy));
+            }
+
             this.enemies.Add(enemy);
         }
 

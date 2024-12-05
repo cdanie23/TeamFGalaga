@@ -13,8 +13,10 @@ namespace Galaga.Model
         #region Data members
 
         private const int NumOfStars = 60;
-        private const int TimerInteralMilliseconds = 20;
+        private const int TimerIntervalMilliseconds = 20;
         private const int SpeedOfStars = 6;
+
+        private const int BehindBulletsAndShips = -2;
 
         private readonly Canvas canvas;
         private readonly DispatcherTimer starMoveTimer;
@@ -33,7 +35,7 @@ namespace Galaga.Model
         public StarsManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-            this.starMoveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, TimerInteralMilliseconds) };
+            this.starMoveTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalMilliseconds) };
 
             this.setupStars();
 
@@ -70,7 +72,7 @@ namespace Galaga.Model
                 var star = new StarSprite();
                 Canvas.SetLeft(star, this.getRandomXPosition());
                 Canvas.SetTop(star, this.getRandomYPosition());
-                Canvas.SetZIndex(star, -2);
+                Canvas.SetZIndex(star, BehindBulletsAndShips);
                 this.canvas.Children.Add(star);
             }
         }

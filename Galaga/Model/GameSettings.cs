@@ -5,6 +5,27 @@
     /// </summary>
     public class GameSettings
     {
+        #region Data members
+
+        private const int StartLevel = 1;
+
+        private static readonly int[] EnemyNumbersLevel2 = { 3, 4, 4, 5 };
+        private static readonly int[] EnemyNumbersLevel1 = { 2, 3, 3, 4 };
+        private static readonly int[] EnemyNumbersLevel3 = { 3, 4, 5, 6 };
+
+        private const int Level1EnemySpeed = 2;
+        private const int Level2Enemies1And2Speed = 3;
+        private const int Level2Enemies3And4Speed = 4;
+        private const int Level3Enemies1And2Speed = 5;
+        private const int Level3Enemies3Speed = 6;
+        private const int Level3Enemies4Speed = 7;
+        private const int BonusEnemySpeed = 5;
+        private const int Level1BulletSpeed = 8;
+        private const int Level2BulletSpeed = 9;
+        private const int Level3BulletSpeed = 10;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -58,17 +79,17 @@
         /// </summary>
         public GameSettings()
         {
-            this.Level = 1;
+            this.Level = StartLevel;
 
-            this.Level1EnemyXSpeed = 2;
-            this.Level2EnemyXSpeed = 2;
-            this.Level3EnemyXSpeed = 2;
-            this.Level4EnemyXSpeed = 2;
-            this.BonusEnemyXSpeed = 5;
+            this.Level1EnemyXSpeed = Level1EnemySpeed;
+            this.Level2EnemyXSpeed = Level1EnemySpeed;
+            this.Level3EnemyXSpeed = Level1EnemySpeed;
+            this.Level4EnemyXSpeed = Level1EnemySpeed;
+            this.BonusEnemyXSpeed = BonusEnemySpeed;
 
-            this.ShootingEnemyBulletSpeed = 8;
+            this.ShootingEnemyBulletSpeed = Level1BulletSpeed;
 
-            this.NumberOfEachEnemy = new[] { 2, 3, 3, 4 };
+            this.NumberOfEachEnemy = EnemyNumbersLevel1;
         }
 
         #endregion
@@ -82,43 +103,41 @@
         /// <param name="gameLevel">the level of the game to set the settings to</param>
         public void SetGameSettings(int gameLevel)
         {
+            this.Level = gameLevel;
             switch (gameLevel)
             {
                 case 1:
-                    this.Level = 1;
 
-                    this.Level1EnemyXSpeed = 2;
-                    this.Level2EnemyXSpeed = 2;
-                    this.Level3EnemyXSpeed = 2;
-                    this.Level4EnemyXSpeed = 2;
+                    this.Level1EnemyXSpeed = Level1EnemySpeed;
+                    this.Level2EnemyXSpeed = Level1EnemySpeed;
+                    this.Level3EnemyXSpeed = Level1EnemySpeed;
+                    this.Level4EnemyXSpeed = Level1EnemySpeed;
 
-                    this.ShootingEnemyBulletSpeed = 8;
+                    this.ShootingEnemyBulletSpeed = Level1BulletSpeed;
 
-                    this.NumberOfEachEnemy = new[] { 2, 3, 3, 4 };
+                    this.NumberOfEachEnemy = EnemyNumbersLevel1;
                     break;
                 case 2:
-                    this.Level = 2;
 
-                    this.Level1EnemyXSpeed = 3;
-                    this.Level2EnemyXSpeed = 3;
-                    this.Level3EnemyXSpeed = 4;
-                    this.Level4EnemyXSpeed = 4;
+                    this.Level1EnemyXSpeed = Level2Enemies1And2Speed;
+                    this.Level2EnemyXSpeed = Level2Enemies1And2Speed;
+                    this.Level3EnemyXSpeed = Level2Enemies3And4Speed;
+                    this.Level4EnemyXSpeed = Level2Enemies3And4Speed;
 
-                    this.ShootingEnemyBulletSpeed = 9;
+                    this.ShootingEnemyBulletSpeed = Level2BulletSpeed;
 
-                    this.NumberOfEachEnemy = new[] { 3, 4, 4, 5 };
+                    this.NumberOfEachEnemy = EnemyNumbersLevel2;
                     break;
                 case 3:
-                    this.Level = 3;
 
-                    this.Level1EnemyXSpeed = 5;
-                    this.Level2EnemyXSpeed = 5;
-                    this.Level3EnemyXSpeed = 6;
-                    this.Level4EnemyXSpeed = 7;
+                    this.Level1EnemyXSpeed = Level3Enemies1And2Speed;
+                    this.Level2EnemyXSpeed = Level3Enemies1And2Speed;
+                    this.Level3EnemyXSpeed = Level3Enemies3Speed;
+                    this.Level4EnemyXSpeed = Level3Enemies4Speed;
 
-                    this.ShootingEnemyBulletSpeed = 10;
+                    this.ShootingEnemyBulletSpeed = Level3BulletSpeed;
 
-                    this.NumberOfEachEnemy = new[] { 3, 4, 5, 6 };
+                    this.NumberOfEachEnemy = EnemyNumbersLevel3;
                     break;
             }
         }

@@ -65,27 +65,37 @@ namespace Galaga.Model
                     flaggedBullets.Add(bullet);
                 }
 
-                if (this.playerManager.PlayerDoubleActive)
-                {
-                    if (this.playerManager.PlayerDouble.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
-                    {
-                        this.playerManager.removePlayerDouble(this.playerManager.PlayerDouble);
-                        flaggedBullets.Add(bullet);
-                    }
-                    else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
-                    {
-                        this.playerManager.removePlayerDouble(this.playerManager.Player);
-                        flaggedBullets.Add(bullet);
-                    }
-                }
-                else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
-                {
-                    this.PlayerStruck?.Invoke(this, EventArgs.Empty);
-                    flaggedBullets.Add(bullet);
-                }
+                this.checkCollisionWithPlayer(bullet, flaggedBullets);
             }
 
             RemoveFlaggedBullets(flaggedBullets);
+        }
+
+        private void checkCollisionWithPlayer(Bullet bullet, Collection<Bullet> flaggedBullets)
+        {
+            if (this.playerManager.PlayerDoubleActive)
+            {
+                this.checkCollisionWhenPlayerDoubleActive(bullet, flaggedBullets);
+            }
+            else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+            {
+                this.PlayerStruck?.Invoke(this, EventArgs.Empty);
+                flaggedBullets.Add(bullet);
+            }
+        }
+
+        private void checkCollisionWhenPlayerDoubleActive(Bullet bullet, Collection<Bullet> flaggedBullets)
+        {
+            if (this.playerManager.PlayerDouble.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+            {
+                this.playerManager.removePlayerDouble(this.playerManager.PlayerDouble);
+                flaggedBullets.Add(bullet);
+            }
+            else if (this.playerManager.Player.CollisionDetected(bullet) && !this.playerManager.IsInvulnerable)
+            {
+                this.playerManager.removePlayerDouble(this.playerManager.Player);
+                flaggedBullets.Add(bullet);
+            }
         }
 
         /// <summary>
